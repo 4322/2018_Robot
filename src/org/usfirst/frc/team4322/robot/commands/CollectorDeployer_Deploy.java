@@ -19,7 +19,7 @@ public class CollectorDeployer_Deploy extends Command
 	@Override
 	protected void execute()
 	{
-		if (!Robot.collectorDeployer.isLimit())
+		if (!Robot.collectorDeployer.isLimit() && !Robot.collectorDeployer.isDown())
 		{
 			Robot.collectorDeployer.set(1);
 		}
@@ -51,12 +51,13 @@ public class CollectorDeployer_Deploy extends Command
 	protected boolean isFinished()
 	{
 		// TODO: Make this return true when this Command no longer needs to run execute()
-		return Robot.collectorDeployer.isDone();
+		return Robot.collectorDeployer.isDone() || Robot.collectorDeployer.isDown();
 	}
 
 	@Override
 	protected void end()
 	{
 		Robot.collectorDeployer.resetEncoder();
+		Robot.collectorDeployer.setDown();
 	}
 }

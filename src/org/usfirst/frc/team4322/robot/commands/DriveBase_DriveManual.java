@@ -53,9 +53,9 @@ public class DriveBase_DriveManual extends Command
         if (power != 0)
         {
         	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
-                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 0);
+                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1);
         	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
-                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 0);
+                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1);
 
         }
         vLeft += vAngular;

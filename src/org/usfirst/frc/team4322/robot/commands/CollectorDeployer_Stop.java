@@ -18,6 +18,10 @@ public class CollectorDeployer_Stop extends Command
 	protected void execute()
 	{
 		Robot.collectorDeployer.set(0);
+		if (Robot.collectorDeployer.isLimit())
+		{
+			Robot.collectorDeployer.setDown();
+		}
 	}
 
 

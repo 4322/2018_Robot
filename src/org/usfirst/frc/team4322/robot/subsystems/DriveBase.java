@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4322.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.SPI;
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveManual;
 
@@ -62,7 +63,7 @@ public class DriveBase extends Subsystem {
 			rightSlave.setInverted(true);
 
 			System.out.println("[d] DriveBase() creating Navx...");
-			navx = new AHRS(Port.kMXP);
+			navx = new AHRS(SPI.Port.kMXP);
 			navx.reset();
 			basePitch = navx.getPitch();
 			
@@ -114,7 +115,10 @@ public class DriveBase extends Subsystem {
 	{
 		return (navx.getYaw() - offsetNavX);
 	}
-
+	public double getAngleRaw()
+	{
+		return navx.getYaw();
+	}
 	public void resetNavX()
 	{
 		offsetNavX = navx.getYaw();

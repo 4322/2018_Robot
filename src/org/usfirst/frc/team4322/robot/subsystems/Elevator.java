@@ -100,5 +100,8 @@ public class Elevator extends Subsystem {
 	{
 		master.clearMotionProfileTrajectories();
 	}
-
+	public void reset()
+	{
+		master.setSelectedSensorPosition(0, 0, 10);
+	}
 }

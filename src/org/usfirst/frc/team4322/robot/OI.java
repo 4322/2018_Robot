@@ -21,15 +21,15 @@ public class OI {
 
         operator.y.whenPressed(new Elevator_Scale());
         operator.a.whenPressed(new Elevator_Switch());
-        operator.b.whenPressed(new Elevator_Home());
+        operator.b.whenPressed(new Group_HomeAndCollect());
         operator.x.whenPressed(new Group_ReadyForClimb());
 
         operator.lt.whileHeld(new CollectorActuator_Open());
         operator.lb.whileHeld(new CollectorRollers_Collect());
         operator.rb.whileHeld(new CollectorRollers_Eject());
 
-        operator.dPad.down.whileHeld(new CollectorDeployer_Deploy());
-        operator.dPad.up.whileHeld(new CollectorDeployer_UnDeploy());
+        operator.dPad.down.whenPressed(new CollectorDeployer_Deploy());
+        operator.dPad.up.whenPressed(new CollectorDeployer_UnDeploy());
         
       
     }

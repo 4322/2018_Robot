@@ -8,19 +8,30 @@ import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4322.robot.RobotMap;
-import org.usfirst.frc.team4322.robot.commands.CollectorDeployer_Deploy;
-import org.usfirst.frc.team4322.robot.commands.CollectorDeployer_DeployManual;
 import org.usfirst.frc.team4322.robot.commands.CollectorDeployer_Stop;
+
+import java.util.stream.Collector;
+
+import static org.usfirst.frc.team4322.robot.subsystems.CollectorDeployer.CollectorPosition.DOWN;
+import static org.usfirst.frc.team4322.robot.subsystems.CollectorDeployer.CollectorPosition.UP;
 
 //import org.usfirst.frc.team4322.logging.RobotLogger;
 
-public class CollectorDeployer extends Subsystem {
+public class CollectorDeployer extends Subsystem
+{
 
 	private Counter counter;
 	private AnalogTrigger trigger;
 	private WPI_TalonSRX collectorDeployer;
 	private DigitalInput limit;
 
+	public enum CollectorPosition
+	{
+		UP,
+		DOWN
+	}
+
+	private CollectorPosition position = UP;
 
 	public CollectorDeployer()
 	{
@@ -29,9 +40,10 @@ public class CollectorDeployer extends Subsystem {
 		counter = new Counter(trigger);
 		limit = new DigitalInput(4);
 	}
-	
+
 	@Override
-	protected void initDefaultCommand() {
+	protected void initDefaultCommand()
+	{
 		// TODO Auto-generated method stub
 		setDefaultCommand(new CollectorDeployer_Stop());
 	}
@@ -40,20 +52,42 @@ public class CollectorDeployer extends Subsystem {
 	{
 		collectorDeployer.set(ControlMode.PercentOutput, val);
 	}
+
 	public int getEncoder()
 	{
 		return counter.get();
 	}
+
 	public void resetEncoder()
 	{
 		counter.reset();
 	}
+
 	public boolean isDone()
 	{
 		return (counter.get() == RobotMap.COLLECTOR_DEPLOYER_SETPOINT);
 	}
+
 	public boolean isLimit()
 	{
 		return !limit.get();
+	}
+
+	public void setUp()
+	{
+		position = UP;
+	}
+
+	public void setDown()
+	{
+		position = DOWN;
+	}
+	public boolean isUp()
+	{
+		return position == UP;
+	}
+	public boolean isDown()
+	{
+		return position == DOWN;
 	}
 }

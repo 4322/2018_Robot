@@ -13,7 +13,7 @@ public class DriveBase_DriveArc extends Command
 
 	private boolean isFinished = false;
 
-	private static final double angleTolerance = Math.toRadians(4);
+	private static final double angleTolerance = 4;
 
 	public DriveBase_DriveArc(double velocity, double endAngle, double straightDistance)
 	{
@@ -22,6 +22,11 @@ public class DriveBase_DriveArc extends Command
 		double endAngleRadians = Math.toRadians(endAngle);
 		radius = (straightDistance * Math.sin((Math.PI - endAngleRadians)) / 2) / Math.sin(endAngleRadians); //radius of the circle
 		arcLength = Math.abs(endAngleRadians) * Math.abs(radius);
+	}
+	@Override
+	public void initialize()
+	{
+		Robot.driveBase.resetNavX();
 	}
 	@Override
 	public void execute()
@@ -38,12 +43,12 @@ public class DriveBase_DriveArc extends Command
 		{
 			isFinished = true;
 		}
-		if (endAngle > 0)
+		if (endAngle < 0)
 		{
 			vLeft = turnValue();
 			vRight = velocity;
 		}
-		else if (endAngle < 0)
+		else if (endAngle > 0)
 		{
 			vRight = turnValue();
 			vLeft = velocity;
@@ -53,6 +58,9 @@ public class DriveBase_DriveArc extends Command
 			vLeft = velocity;
 			vRight = velocity;
 		}
+		vLeft = vLeft * 12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER);
+		vRight = vRight * 12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER);
+
 		Robot.driveBase.setVelocity(vLeft, vRight);
 	}
 	private double turnValue()

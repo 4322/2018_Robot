@@ -8,9 +8,11 @@ public class AutoGroup_SwitchCenter_Right extends CommandGroup {
 
 	public AutoGroup_SwitchCenter_Right()
 	{
-		addSequential(new CollectorDeployer_Deploy());
 		addParallel(new Elevator_Switch());
-		addSequential(new Auto_MotionProfileDrive(Robot.autoSwitchRight));
-		addSequential(new CollectorRollers_EjectFast());
+		addParallel(new CollectorDeployer_Deploy());
+//		addSequential(new Auto_MotionProfileDrive(Robot.autoSwitchRight));
+		addSequential(new DriveBase_DriveArc(2, 30, 5));
+		addSequential(new DriveBase_DriveArc(2, -30, 5));
+		addSequential(new CollectorActuator_Open());
 	}
 }

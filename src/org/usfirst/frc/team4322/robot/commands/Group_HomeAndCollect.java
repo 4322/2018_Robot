@@ -9,6 +9,6 @@ public class Group_HomeAndCollect extends CommandGroup
 	public Group_HomeAndCollect()
 	{
 		addParallel(new Elevator_Home());
-		addSequential(new CollectorRollers_Collect());
+		addSequential(new CollectorDeployer_Deploy());
 	}
 }

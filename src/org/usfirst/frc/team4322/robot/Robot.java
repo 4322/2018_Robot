@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Left;
+import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Right;
 import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
@@ -167,7 +168,8 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Left Enc: ", Robot.driveBase.leftMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.getPosition());
-//		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
+		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
+		SmartDashboard.putNumber("Auto Switch: ", Robot.smartAuto.getPosition());
 //		SmartDashboard.putNumber("Pitch: ", Robot.driveBase.getPitch());
 	}
 
@@ -184,9 +186,10 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-//		smartAuto.choose();
-//		autoCommand = smartAuto.getAuto();
-		autoCommand = new AutoGroup_SwitchCenter_Left();
+		Robot.elevator.reset();
+		smartAuto.choose();
+		autoCommand = smartAuto.getAuto();
+//		autoCommand = new AutoGroup_SwitchCenter_Right();
 		autoCommand.start();
 	}
 
@@ -197,13 +200,14 @@ public class Robot extends IterativeRobot
 	{
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("DriveBase Encoder Value: ", Robot.driveBase.getDist());
+		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
 	}
 
 	public void teleopInit()
 	{
 //		driveBase.leftMaster.clearMotionProfileTrajectories();
 //		driveBase.rightMaster.clearMotionProfileTrajectories();
-		elevator.position = Elevator.ElevatorPosition.HOME;
+//		elevator.position = Elevator.ElevatorPosition.HOME;
 		driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
 		driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
 		limelight.getEntry("ledMode").setValue(1);
@@ -221,6 +225,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Left Velocity", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putBoolean("Pivot Limit: ", Robot.collectorDeployer.isLimit());
+		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngleRaw());
 	}
 
 	/**

@@ -67,4 +67,10 @@ public class SmartAuto
 	{
 		return auto;
 	}
+	public int getPosition()
+	{
+		position = (d0.get() ? 1 : 0) + (d1.get() ? 2: 0) + (d2.get() ? 4 : 0) + (d3.get() ? 8 : 0);
+
+		return position;
+	}
 }

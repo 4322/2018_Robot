@@ -27,7 +27,8 @@ public class CollectorDeployer_UnDeploy extends Command
 		{
 			Robot.collectorDeployer.set(-1);
 		}
-		else if (Robot.collectorDeployer.getEncoder() >= RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
+		else if ((Robot.collectorDeployer.getEncoder() >= RobotMap.COLLECTOR_DEPLOYER_SETPOINT) ||
+			Robot.collectorDeployer.isUp())
 		{
 			Robot.collectorDeployer.set(0);
 		}
@@ -55,11 +56,12 @@ public class CollectorDeployer_UnDeploy extends Command
 	protected boolean isFinished()
 	{
 		// TODO: Make this return true when this Command no longer needs to run execute()
-		return Robot.collectorDeployer.isDone();
+		return Robot.collectorDeployer.isDone() || Robot.collectorDeployer.isUp();
 	}
 	@Override
 	protected void end()
 	{
 		Robot.collectorDeployer.resetEncoder();
+		Robot.collectorDeployer.setUp();
 	}
 }
