@@ -100,6 +100,41 @@ public class MotionProfileCurve {
 		}
 		return result;
 	}
+	double[] optimizeVelocity(double[] velocity, double[] rampedVelocity)
+	{
+		/*since ramping ends up lowering the arclength of the profile, we need to 
+		* optimize the velocity so that the ramping still applies but we also 
+		* get to our setpoint
+		*/
+		double[] result = new double[numOfPoints];
+		result[0] = 0;
+		double[] difference = new double[numOfPoints];
+		double[] position;
+		double[] positionRamped;
+		double increase = 0;
+		for (int i = 0; i < numOfPoints; i++)
+		{
+			positionRamped = arcLength(rampedVelocity);
+			position = arcLength(velocity);
+			difference[i] = positionRamped[i] - position[i];
+		}
+		while (Math.abs(difference[difference.length - 1]) > .000001)
+		{
+			increase = difference[difference.length - 1] / 50;
+			for (int i = 1; i < numOfPoints; i++)
+			{
+				result[i] = rampedVelocity[i] - increase;
+			}
+			for (int i = 0; i < numOfPoints; i++)
+			{
+				positionRamped = arcLength(rampedVelocity);
+				position = arcLength(velocity);
+				difference[i] = positionRamped[i] - position[i];
+			}
+			
+		}
+		return result;
+	}
 	public double[] arcLength(double[] velocity) //calculate number of rotations for encoder
 	{
 		//calculates position setpoint at each node
@@ -136,7 +171,7 @@ public class MotionProfileCurve {
 		double[] rotLeft;
 		fillPosition();
 		fillVelocity(positionLeft, positionRight, velocityLeft, velocityRight);
-		rampedVelocityLeft = applyRamping(velocityLeft);
+		rampedVelocityLeft = optimizeVelocity(velocityLeft, applyRamping(velocityLeft));
 		rotLeft = arcLength(rampedVelocityLeft);
 		outputLeft = compileProfile(rotLeft, rampedVelocityLeft);
 		return outputLeft;
@@ -148,7 +183,7 @@ public class MotionProfileCurve {
 		double[] rotRight;
 		fillPosition();
 		fillVelocity(positionLeft, positionRight, velocityLeft, velocityRight);
-		rampedVelocityRight = applyRamping(velocityRight);
+		rampedVelocityRight = optimizeVelocity(velocityRight, applyRamping(velocityRight));
 		rotRight = arcLength(rampedVelocityRight);
 		outputRight = compileProfile(rotRight, rampedVelocityRight);
 		return outputRight;
