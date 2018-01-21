@@ -17,12 +17,7 @@ public class DriveBase_DriveManual extends Command
     }
     @Override
     protected void initialize()
-    {
-    	Robot.driveBase.rightMaster.set(ControlMode.Velocity, 0);
-    	Robot.driveBase.leftMaster.set(ControlMode.Velocity, 0);
-    	
-    	
-    	
+    {	
     	Robot.driveBase.leftMaster.config_kF(0, 0.76, 10);
     	Robot.driveBase.leftMaster.config_kP(0, 1.0, 10);
     	Robot.driveBase.leftMaster.config_kI(0, 0, 10);
@@ -43,12 +38,14 @@ public class DriveBase_DriveManual extends Command
         double vLeft = 0;
         double vRight = 0;
         
-        double vAngular = RobotMap.DRIVEBASE_MAX_SPEED * Math.pow(turn, 3);
+        double vAngular = (power == 0) ? .3 * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5))
+        		:
+        		.3 * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
         
         if (power != 0)
         {
-        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * Math.pow(power, 3);
-        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * Math.pow(power, 3);
+        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(power)) * Math.cosh(Math.pow(power, 5)); //spooky ramping
+        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(power)) * Math.cosh(Math.pow(power, 5)); 
         }
         vLeft += vAngular;
         vRight -= vAngular;

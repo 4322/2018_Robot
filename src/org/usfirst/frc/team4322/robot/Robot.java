@@ -5,6 +5,7 @@ import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
 import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
+import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.DriveBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -29,6 +30,9 @@ public class Robot extends IterativeRobot
     // Drivebase Subsystem Class
     public static DriveBase driveBase;
     
+    public static MotionProfileCurve curve;
+    public static double[][] sineCurveLeft;
+    public static double[][] sineCurveRight;
     //Autonomous
     private Command autoCommand;
 
@@ -42,6 +46,8 @@ public class Robot extends IterativeRobot
         driveBase = new DriveBase();
         //Start OI
         oi = new OI();
+        
+        curve = new MotionProfileCurve();
     }
 
     /**
@@ -51,6 +57,8 @@ public class Robot extends IterativeRobot
      */
     public void disabledInit()
     {
+//    	sineCurveLeft = curve.generateProfileLeft();
+//    	sineCurveRight = curve.generateProfileRight();
     }
 
     public void disabledPeriodic()
@@ -76,7 +84,7 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-    	autoCommand = new AutoGroup_DriveSquare();
+    	autoCommand = new Auto_MotionProfileDrive();
     	autoCommand.start();
     }
 

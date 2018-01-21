@@ -27,6 +27,7 @@ public class DriveBase_DriveDistance extends Command
     @Override
     protected void initialize()
     {
+    	Robot.driveBase.resetEncoder();
     	//Right-side controllers
     	Robot.driveBase.rightMaster.configMotionCruiseVelocity(cruiseVel, 10);
     	Robot.driveBase.rightMaster.configMotionAcceleration(accel, 10);
@@ -61,7 +62,6 @@ public class DriveBase_DriveDistance extends Command
 		Robot.driveBase.leftMaster.configPeakOutputForward(1, 10);
 		Robot.driveBase.leftMaster.configPeakOutputReverse(-1, 10);
 		
-    	Robot.driveBase.resetEncoder();
 
     	Robot.driveBase.rightMaster.set(ControlMode.MotionMagic, ticks);
     	Robot.driveBase.leftMaster.set(ControlMode.MotionMagic, ticks);

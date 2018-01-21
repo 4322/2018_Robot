@@ -2,7 +2,7 @@
 																									
 																									
 																									
-package org.usfirst.frc.team4322.robot;																									
+package org.usfirst.frc.team4322.robot.motion;																									
 public class MotionProfile {																									
 	public static final int kNumPoints =179;																								
 	// Position (rotations)	Velocity (RPM)	Duration (ms)																						

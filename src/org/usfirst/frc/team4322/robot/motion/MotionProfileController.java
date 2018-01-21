@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4322.robot;
+package org.usfirst.frc.team4322.robot.motion;
 
 import java.lang.instrument.Instrumentation;
 
@@ -23,6 +23,8 @@ public class MotionProfileController {
 	private boolean start = false;
 	private SetValueMotionProfile setValue = SetValueMotionProfile.Disable;
 	
+	private double[][] points;
+	
 	private static int minBufferSize = 5;
 	private static int timeoutLoops = 10;
 	
@@ -34,9 +36,10 @@ public class MotionProfileController {
 	    	}
 	}
 	Notifier notifier = new Notifier(new PeriodicRunnable());
-	public MotionProfileController(WPI_TalonSRX talon)
+	public MotionProfileController(WPI_TalonSRX talon, double[][] points)
 	{
 		this.talon = talon;
+		this.points = points;
 		motionProfileStatus = new MotionProfileStatus();
 		talon.changeMotionControlFramePeriod(5);
 		notifier.startPeriodic(0.05);
@@ -75,7 +78,6 @@ public class MotionProfileController {
 				if (motionProfileStatus.activePointValid && motionProfileStatus.isLast) 
 				{
 					setValue = SetValueMotionProfile.Hold;
-					state = 0;
 				}
 				break;
 		}
@@ -99,7 +101,7 @@ public class MotionProfileController {
 	}
 	private void startFilling()
 	{
-		startFilling(MotionProfile.Points, MotionProfile.kNumPoints);
+		startFilling(points, points.length);
 	}
 	private void startFilling(double [][] profile, int total)
 	{
@@ -115,8 +117,8 @@ public class MotionProfileController {
 			double positionRot = profile[i][0];
 			double velocityRPM = profile[i][1];
 			
-			point.position = positionRot * 4096;
-			point.velocity = velocityRPM * 4096 / 600;
+			point.position = positionRot * 1024;
+			point.velocity = velocityRPM * 1024 / 600;
 			point.headingDeg = 0;
 			point.profileSlotSelect0 = 0;
 			point.profileSlotSelect1 = 0;
