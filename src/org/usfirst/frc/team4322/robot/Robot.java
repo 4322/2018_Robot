@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot
         //Start OI
         oi = new OI();
         
-        curve = new MotionProfileCurve();
+        curve = new MotionProfileCurve(Math.toRadians(45), Math.toRadians(45), 3 * 1.414);
     }
 
     /**
@@ -57,8 +57,8 @@ public class Robot extends IterativeRobot
      */
     public void disabledInit()
     {
-//    	sineCurveLeft = curve.generateProfileLeft();
-//    	sineCurveRight = curve.generateProfileRight();
+    	sineCurveLeft = curve.generateProfileLeft();
+    	sineCurveRight = curve.generateProfileRight();
     }
 
     public void disabledPeriodic()

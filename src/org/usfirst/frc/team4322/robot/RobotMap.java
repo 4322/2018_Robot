@@ -22,5 +22,6 @@ public class RobotMap
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
     
     public static final double DRIVEBASE_MAX_SPEED = 977.85;
+    public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
 
 }

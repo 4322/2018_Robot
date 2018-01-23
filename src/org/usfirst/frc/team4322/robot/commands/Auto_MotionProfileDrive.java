@@ -2,6 +2,7 @@ package org.usfirst.frc.team4322.robot.commands;
 
 
 import org.usfirst.frc.team4322.robot.Robot;
+import org.usfirst.frc.team4322.robot.motion.MotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -55,15 +56,17 @@ public class Auto_MotionProfileDrive extends Command
     	
 		Robot.driveBase.rightMaster.set(ControlMode.MotionProfile, mpControllerRight.getSetValue().value);
     	Robot.driveBase.leftMaster.set(ControlMode.MotionProfile, mpControllerLeft.getSetValue().value);
+    	
+    	System.out.println("Motion Profile Started!");
+    	mpControllerRight.startMotionProfile();
+    	mpControllerLeft.startMotionProfile();
     }
     @Override
     protected void execute()
     {
     	mpControllerRight.control();
     	mpControllerLeft.control();
-    	System.out.println("Motion Profile Started!");
-    	mpControllerRight.startMotionProfile();
-    	mpControllerLeft.startMotionProfile();
+    	
     	Robot.driveBase.rightMaster.set(ControlMode.MotionProfile, mpControllerRight.getSetValue().value);
     	Robot.driveBase.leftMaster.set(ControlMode.MotionProfile, mpControllerLeft.getSetValue().value);
     }

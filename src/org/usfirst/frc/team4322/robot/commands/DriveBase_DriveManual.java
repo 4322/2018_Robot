@@ -35,12 +35,15 @@ public class DriveBase_DriveManual extends Command
         Double power= OI.pilot.leftStick.getY();
         Double turn = OI.pilot.rightStick.getX();
         
+        
+        
         double vLeft = 0;
         double vRight = 0;
         
-        double vAngular = (power == 0) ? .3 * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5))
+        double vAngular = (power == 0) ? 
+        		RobotMap.DRIVEBASE_TURN_SENSITIVITY * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5))
         		:
-        		.3 * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+        		RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
         
         if (power != 0)
         {
