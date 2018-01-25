@@ -6,6 +6,7 @@ import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
+import org.usfirst.frc.team4322.robot.subsystems.Collector;
 import org.usfirst.frc.team4322.robot.subsystems.DriveBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -29,6 +30,8 @@ public class Robot extends IterativeRobot
     public static OI oi;
     // Drivebase Subsystem Class
     public static DriveBase driveBase;
+    // Collector Subsystem Class
+    public static Collector collector;
     
     public static MotionProfileCurve curve;
     public static double[][] sineCurveLeft;
@@ -44,10 +47,11 @@ public class Robot extends IterativeRobot
     {
         //Start Subsystems (Mind Dependencies!)
         driveBase = new DriveBase();
+        collector = new Collector();
         //Start OI
         oi = new OI();
         
-        curve = new MotionProfileCurve(Math.toRadians(45), Math.toRadians(45), 3 * 1.414);
+        curve = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5);
     }
 
     /**

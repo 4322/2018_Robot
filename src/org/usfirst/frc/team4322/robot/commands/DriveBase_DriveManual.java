@@ -27,6 +27,9 @@ public class DriveBase_DriveManual extends Command
     	Robot.driveBase.rightMaster.config_kP(0, 1.0, 10);
     	Robot.driveBase.rightMaster.config_kI(0, 0, 10);
     	Robot.driveBase.rightMaster.config_kD(0, 20.0, 10);
+    	
+    	Robot.driveBase.rightMaster.set(ControlMode.Velocity, 0);
+    	Robot.driveBase.leftMaster.set(ControlMode.Velocity, 0);
     }
     @Override
     protected void execute()
