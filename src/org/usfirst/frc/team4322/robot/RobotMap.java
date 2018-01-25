@@ -17,11 +17,13 @@ public class RobotMap
     public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR = 12;
     public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_SLAVE_ADDR = 13;
     
-    public static final double DRIVEBASE_TALON_RAMP_RATE = .25;
-    
+    // *******************************
+    // ** DRIVEBASE PARAMETERS **
+    // *******************************
+    public static final double DRIVEBASE_TALON_RAMP_RATE = .25; 
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
-    
     public static final double DRIVEBASE_MAX_SPEED = 977.85;
     public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
+    public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.57; //2.57 feet
 
 }

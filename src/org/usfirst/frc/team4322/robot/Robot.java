@@ -34,8 +34,8 @@ public class Robot extends IterativeRobot
     public static Collector collector;
     
     public static MotionProfileCurve curve;
-    public static double[][] sineCurveLeft;
-    public static double[][] sineCurveRight;
+    public static double[][] curveLeft;
+    public static double[][] curveRight;
     //Autonomous
     private Command autoCommand;
 
@@ -61,8 +61,8 @@ public class Robot extends IterativeRobot
      */
     public void disabledInit()
     {
-    	sineCurveLeft = curve.generateProfileLeft();
-    	sineCurveRight = curve.generateProfileRight();
+    	curveLeft = curve.generateProfileLeft();
+    	curveRight = curve.generateProfileRight();
     }
 
     public void disabledPeriodic()
@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-    	autoCommand = new Auto_MotionProfileDrive();
+    	autoCommand = new Auto_MotionProfileDrive(curveLeft, curveRight);
     	autoCommand.start();
     }
 

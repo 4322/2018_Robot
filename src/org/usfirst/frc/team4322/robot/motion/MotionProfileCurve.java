@@ -2,6 +2,8 @@ package org.usfirst.frc.team4322.robot.motion;
 
 import java.util.function.DoubleSupplier;
 
+import org.usfirst.frc.team4322.robot.RobotMap;
+
 public class MotionProfileCurve {
 	public double[][] position;
 	  public double[][] positionLeft;
@@ -14,10 +16,11 @@ public class MotionProfileCurve {
 	  public double[][] generatedProfile;
 	  
 	  public double targetVelocity = 3; //cruising speed in feet per s
+	  public double rampRate = 14.8; 
 	  public double timeConstant = 0; //accumulates over time
 	  public double maxTime = 5/3; //duration of profile
 	  public static final double duration = .10; //duration of each point in seconds
-	  public static final double wheelBaseWidth = 2.57; //feet
+	  public static final double wheelBaseWidth = RobotMap.DRIVEBASE_WHEELBASE_WIDTH; //feet
 	  public int numOfPoints = (int) (maxTime / duration);
 	    
 	  public double theta1;
@@ -69,10 +72,10 @@ public class MotionProfileCurve {
 	      double grad;
 	      
 	      position[i][0] = targetVelocity * timeConstant;//x
-	      position[i][1] = (quintic * Math.pow(targetVelocity * timeConstant, 5)) + 
-	        (quartic * Math.pow(targetVelocity * timeConstant, 4)) +
-	        (cubic * Math.pow(targetVelocity * timeConstant, 3)) + 
-	        (linear * targetVelocity * timeConstant);//y
+	      position[i][1] = (quintic * Math.pow(position[i][0], 5)) + 
+	        (quartic * Math.pow(position[i][0], 4)) +
+	        (cubic * Math.pow(position[i][0], 3)) + 
+	        (linear * position[i][0]);//y
 	      
 	      System.out.println(timeConstant + " (" + position[i][0] + ", " + position[i][1] + ")");
 	      if (i == numOfPoints-1)
@@ -131,7 +134,7 @@ public class MotionProfileCurve {
 	    double t = 0;
 	    for(int i = 0; i < numOfPoints; i++)
 	    {
-	      result[i] = velocity[i] * ( (1 / (1 + Math.exp(-14.8 * 1 * (t + (.05 * 14.8) - 1))) - (1 / (1 + Math.exp(-14.8 * ( 1 * (t + 14.8 *.05 - 1) - (maxTime-.5))))))); 
+	      result[i] = velocity[i] * ( (1 / (1 + Math.exp(-rampRate * (t + (.05 * rampRate) - 1))) - (1 / (1 + Math.exp(-rampRate * ( (t + rampRate *.05 - 1) - (maxTime-.5))))))); 
 	      //apply s-curve profile
 	      
 	      t+=duration;

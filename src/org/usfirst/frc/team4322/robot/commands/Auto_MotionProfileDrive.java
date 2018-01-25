@@ -16,12 +16,12 @@ public class Auto_MotionProfileDrive extends Command
 	
 	MotionProfileController mpControllerLeft;
 	MotionProfileController mpControllerRight;
-    public Auto_MotionProfileDrive()
+    public Auto_MotionProfileDrive(double[][] leftProfile, double[][] rightProfile)
     {
     	
         requires(Robot.driveBase);
-        mpControllerLeft = new MotionProfileController(Robot.driveBase.leftMaster, Robot.sineCurveLeft);
-        mpControllerRight = new MotionProfileController(Robot.driveBase.rightMaster, Robot.sineCurveRight);
+        mpControllerLeft = new MotionProfileController(Robot.driveBase.leftMaster, leftProfile);
+        mpControllerRight = new MotionProfileController(Robot.driveBase.rightMaster, rightProfile);
         System.out.println("Motion Profile Controller Assigned");
     }
     @Override
