@@ -13,7 +13,13 @@ public class MotionProfileCurve {
 	  public double[] velocityLeft;
 	  public double[] velocityRight;
 	  
+	  public double[] rampedVelocityLeft;
+	  public double[] rampedVelocityRight;
+	  
 	  public double[][] generatedProfile;
+	  
+	  public double[][] generatedProfileLeft;
+	  public double[][] generatedProfileRight;
 	  
 	  public double targetVelocity = 3; //cruising speed in feet per s
 	  public double rampRate = 14.8; 
@@ -28,11 +34,20 @@ public class MotionProfileCurve {
 	  public double distance;
 	  
 	  //numbers used for quintic hermite spline interpolation
-	  private double quintic;
-	  private double quartic;
-	  private double cubic;
-	  private double linear;
-	  
+	  public double quintic;
+	  public double quartic;
+	  public double cubic;
+	  public double linear;
+	  public MotionProfileCurve(int numOfPoints)
+	  {
+	    position = new double[numOfPoints][2];
+	    positionLeft = new double[numOfPoints][2];
+	    positionRight = new double[numOfPoints][2];
+	    velocity = new double[numOfPoints];
+	    velocityLeft = new double[numOfPoints];
+	    velocityRight = new double[numOfPoints];
+	    generatedProfile = new double[numOfPoints][3];
+	  }
 	  public MotionProfileCurve(double theta1, double theta2, double distance, double maxTime)
 	  {
 	    this.theta1 = theta1;
@@ -42,6 +57,17 @@ public class MotionProfileCurve {
 	    targetVelocity = distance / maxTime;
 	    numOfPoints = (int) (maxTime / duration);
 	    
+	  //calculates coefficients for quintic polynomial
+        quintic = (-3 * (Math.tan(theta2) + Math.tan(theta1))) / (Math.pow(distance, 4));
+        quartic = (Math.tan(theta1) - ((2.333333) * Math.pow(distance, 4) * quintic)) / Math.pow(distance, 3);
+        cubic = ((10 * Math.pow(distance, 2) * quintic) + (6 * distance * quartic)) / -3;
+        linear = Math.tan(theta1);
+        
+        System.out.println("Quintic Term: " + quintic);
+        System.out.println("Quartic Term: " + quartic);
+        System.out.println("Cubic Term: " + cubic);
+        System.out.println("Linear Term: " + linear);
+	    
 	    position = new double[numOfPoints][2];
 	    positionLeft = new double[numOfPoints][2];
 	    positionRight = new double[numOfPoints][2];
@@ -50,18 +76,74 @@ public class MotionProfileCurve {
 	    velocityRight = new double[numOfPoints];
 	    generatedProfile = new double[numOfPoints][3];
 	  }
+	  public void initializeCurve()
+	  {
+		  fillPosition();
+		  fillPosition();
+		  
+		  fillVelocity(positionLeft, positionRight, velocityLeft, velocityRight);
+	  }
+	  public static MotionProfileCurve appendProfiles(MotionProfileCurve curve1, MotionProfileCurve curve2)
+	  {
+		  int numOfPoints = curve1.numOfPoints + curve2.numOfPoints;
+		  MotionProfileCurve appendedCurve = new MotionProfileCurve(numOfPoints);
+		  appendedCurve.maxTime = curve1.maxTime + curve2.maxTime;
+		  
+		  appendedCurve.numOfPoints = numOfPoints;
+//		  appendedCurve.generatedProfileLeft = new double[numOfPoints][3];
+//		  appendedCurve.generatedProfileRight = new double[numOfPoints][3];
+		  
+		  double [][] positionNew = new double[numOfPoints][2];
+		  
+
+//		  curve1.fillPosition();
+//		  curve1.fillPosition();
+//
+//		  curve2.fillPosition();
+//		  
+//
+//		  curve1.fillVelocity(curve1.positionLeft, curve1.positionRight, curve1.velocityLeft, curve1.velocityRight);
+//		  curve2.fillVelocity(curve2.positionLeft, curve2.positionRight, curve2.velocityLeft, curve2.velocityRight);
+		  
+//		  double[] velocityLeft1 = curve1.velocityLeft;
+//		  double[] velocityRight1 = curve1.velocityRight;
+//
+//		  double[] velocityLeft2 = curve2.velocityLeft;
+//		  double[] velocityRight2 = curve2.velocityRight;
+//
+//		  
+//		  
+//		  double timeConstant = 0;
+		  //generate first spline
+		  for(int i = 0; i < curve1.numOfPoints; i++)
+		  {
+			  appendedCurve.velocityLeft[i] = curve1.velocityLeft[i];
+			  appendedCurve.velocityRight[i] = curve1.velocityRight[i];
+		  }
+		  for (int i = curve1.numOfPoints; i < numOfPoints; i++)
+		  {
+			  appendedCurve.velocityLeft[i] = curve2.velocityLeft[i-curve1.numOfPoints];
+			  appendedCurve.velocityRight[i] = curve2.velocityRight[i-curve1.numOfPoints];
+		  }
+		  appendedCurve.velocityLeft[curve1.numOfPoints] = (appendedCurve.velocityLeft[curve1.numOfPoints - 1] + appendedCurve.velocityLeft[curve1.numOfPoints + 1]) / 2;
+		  appendedCurve.velocityRight[curve1.numOfPoints] = (appendedCurve.velocityRight[curve1.numOfPoints - 1] + appendedCurve.velocityRight[curve1.numOfPoints + 1]) / 2;
+		  double[] velocityLeftOrig = appendedCurve.velocityLeft;
+		  double[] velocityRightOrig = appendedCurve.velocityRight;
+		  
+		  appendedCurve.rampedVelocityLeft = appendedCurve.applyRamping(velocityLeftOrig);
+		  appendedCurve.rampedVelocityLeft = appendedCurve.optimizeVelocity(velocityLeftOrig, appendedCurve.rampedVelocityLeft);
+		  
+		  appendedCurve.rampedVelocityRight = appendedCurve.applyRamping(velocityRightOrig);
+		  appendedCurve.rampedVelocityRight = appendedCurve.optimizeVelocity(velocityRightOrig, appendedCurve.rampedVelocityRight);
+		  
+		  appendedCurve.generatedProfileLeft = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityLeft), appendedCurve.rampedVelocityLeft);
+		  appendedCurve.generatedProfileRight = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityRight), appendedCurve.rampedVelocityRight);
+		  
+		  return appendedCurve;
+	  }
 	  public void fillHermite()
 	  {
-	    //calculates coefficients for quintic polynomial
-	        quintic = (-3 * (Math.tan(theta2) + Math.tan(theta1))) / (Math.pow(distance, 4));
-	        quartic = (Math.tan(theta1) - ((2.333333) * Math.pow(distance, 4) * quintic)) / Math.pow(distance, 3);
-	        cubic = ((10 * Math.pow(distance, 2) * quintic) + (6 * distance * quartic)) / -3;
-	        linear = Math.tan(theta1);
-	        
-	        System.out.println("Quintic Term: " + quintic);
-	        System.out.println("Quartic Term: " + quartic);
-	        System.out.println("Cubic Term: " + cubic);
-	        System.out.println("Linear Term: " + linear);
+	    
 	  }
 	  public void fillPosition()
 	  {

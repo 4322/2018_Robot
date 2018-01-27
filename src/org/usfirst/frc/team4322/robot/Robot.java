@@ -32,10 +32,18 @@ public class Robot extends IterativeRobot
     public static DriveBase driveBase;
     // Collector Subsystem Class
     public static Collector collector;
+    //MotionProfiles
+    public static MotionProfileCurve line;
+    public static MotionProfileCurve autoSwitchRight;
+    public static double[][] autoSwitchRight_Left;
+    public static double[][] autoSwitchRight_Right;
+    public static MotionProfileCurve autoSwitchLeft;
+    public static double[][] autoSwitchLeft_Left;
+    public static double[][] autoSwitchLeft_Right;
+    public static MotionProfileCurve turn90;
     
-    public static MotionProfileCurve curve;
-    public static double[][] curveLeft;
-    public static double[][] curveRight;
+    public static MotionProfileCurve motionProfileAppendTest;
+    
     //Autonomous
     private Command autoCommand;
 
@@ -51,7 +59,12 @@ public class Robot extends IterativeRobot
         //Start OI
         oi = new OI();
         
-        curve = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5);
+//        autoSwitchRight = new MotionProfileCurve(Math.toRadians(24.396), Math.toRadians(24.396), 9.33333, 3.5);
+//        autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 3.5);
+        line = new MotionProfileCurve(Math.toRadians(0), Math.toRadians(0), 5, 3.5);
+        autoSwitchLeft = new MotionProfileCurve(-Math.PI / 6, -Math.PI / 6, 5, 3.5);
+        autoSwitchRight = new MotionProfileCurve(Math.PI / 6, Math.PI / 6, 5, 3.5);
+        turn90 = new MotionProfileCurve(Math.PI / 4, 3 * Math.PI/ 4, 4.2, 3);
     }
 
     /**
@@ -61,8 +74,28 @@ public class Robot extends IterativeRobot
      */
     public void disabledInit()
     {
-    	curveLeft = curve.generateProfileLeft();
-    	curveRight = curve.generateProfileRight();
+//    	autoSwitchRight_Left = autoSwitchRight.generateProfileLeft();
+//    	autoSwitchRight_Right = autoSwitchRight.generateProfileRight();
+//    	
+//    	autoSwitchLeft_Left = autoSwitchLeft.generateProfileLeft();
+//    	autoSwitchLeft_Right = autoSwitchLeft.generateProfileRight();
+    	
+    	line.initializeCurve();
+    	turn90.initializeCurve();
+    	autoSwitchLeft.initializeCurve();
+    	autoSwitchRight.initializeCurve();
+    	
+//    	motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, autoSwitchRight);
+    	motionProfileAppendTest = 
+    			MotionProfileCurve.appendProfiles(
+	    			MotionProfileCurve.appendProfiles(
+		    			MotionProfileCurve.appendProfiles(
+		    					autoSwitchLeft, 
+		    					autoSwitchRight)
+		    			, turn90)
+	    			
+    			, turn90);
+    			;
     }
 
     public void disabledPeriodic()
@@ -88,7 +121,7 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-    	autoCommand = new Auto_MotionProfileDrive(curveLeft, curveRight);
+    	autoCommand = new Auto_MotionProfileDrive(motionProfileAppendTest.generatedProfileLeft, motionProfileAppendTest.generatedProfileRight);
     	autoCommand.start();
     }
 
@@ -103,6 +136,8 @@ public class Robot extends IterativeRobot
 
     public void teleopInit()
     {
+    	driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
+    	driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
     }
 
     /**

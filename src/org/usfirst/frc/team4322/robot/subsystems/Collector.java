@@ -15,10 +15,11 @@ public class Collector extends Subsystem {
 	{
 		collectorLeft = new WPI_TalonSRX(21);
 		collectorRight = new WPI_TalonSRX(30);
-		collectorRight.follow(collectorLeft);
+//		collectorRight.follow(collectorLeft);
 		collectorRight.setInverted(true);
 		
 		collectorLeft.set(ControlMode.PercentOutput, 0);
+		collectorRight.set(ControlMode.PercentOutput, 0);
 	}
 	
 	@Override
