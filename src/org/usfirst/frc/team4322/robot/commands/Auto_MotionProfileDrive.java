@@ -13,12 +13,10 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class Auto_MotionProfileDrive extends Command
 {
-	
 	MotionProfileController mpControllerLeft;
 	MotionProfileController mpControllerRight;
     public Auto_MotionProfileDrive(double[][] leftProfile, double[][] rightProfile)
     {
-    	
         requires(Robot.driveBase);
         mpControllerLeft = new MotionProfileController(Robot.driveBase.leftMaster, leftProfile);
         mpControllerRight = new MotionProfileController(Robot.driveBase.rightMaster, rightProfile);
