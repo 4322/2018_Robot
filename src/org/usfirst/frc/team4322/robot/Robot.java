@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -65,7 +66,7 @@ public class Robot extends IterativeRobot
 //        autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 3.5);
 		line = new MotionProfileCurve(Math.toRadians(0), Math.toRadians(0), 5, 3.5);
 		autoSwitchLeft = new MotionProfileCurve(-Math.PI / 6, -Math.PI / 6, 5, 3.5);
-		autoSwitchRight = new MotionProfileCurve(Math.PI / 6, Math.PI / 6, 5, 3.5);
+		autoSwitchRight = new MotionProfileCurve(Math.PI / 6, Math.PI / 6, 5, 5);
 		turn90 = new MotionProfileCurve(Math.PI / 4, 3 * Math.PI / 4, 4.2, 3);
 	}
 
@@ -82,29 +83,47 @@ public class Robot extends IterativeRobot
 //    	autoSwitchLeft_Left = autoSwitchLeft.generateProfileLeft();
 //    	autoSwitchLeft_Right = autoSwitchLeft.generateProfileRight();
 
-		line.initializeCurve("line");
-		turn90.initializeCurve("turn90");
-		autoSwitchLeft.initializeCurve("autoSwitchLeft");
-		autoSwitchRight.initializeCurve("autoSwitchRight");
-		motionProfileAppendTest.setName("motionProfileAppendTest");
-//    	motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, autoSwitchRight);
-		try
-		{
-			motionProfileAppendTest =
-					MotionProfileCurve.appendProfiles(
-							MotionProfileCurve.appendProfiles(
-									MotionProfileCurve.appendProfiles(
-											autoSwitchLeft,
-											autoSwitchRight)
-									, turn90)
+//		File test = new File("/home/lvuser/stupid.csv");
+//		try
+//		{
+//			test.createNewFile();
+//			System.out.println("file created!");
+//		}
+//		catch (IOException e)
+//		{
+//			
+//		}
+//		line.setName("line");
+//		line.readProfileFromCSV();
+		autoSwitchLeft.setName("autoSwitchLeft");
+		autoSwitchLeft.readProfileFromCSV();
 
-							, turn90);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		;
+//		motionProfileAppendTest.setName("chain");
+//		motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, line);
+//		motionProfileAppendTest.readProfileFromCSV();
+//		line.initializeCurve();
+//		turn90.initializeCurve();
+//		autoSwitchLeft.initializeCurve();
+//		autoSwitchRight.initializeCurve();
+//		motionProfileAppendTest.setName();
+////    	motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, autoSwitchRight);
+//		try
+//		{
+//			motionProfileAppendTest =
+//					MotionProfileCurve.appendProfiles(
+//							MotionProfileCurve.appendProfiles(
+//									MotionProfileCurve.appendProfiles(
+//											autoSwitchLeft,
+//											autoSwitchRight)
+//									, turn90)
+//
+//							, turn90);
+//		}
+//		catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		;
 	}
 
 	public void disabledPeriodic()
@@ -130,7 +149,7 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-		autoCommand = new Auto_MotionProfileDrive(motionProfileAppendTest.generatedProfileLeft, motionProfileAppendTest.generatedProfileRight);
+		autoCommand = new Auto_MotionProfileDrive(autoSwitchLeft.generatedProfileLeft, autoSwitchLeft.generatedProfileRight);
 		autoCommand.start();
 	}
 
