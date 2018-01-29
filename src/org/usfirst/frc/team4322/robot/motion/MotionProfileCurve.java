@@ -235,7 +235,22 @@ public class MotionProfileCurve
 		}
 		return result;
 	}
-
+	double[] smoothVelocity(double[] velocity, double weight_data, double weight_smooth, double tolerance)
+	{
+		double[] result = velocity;
+		double change = tolerance;
+		while (change >= tolerance)
+		{
+			change = 0;
+			for (int i = 1; i < velocity.length - 1; i++)
+			{
+					double aux = result[i];
+					result[i] += weight_data * (velocity[i] - result[i]) + weight_smooth * (result[i-1] + result[i+1] - (2 * result[i]));
+					change += Math.abs(aux - result[i]);
+			}
+		}
+		return result;
+	}
 	double[] optimizeVelocity(double[] velocity, double[] rampedVelocity)
 	{
 		/*since ramping ends up lowering the arclength of the profile, we need to
@@ -423,8 +438,15 @@ public class MotionProfileCurve
 			{
 				
 			}
-			generatedProfileLeft = generateProfileLeft();
-			generatedProfileRight = generateProfileRight();
+			if (isAppended)
+			{
+				compileAppendedProfile();
+			}
+			else
+			{
+				generatedProfileLeft = generateProfileLeft();
+				generatedProfileRight = generateProfileRight();
+			}
 		}
 	}
 }
