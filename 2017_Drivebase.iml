@@ -20,6 +20,11 @@
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
   </component>
+  <component name="FacetManager">
+    <facet type="FRC_FACET" name="FRC">
+      <configuration />
+    </facet>
+  </component>
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
@@ -85,17 +90,17 @@
       <library name="navx_frc.jar">
         <CLASSES>
           <root url="file://$USERLIBS_DIR$/navx_frc.jar" />
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </CLASSES>
         <JAVADOC />
         <NATIVE>
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </NATIVE>
         <SOURCES>
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </SOURCES>
-        <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" />
-        <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" type="SOURCES" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="false" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -122,17 +127,17 @@
       <library name="CTRE_Phoenix-sources.jar">
         <CLASSES>
           <root url="file://$USERLIBS_DIR$/CTRE_Phoenix-sources.jar" />
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </CLASSES>
         <JAVADOC />
         <NATIVE>
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </NATIVE>
         <SOURCES>
-          <root url="file://$USER_HOME$/wpilib/user/java/lib" />
+          <root url="file://$USERLIBS_DIR$" />
         </SOURCES>
-        <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" />
-        <jarDirectory url="file://$USER_HOME$/wpilib/user/java/lib" recursive="false" type="SOURCES" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="false" />
+        <jarDirectory url="file://$USERLIBS_DIR$" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">

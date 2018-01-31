@@ -30,7 +30,8 @@ public class MotionProfileCurve
 	public double[][] generatedProfileRight;
 
 	public double targetVelocity = 3; //cruising speed in feet per s
-	public double rampRate = 14.8;
+	public double rampRate = 1;
+	public double jConstant = 10.3;
 	public double timeConstant = 0; //accumulates over time
 	public double maxTime = 5 / 3; //duration of profile
 	public static final double duration = .10; //duration of each point in seconds
@@ -224,11 +225,17 @@ public class MotionProfileCurve
 	public double[] applyRamping(double[] velocity)
 	{
 		//this method applies a smoothed trapezoidal profile to the velocity so it ramps up and down
+		//rampRate is acceleration in ft/s^2
+		//jConstant controls jerk in profile; lower jConstant means more s-curving in profile
 		double[] result = new double[numOfPoints];
 		double t = 0;
 		for (int i = 0; i < numOfPoints; i++)
 		{
-			result[i] = velocity[i] * ((1 / (1 + Math.exp(-rampRate * (t + (.05 * rampRate) - 1))) - (1 / (1 + Math.exp(-rampRate * ((t + rampRate * .05 - 1) - (maxTime - .5)))))));
+			result[i] = velocity[i] * Math.log( ( ( ((Math.exp(-jConstant * rampRate * (t - (.005 * rampRate))) + 1)
+					/(Math.exp(-jConstant * (rampRate * (t - (.005 * rampRate)) - 1)) + 1))
+					/(Math.exp(-jConstant * rampRate * (t - (.005 * rampRate) - maxTime + 1)) + 1) ) *
+					(Math.exp(-jConstant * (rampRate * (t - (.005 * jConstant) - maxTime + 1) - 1)) + 1))
+					/ jConstant );
 			//apply s-curve profile
 
 			t += duration;
@@ -273,7 +280,6 @@ public class MotionProfileCurve
 			{
 				result[i] = result[i] - (correctionFactor * error / 50);
 			}
-			result = applyRamping(result);
 			positionRamped = arcLength(result);
 			positionActual = positionRamped[numOfPoints - 1];
 			error = positionActual - positionExpected;
