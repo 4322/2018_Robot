@@ -231,13 +231,23 @@ public class MotionProfileCurve
 		double t = 0;
 		for (int i = 0; i < numOfPoints; i++)
 		{
-			result[i] = velocity[i] * Math.log( ( ( ((Math.exp(-jConstant * rampRate * (t - (.005 * rampRate))) + 1)
-					/(Math.exp(-jConstant * (rampRate * (t - (.005 * rampRate)) - 1)) + 1))
-					/(Math.exp(-jConstant * rampRate * (t - (.005 * rampRate) - maxTime + 1)) + 1) ) *
-					(Math.exp(-jConstant * (rampRate * (t - (.005 * jConstant) - maxTime + 1) - 1)) + 1))
-					/ jConstant );
+			result[i] = velocity[i] * (Math.log( 
+					
+					(
+							(Math.exp(-jConstant * rampRate * t) + 1)
+							/
+							(Math.exp((-jConstant * rampRate * t) + jConstant) + 1)
+							)
+					/
+					(Math.exp(-jConstant * rampRate * (t - (maxTime * (-Math.pow(jConstant, -2) + 1) + Math.pow(rampRate, -1)) ) + 1)
+					)
+					* (Math.exp(-jConstant * rampRate * (t - (maxTime * (-Math.pow(jConstant, -2) + 1) + Math.pow(rampRate, -1) ) ) + jConstant ) + 1)
+					
+					
+					) 
+					/ jConstant);
 			//apply s-curve profile
-
+			
 			t += duration;
 		}
 		return result;
@@ -376,6 +386,7 @@ public class MotionProfileCurve
 		double[] rotRight;
 		fillHermite();
 		fillPosition();
+		fillPosition();
 		fillVelocity(positionLeft, positionRight, velocityLeft, velocityRight);
 		rampedVelocityRight = optimizeVelocity(velocityRight, applyRamping(velocityRight));
 //	     rampedVelocityRight = applyRamping(velocityRight);
@@ -430,6 +441,8 @@ public class MotionProfileCurve
 			{
 				
 			}
+			csvFileLeft.delete();
+			csvFileRight.delete();
 		}
 		else
 		{

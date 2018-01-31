@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot
 
 //        autoSwitchRight = new MotionProfileCurve(Math.toRadians(24.396), Math.toRadians(24.396), 9.33333, 3.5);
 //        autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 3.5);
-		line = new MotionProfileCurve(Math.toRadians(0), Math.toRadians(0), 5, 3.5);
+		line = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 6, 4);
 		autoSwitchLeft = new MotionProfileCurve(-Math.PI / 6, -Math.PI / 6, 5, 3.5);
 		autoSwitchRight = new MotionProfileCurve(Math.PI / 6, Math.PI / 6, 5, 5);
 		turn90 = new MotionProfileCurve(Math.PI / 4, 3 * Math.PI / 4, 4.2, 3);
@@ -93,13 +93,13 @@ public class Robot extends IterativeRobot
 //		{
 //			
 //		}
-//		line.setName("line");
-//		line.readProfileFromCSV();
-		autoSwitchLeft.setName("autoSwitchLeft");
-		autoSwitchLeft.readProfileFromCSV();
+		line.setName("line");
+		line.readProfileFromCSV();
+//		autoSwitchLeft.setName("autoSwitchLeft");
+//		autoSwitchLeft.readProfileFromCSV();
 
 //		motionProfileAppendTest.setName("chain");
-//		motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, line);
+//		motionProfileAppendTest = MotionProfileCurve.appendProfiles(line, line);
 //		motionProfileAppendTest.readProfileFromCSV();
 //		line.initializeCurve();
 //		turn90.initializeCurve();
@@ -149,7 +149,7 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-		autoCommand = new Auto_MotionProfileDrive(autoSwitchLeft.generatedProfileLeft, autoSwitchLeft.generatedProfileRight);
+		autoCommand = new Auto_MotionProfileDrive(line.generatedProfileLeft, line.generatedProfileRight);
 		autoCommand.start();
 	}
 
