@@ -53,7 +53,7 @@ public class MotionProfileCurve
 	FileWriter writer;
 	private boolean isAppended = false;
 
-	public MotionProfileCurve(int numOfPoints)
+	public MotionProfileCurve()
 	{
 		position = new double[numOfPoints][2];
 		positionLeft = new double[numOfPoints][2];
@@ -97,12 +97,25 @@ public class MotionProfileCurve
 	public static MotionProfileCurve appendProfiles(MotionProfileCurve curve1, MotionProfileCurve curve2)
 	{
 		int numOfPoints = curve1.numOfPoints + curve2.numOfPoints;
-		curve1.initializeCurve();
-		curve2.initializeCurve();
-		MotionProfileCurve appendedCurve = new MotionProfileCurve(numOfPoints);
+		if (!curve1.isAppended)
+		{
+			curve1.initializeCurve();
+		}
+		if (!curve2.isAppended)
+		{
+			curve2.initializeCurve();
+		}
+		
+		MotionProfileCurve appendedCurve = new MotionProfileCurve();
 		appendedCurve.maxTime = curve1.maxTime + curve2.maxTime;
 		appendedCurve.numOfPoints = numOfPoints;
 		appendedCurve.isAppended = true;
+		appendedCurve.position = new double[numOfPoints][2];
+		appendedCurve.positionLeft = new double[numOfPoints][2];
+		appendedCurve.positionRight = new double[numOfPoints][2];
+		appendedCurve.velocity = new double[numOfPoints];
+		appendedCurve.velocityLeft = new double[numOfPoints];
+		appendedCurve.velocityRight = new double[numOfPoints];
 		for (int i = 0; i < curve1.numOfPoints; i++)
 		{
 			appendedCurve.velocityLeft[i] = curve1.velocityLeft[i];
@@ -132,7 +145,7 @@ public class MotionProfileCurve
 	public void compileAppendedProfile()
 	{
 		generatedProfileLeft = compileProfile(arcLength(rampedVelocityLeft), rampedVelocityLeft, name + "Left");
-		generatedProfileLeft = compileProfile(arcLength(rampedVelocityLeft), rampedVelocityLeft, name + "Left");
+		generatedProfileRight = compileProfile(arcLength(rampedVelocityRight), rampedVelocityRight, name + "Right");
 	}
 	public void fillHermite()
 	{
@@ -459,6 +472,7 @@ public class MotionProfileCurve
 			}
 			if (isAppended)
 			{
+				System.out.println("Spline is appended!");
 				compileAppendedProfile();
 			}
 			else

@@ -26,6 +26,9 @@ public class DriveBase_Rotate extends Command {
 	{
 		Robot.driveBase.resetNavX();
 		
+    	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
+    	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
+		
 		//Right-side controllers
     	Robot.driveBase.rightMaster.configMotionCruiseVelocity(anglarVel, 10);
     	Robot.driveBase.rightMaster.configMotionAcceleration(angularAccel, 10);
@@ -72,6 +75,14 @@ public class DriveBase_Rotate extends Command {
 		Robot.driveBase.rightMaster.set(ControlMode.MotionMagic, ticks);
     	Robot.driveBase.leftMaster.set(ControlMode.MotionMagic, -ticks);
 	}
+	@Override 
+    protected void end()
+    {
+    	Robot.driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
+    	Robot.driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
+    	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
+    	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
+    }
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub

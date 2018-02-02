@@ -75,12 +75,13 @@ public class Auto_MotionProfileDrive extends Command
     	mpControllerRight.reset();
     	Robot.driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
     	Robot.driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
+		Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
+		Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
     }
     @Override
     protected boolean isFinished()
     {
         // TODO Auto-generated method stub
-
         return false;
     }
     

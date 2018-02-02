@@ -28,6 +28,9 @@ public class DriveBase_DriveDistance extends Command
     protected void initialize()
     {
     	Robot.driveBase.resetEncoder();
+    	
+    	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
+    	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
     	//Right-side controllers
     	Robot.driveBase.rightMaster.configMotionCruiseVelocity(cruiseVel, 10);
     	Robot.driveBase.rightMaster.configMotionAcceleration(accel, 10);
@@ -72,6 +75,15 @@ public class DriveBase_DriveDistance extends Command
         // TODO Auto-generated method stub
     	Robot.driveBase.rightMaster.set(ControlMode.MotionMagic, ticks);
     	Robot.driveBase.leftMaster.set(ControlMode.MotionMagic, ticks);
+    }
+    @Override 
+    protected void end()
+    {
+    	System.out.println("MOTION MAGIC COMPLETE!");
+    	Robot.driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
+    	Robot.driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
+    	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
+    	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
     }
     @Override
     protected boolean isFinished()
