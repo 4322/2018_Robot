@@ -16,6 +16,10 @@ public class RobotMap
     public static final int DRIVEBASE_MOTORCONTROLLER_LEFT_SLAVE_ADDR = 11;
     public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR = 12;
     public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_SLAVE_ADDR = 13;
+    public static final int COLLECTOR_MOTORCONTROLLER_LEFT_ADDR = 20;
+    public static final int COLLECTOR_MOTORCONTROLLER_RIGHT_ADDR = 21;
+    public static final int ELEVATOR_MOTORCONTROLLER_MASTER_ADDR = 30;
+    public static final int ELEVATOR_MOTORCONTROLLER_SLAVE_ADDR = 31;
     
     // *******************************
     // ** DRIVEBASE PARAMETERS **
@@ -24,6 +28,15 @@ public class RobotMap
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
     public static final double DRIVEBASE_MAX_SPEED = 977.85;
     public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
-    public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.57; //2.57 feet
+    public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.099; //2.099 feet
+    public static final double DRIVEBASE_WHEEL_DIAMETER = 6; //INCHES
 
+    // *************************
+    // ** ELEVATOR PARAMETERS **
+    // *************************
+    public static final double ELEVATOR_SCALE_DISTANCE = 0;
+    public static final double ELEVATOR_SWITCH_DISTANCE = 0;
+    public static final double ELEVATOR_MAX_SPEED = 0;
+    public static final double ELEVATOR_MAX_ACCEL = 0;
+    
 }

@@ -8,6 +8,7 @@ import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.Collector;
 import org.usfirst.frc.team4322.robot.subsystems.DriveBase;
+import org.usfirst.frc.team4322.robot.subsystems.Elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -35,6 +36,8 @@ public class Robot extends IterativeRobot
 	public static DriveBase driveBase;
 	// Collector Subsystem Class
 	public static Collector collector;
+	// Elevator Subsystem Class
+	public static Elevator elevator;
 	//MotionProfiles
 	public static MotionProfileCurve spline;
 	public static MotionProfileCurve straight;
@@ -159,8 +162,8 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-//		autoCommand = new Auto_MotionProfileDrive(motionProfileAppendTest.generatedProfileLeft, motionProfileAppendTest.generatedProfileRight);
-		autoCommand = new AutoGroup_DriveSquare();
+		autoCommand = new Auto_MotionProfileDrive(motionProfileAppendTest.generatedProfileLeft, motionProfileAppendTest.generatedProfileRight);
+//		autoCommand = new AutoGroup_DriveSquare();
 		autoCommand.start();
 	}
 
@@ -190,6 +193,10 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("DriveBase Encoder Value: ", Robot.driveBase.getDist());
 		SmartDashboard.putNumber("Left Enc: ", Robot.driveBase.leftMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right motor voltage: ", Robot.driveBase.getVoltageRight());
+		SmartDashboard.putNumber("Left motor voltage: ", Robot.driveBase.getVoltageLeft());
+		SmartDashboard.putNumber("V Left: ", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("V Right: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
 	}
 
 	/**

@@ -19,12 +19,12 @@ public class DriveBase_DriveManual extends Command
     protected void initialize()
     {	
     	Robot.driveBase.leftMaster.config_kF(0, 0.76, 10);
-    	Robot.driveBase.leftMaster.config_kP(0, 1.0, 10);
+    	Robot.driveBase.leftMaster.config_kP(0, 2.0, 10);
     	Robot.driveBase.leftMaster.config_kI(0, 0, 10);
     	Robot.driveBase.leftMaster.config_kD(0, 20.0, 10);
     	
     	Robot.driveBase.rightMaster.config_kF(0, 0.76, 10);
-    	Robot.driveBase.rightMaster.config_kP(0, 1.0, 10);
+    	Robot.driveBase.rightMaster.config_kP(0, 2.0, 10);
     	Robot.driveBase.rightMaster.config_kI(0, 0, 10);
     	Robot.driveBase.rightMaster.config_kD(0, 20.0, 10);
     	
@@ -38,6 +38,7 @@ public class DriveBase_DriveManual extends Command
         Double power= OI.pilot.leftStick.getY();
         Double turn = OI.pilot.rightStick.getX();
         
+//        Robot.driveBase.drive(power, turn);
         
         
         double vLeft = 0;

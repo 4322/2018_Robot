@@ -227,8 +227,8 @@ public class MotionProfileCurve
 			dxdtR = (positionRight[i][0] - positionRight[i - 1][0]) / duration; //run an approximation of dxdt and dydt
 			dydtR = (positionRight[i][1] - positionRight[i - 1][1]) / duration;
 
-			velocityLeft[i] = Math.sqrt(Math.pow(dxdtL, 2) + Math.pow(dydtL, 2)) * 180 / Math.PI; //calculate magnitude of velocity, convert to rpm
-			velocityRight[i] = Math.sqrt(Math.pow(dxdtR, 2) + Math.pow(dydtR, 2)) * 180 / Math.PI;
+			velocityLeft[i] = Math.sqrt(Math.pow(dxdtL, 2) + Math.pow(dydtL, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI); //calculate magnitude of velocity, convert to rpm
+			velocityRight[i] = Math.sqrt(Math.pow(dxdtR, 2) + Math.pow(dydtR, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI);;
 			System.out.println("Left: " + velocityLeft[i]);
 			System.out.println("Right: " + velocityRight[i]);
 		}

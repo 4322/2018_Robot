@@ -16,10 +16,11 @@ public class DriveBase extends Subsystem {
 
 	public WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
 	private AHRS navx;
-	private static final double ticksToDist = 4 * Math.PI / 1024;
+	private static final double ticksToDist = 6 * Math.PI / 1024;
 	double offset = 0.0;
 	double offsetNavX = 0;
-
+	public DifferentialDrive drive;
+	
 	public DriveBase() {
 		try {
 			
@@ -53,6 +54,8 @@ public class DriveBase extends Subsystem {
 
 			System.out.println("[d] DriveBase() creating Navx...");
 			navx = new AHRS(Port.kMXP);
+			
+//			drive = new DifferentialDrive(leftMaster, rightMaster);
 
 		} catch (Exception ex) {
 		}
@@ -102,16 +105,24 @@ public class DriveBase extends Subsystem {
 	{
 		offsetNavX = navx.getYaw();
 	}
+	public double getVoltageLeft()
+	{
+		return leftMaster.getMotorOutputVoltage();
+	}
+	public double getVoltageRight()
+	{
+		return rightMaster.getMotorOutputVoltage();
+	}
 
 //	public void autoDrive(double pow, double rot)
 //	{
 //		drive.arcadeDrive(pow, rot);
 //	}
 //
-//	public void drive(double pow, double rot) {
-//		System.out.println("[d] Drivebase() calling drive.arcadeDrive(" + pow + ", " + rot + ", true);");
-//		drive.arcadeDrive(pow, rot, true); 
-//	}
+	public void drive(double pow, double rot) {
+		System.out.println("[d] Drivebase() calling drive.arcadeDrive(" + pow + ", " + rot + ", true);");
+		drive.arcadeDrive(pow, rot, true); 
+	}
 
 	public void resetEncoder() {
 		leftMaster.setSelectedSensorPosition(0, 0, 10);
