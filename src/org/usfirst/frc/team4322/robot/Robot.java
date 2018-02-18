@@ -63,6 +63,7 @@ public class Robot extends IterativeRobot
 		//Start Subsystems (Mind Dependencies!)
 		driveBase = new DriveBase();
 		collector = new Collector();
+		elevator = new Elevator();
 		//Start OI
 		oi = new OI();
 
