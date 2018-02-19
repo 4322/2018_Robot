@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4322.robot.subsystems;
 
+import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.Collector_Collect;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,8 +14,8 @@ public class Collector extends Subsystem {
 	public WPI_TalonSRX collectorRight;
 	public Collector()
 	{
-		collectorLeft = new WPI_TalonSRX(21);
-		collectorRight = new WPI_TalonSRX(30);
+		collectorLeft = new WPI_TalonSRX(RobotMap.COLLECTOR_MOTORCONTROLLER_LEFT_ADDR);
+		collectorRight = new WPI_TalonSRX(RobotMap.COLLECTOR_MOTORCONTROLLER_RIGHT_ADDR);
 //		collectorRight.follow(collectorLeft);
 		collectorRight.setInverted(true);
 		

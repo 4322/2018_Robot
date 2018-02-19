@@ -24,7 +24,7 @@ public class DriveBase_Rotate extends Command {
 	@Override 
 	protected void initialize()
 	{
-		Robot.driveBase.resetNavX();
+//		Robot.driveBase.resetNavX();
 		
     	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
     	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();

@@ -6,7 +6,7 @@ import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveManual;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveBase extends Subsystem {
 
 	public WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
-	private AHRS navx;
+//	private AHRS navx;
 	private static final double ticksToDist = 6 * Math.PI / 1024;
 	double offset = 0.0;
 	double offsetNavX = 0;
@@ -30,6 +30,11 @@ public class DriveBase extends Subsystem {
 			leftMaster.configOpenloopRamp(RobotMap.DRIVEBASE_TALON_RAMP_RATE, 1000);
 			leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 			leftMaster.setSensorPhase(true);
+		
+			leftMaster.config_kF(0, RobotMap.DRIVEBASE_KF, 10);
+	    	leftMaster.config_kP(0, RobotMap.DRIVEBASE_KP, 10);
+	    	leftMaster.config_kI(0, RobotMap.DRIVEBASE_KI, 10);
+	    	leftMaster.config_kD(0, RobotMap.DRIVEBASE_KD, 10);
 
 			System.out.println("[d] DriveBase() creating rightMaster...");
 			rightMaster = new WPI_TalonSRX(RobotMap.DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR);
@@ -38,7 +43,10 @@ public class DriveBase extends Subsystem {
 			rightMaster.setSensorPhase(true);
 			rightMaster.setInverted(true);
 
-
+			rightMaster.config_kF(0, RobotMap.DRIVEBASE_KF, 10);
+	    	rightMaster.config_kP(0, RobotMap.DRIVEBASE_KP, 10);
+	    	rightMaster.config_kI(0, RobotMap.DRIVEBASE_KI, 10);
+	    	rightMaster.config_kD(0, RobotMap.DRIVEBASE_KD, 10);
 			
 			System.out.println("[d] DriveBase() creating leftSlave...");
 			leftSlave = new WPI_TalonSRX(RobotMap.DRIVEBASE_MOTORCONTROLLER_LEFT_SLAVE_ADDR);
@@ -52,8 +60,8 @@ public class DriveBase extends Subsystem {
 			rightSlave.follow(rightMaster);
 			rightSlave.setInverted(true);
 
-			System.out.println("[d] DriveBase() creating Navx...");
-			navx = new AHRS(Port.kMXP);
+//			System.out.println("[d] DriveBase() creating Navx...");
+//			navx = new AHRS(Port.kMXP);
 			
 //			drive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -91,20 +99,20 @@ public class DriveBase extends Subsystem {
 	{
 		return (leftMaster.getSelectedSensorPosition(0) + rightMaster.getSelectedSensorPosition(0)) / 2;
 	}
-	public double getRoll()
-	{
-		return navx.getRawAccelZ();
-	}
-
-	public double getAngle()
-	{
-		return (navx.getYaw() - offsetNavX);
-	}
-
-	public void resetNavX()
-	{
-		offsetNavX = navx.getYaw();
-	}
+//	public double getRoll()
+//	{
+//		return navx.getRawAccelZ();
+//	}
+//
+//	public double getAngle()
+//	{
+//		return (navx.getYaw() - offsetNavX);
+//	}
+//
+//	public void resetNavX()
+//	{
+//		offsetNavX = navx.getYaw();
+//	}
 	public double getVoltageLeft()
 	{
 		return leftMaster.getMotorOutputVoltage();

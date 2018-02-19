@@ -18,16 +18,6 @@ public class DriveBase_DriveManual extends Command
     @Override
     protected void initialize()
     {	
-    	Robot.driveBase.leftMaster.config_kF(0, 0.76, 10);
-    	Robot.driveBase.leftMaster.config_kP(0, 2.0, 10);
-    	Robot.driveBase.leftMaster.config_kI(0, 0, 10);
-    	Robot.driveBase.leftMaster.config_kD(0, 20.0, 10);
-    	
-    	Robot.driveBase.rightMaster.config_kF(0, 0.76, 10);
-    	Robot.driveBase.rightMaster.config_kP(0, 2.0, 10);
-    	Robot.driveBase.rightMaster.config_kI(0, 0, 10);
-    	Robot.driveBase.rightMaster.config_kD(0, 20.0, 10);
-    	
     	Robot.driveBase.rightMaster.set(ControlMode.Velocity, 0);
     	Robot.driveBase.leftMaster.set(ControlMode.Velocity, 0);
     }
@@ -44,10 +34,20 @@ public class DriveBase_DriveManual extends Command
         double vLeft = 0;
         double vRight = 0;
         
-        double vAngular = (power == 0) ? 
-        		RobotMap.DRIVEBASE_TURN_SENSITIVITY * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5))
-        		:
-        		RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+        double vAngular;
+        if (OI.pilot.lb.get())
+        {
+        	//Quick Turning
+            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * RobotMap.DRIVEBASE_MAX_SPEED * 
+            		2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+
+        }
+        else
+        {
+        	//Normal Turning
+        	vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 
+        			2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+        }
         
         if (power != 0)
         {

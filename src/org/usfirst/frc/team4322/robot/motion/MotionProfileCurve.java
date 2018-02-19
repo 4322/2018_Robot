@@ -48,10 +48,10 @@ public class MotionProfileCurve
 	public double cubic;
 	public double linear;
 
-	File csvFileLeft;
-	File csvFileRight;
+	public File csvFileLeft;
+	public File csvFileRight;
 	FileWriter writer;
-	private boolean isAppended = false;
+	public boolean isAppended = false;
 
 	public MotionProfileCurve()
 	{
@@ -137,9 +137,11 @@ public class MotionProfileCurve
 		appendedCurve.rampedVelocityRight = appendedCurve.applyRamping(velocityRightOrig);
 		appendedCurve.rampedVelocityRight = appendedCurve.optimizeVelocity(velocityRightOrig, appendedCurve.rampedVelocityRight);
 
-//		appendedCurve.generatedProfileLeft = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityLeft), appendedCurve.rampedVelocityLeft);
-//		appendedCurve.generatedProfileRight = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityRight), appendedCurve.rampedVelocityRight);
+//		appendedCurve.generatedProfileLeft = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityLeft), appendedCurve.rampedVelocityLeft, appendedCurve.name + "Left");
+//		appendedCurve.generatedProfileRight = appendedCurve.compileProfile(appendedCurve.arcLength(appendedCurve.rampedVelocityRight), appendedCurve.rampedVelocityRight, appendedCurve.name + "Right");
 
+		appendedCurve.compileAppendedProfile();
+		
 		return appendedCurve;
 	}
 	public void compileAppendedProfile()
@@ -457,13 +459,13 @@ public class MotionProfileCurve
 			csvFileLeft.delete();
 			csvFileRight.delete();
 		}
-		else
+		else //if a file doesn't exist
 		{
 			try
 			{
-				csvFileLeft.delete();
+				csvFileLeft.delete(); //delete the other file
 				csvFileRight.delete();
-				csvFileLeft.createNewFile();
+				csvFileLeft.createNewFile(); //create new files
 				csvFileRight.createNewFile();
 			}
 			catch (IOException e)

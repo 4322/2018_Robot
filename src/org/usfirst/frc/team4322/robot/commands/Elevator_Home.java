@@ -7,13 +7,13 @@ import org.usfirst.frc.team4322.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Elevator_Scale_Up extends Command {
+public class Elevator_Home extends Command {
 
 	private int ticks;
 	
-	public Elevator_Scale_Up()
+	public Elevator_Home()
 	{
-		ticks = RobotMap.ELEVATOR_SCALE_DISTANCE;
+		ticks = Robot.elevator.home;
 		requires(Robot.elevator);
 	}
 	@Override
@@ -47,7 +47,9 @@ public class Elevator_Scale_Up extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return (Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - RobotMap.ELEVATOR_SCALE_DISTANCE) > 1) && (Robot.elevator.master.getActiveTrajectoryVelocity() == 0);
+		return ((Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - RobotMap.ELEVATOR_HOME_POSITION) > 1) 
+				&& 
+				(Robot.elevator.master.getActiveTrajectoryVelocity() == 0)) || Robot.elevator.limitHome.get();
 	}
 
 }

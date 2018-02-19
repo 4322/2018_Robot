@@ -32,6 +32,8 @@ public class Robot extends IterativeRobot
 {
 	// Controls Class
 	public static OI oi;
+	// Auto Chooser Class
+	public static SmartAuto smartAuto;
 	// Drivebase Subsystem Class
 	public static DriveBase driveBase;
 	// Collector Subsystem Class
@@ -42,14 +44,11 @@ public class Robot extends IterativeRobot
 	public static MotionProfileCurve spline;
 	public static MotionProfileCurve straight;
 	public static MotionProfileCurve autoSwitchRight;
-	public static double[][] autoSwitchRight_Left;
-	public static double[][] autoSwitchRight_Right;
 	public static MotionProfileCurve autoSwitchLeft;
-	public static double[][] autoSwitchLeft_Left;
-	public static double[][] autoSwitchLeft_Right;
-	public static MotionProfileCurve turn90;
-
-	public static MotionProfileCurve motionProfileAppendTest;
+	public static MotionProfileCurve autoScaleLeftLeft;
+	public static MotionProfileCurve autoScaleLeftRight;
+	public static MotionProfileCurve autoScaleRightRight;
+	public static MotionProfileCurve autoScaleRightLeft;
 
 	//Autonomous
 	private Command autoCommand;
@@ -60,35 +59,60 @@ public class Robot extends IterativeRobot
 	 */
 	public void robotInit()
 	{
+		//Autos
+		smartAuto = new SmartAuto();
 		//Start Subsystems (Mind Dependencies!)
 		driveBase = new DriveBase();
 		collector = new Collector();
 		elevator = new Elevator();
 		//Start OI
 		oi = new OI();
-
-//        autoSwitchRight = new MotionProfileCurve(Math.toRadians(24.396), Math.toRadians(24.396), 9.33333, 3.5);
-//        autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 3.5);
-		spline = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 6, 4);
-		autoSwitchLeft = new MotionProfileCurve(-Math.PI / 6, -Math.PI / 6, 5, 3.5);
-		autoSwitchRight = new MotionProfileCurve(Math.PI / 6, Math.PI / 6, 5, 5);
-		turn90 = new MotionProfileCurve(Math.PI / 4, 3 * Math.PI / 4, 4.2, 1.5);
-		straight = new MotionProfileCurve(0, 0, 10, 2);
-		
-		motionProfileAppendTest = new MotionProfileCurve();
-		
-		spline.setName("line");
-		spline.readProfileFromCSV();
-//		autoSwitchLeft.setName("autoSwitchLeft");
-//		autoSwitchLeft.readProfileFromCSV();
-
-		motionProfileAppendTest.setName("chain");
-		motionProfileAppendTest = 
-				MotionProfileCurve.appendProfiles(
-						MotionProfileCurve.appendProfiles(straight, turn90), 
-						MotionProfileCurve.appendProfiles(turn90, straight)) 
-				;
-		motionProfileAppendTest.readProfileFromCSV();
+		//Motion Profiles
+		autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 4);
+        autoSwitchRight = new MotionProfileCurve(Math.toRadians(24.396), Math.toRadians(24.396), 9.33333, 4);
+		autoScaleLeftLeft = MotionProfileCurve.appendProfiles(
+					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 4),
+					new MotionProfileCurve(Math.toRadians(33), Math.toRadians(180-3.4), 84.513/12, 3)
+				);
+				
+        autoScaleLeftRight = MotionProfileCurve.appendProfiles(
+        		MotionProfileCurve.appendProfiles(
+        			new MotionProfileCurve(0, 0, 159.563/12, 3), 
+        			new MotionProfileCurve(Math.toRadians(63.7), Math.toRadians(180-26.3), 94.81/12, 3)
+        			),
+        		MotionProfileCurve.appendProfiles(
+        			new MotionProfileCurve(Math.toRadians(3.1), Math.toRadians(3.1), 75.107/12, 1), 
+        			new MotionProfileCurve(-Math.toRadians(66.5), Math.toRadians(23.5), 63.809/12, 2)
+        			)
+        		);
+		autoScaleRightRight = MotionProfileCurve.appendProfiles(
+				new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
+				new MotionProfileCurve(-Math.toRadians(33), -Math.toRadians(180-3.4), 84.513/12, 3)
+			);
+        autoScaleRightLeft = MotionProfileCurve.appendProfiles(
+        		MotionProfileCurve.appendProfiles(
+            			new MotionProfileCurve(0, 0, 159.563/12, 3), 
+            			new MotionProfileCurve(-Math.toRadians(63.7), -Math.toRadians(180-26.3), 94.81/12, 3)
+            			),
+            		MotionProfileCurve.appendProfiles(
+            			new MotionProfileCurve(-Math.toRadians(3.1), -Math.toRadians(3.1), 75.107/12, 1), 
+            			new MotionProfileCurve(Math.toRadians(66.5), -Math.toRadians(23.5), 63.809/12, 2)
+            			)
+            		);
+        
+		autoSwitchLeft.setName("autoSwitchLeft");
+		autoSwitchLeft.readProfileFromCSV();
+		autoSwitchRight.setName("autoSwitchRight");
+		autoSwitchRight.readProfileFromCSV();
+		autoScaleLeftLeft.setName("autoScaleLeftLeft");
+		autoScaleLeftLeft.readProfileFromCSV();
+		autoScaleRightRight.setName("autoScaleRightRight");
+		autoScaleRightRight.readProfileFromCSV();
+		autoScaleRightLeft.setName("autoScaleRightLeft");
+		autoScaleRightLeft.readProfileFromCSV();
+		autoScaleLeftRight.setName("autoScaleLeftRight");
+		autoScaleLeftRight.readProfileFromCSV();
+		SmartDashboard.putString("Build DateTime", "2/18/17 5:24PM");
 	}
 
 	/**
@@ -98,46 +122,7 @@ public class Robot extends IterativeRobot
 	 */
 	public void disabledInit()
 	{
-//    	autoSwitchRight_Left = autoSwitchRight.generateProfileLeft();
-//    	autoSwitchRight_Right = autoSwitchRight.generateProfileRight();
-//    	
-//    	autoSwitchLeft_Left = autoSwitchLeft.generateProfileLeft();
-//    	autoSwitchLeft_Right = autoSwitchLeft.generateProfileRight();
-
-//		File test = new File("/home/lvuser/stupid.csv");
-//		try
-//		{
-//			test.createNewFile();
-//			System.out.println("file created!");
-//		}
-//		catch (IOException e)
-//		{
-//			
-//		}
 		
-//		line.initializeCurve();
-//		turn90.initializeCurve();
-//		autoSwitchLeft.initializeCurve();
-//		autoSwitchRight.initializeCurve();
-//		motionProfileAppendTest.setName();
-////    	motionProfileAppendTest = MotionProfileCurve.appendProfiles(autoSwitchLeft, autoSwitchRight);
-//		try
-//		{
-//			motionProfileAppendTest =
-//					MotionProfileCurve.appendProfiles(
-//							MotionProfileCurve.appendProfiles(
-//									MotionProfileCurve.appendProfiles(
-//											autoSwitchLeft,
-//											autoSwitchRight)
-//									, turn90)
-//
-//							, turn90);
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//		;
 	}
 
 	public void disabledPeriodic()
@@ -146,8 +131,8 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("DriveBase Encoder Value: ", Robot.driveBase.getDist());
 		SmartDashboard.putNumber("Left Enc: ", Robot.driveBase.leftMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
-		Robot.driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
-		SmartDashboard.putNumber("NavX Yaw:", Robot.driveBase.getAngle());
+		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
+//		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
 	}
 
 	/**
@@ -163,8 +148,8 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-		autoCommand = new Auto_MotionProfileDrive(motionProfileAppendTest.generatedProfileLeft, motionProfileAppendTest.generatedProfileRight);
-//		autoCommand = new AutoGroup_DriveSquare();
+		smartAuto.choose();
+		autoCommand = smartAuto.getAuto();
 		autoCommand.start();
 	}
 
@@ -198,6 +183,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Left motor voltage: ", Robot.driveBase.getVoltageLeft());
 		SmartDashboard.putNumber("V Left: ", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("V Right: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
 	}
 
 	/**

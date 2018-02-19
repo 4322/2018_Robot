@@ -8,14 +8,22 @@ package org.usfirst.frc.team4322.robot;
  */
 public class RobotMap
 {
+	// ****************************
+    // ** DIGITAL INPUT MAPPINGS **
+    // ****************************
+	public static final int AUTO_DIO_PORT_0 = 0;
+	public static final int AUTO_DIO_PORT_1 = 1;
+	public static final int AUTO_DIO_PORT_2 = 2;
+	public static final int AUTO_DIO_PORT_3 = 3;
+	public static final int ELEVATOR_LIMIT_HOME = 4;
 
     // *******************************
     // ** MOTOR CONTROLLER MAPPINGS **
     // *******************************
-    public static final int DRIVEBASE_MOTORCONTROLLER_LEFT_MASTER_ADDR = 10;
-    public static final int DRIVEBASE_MOTORCONTROLLER_LEFT_SLAVE_ADDR = 11;
-    public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR = 12;
-    public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_SLAVE_ADDR = 13;
+    public static final int DRIVEBASE_MOTORCONTROLLER_LEFT_MASTER_ADDR = 12;
+    public static final int DRIVEBASE_MOTORCONTROLLER_LEFT_SLAVE_ADDR = 13;
+    public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR = 10;
+    public static final int DRIVEBASE_MOTORCONTROLLER_RIGHT_SLAVE_ADDR = 11;
     public static final int COLLECTOR_MOTORCONTROLLER_LEFT_ADDR = 20;
     public static final int COLLECTOR_MOTORCONTROLLER_RIGHT_ADDR = 21;
     public static final int ELEVATOR_MOTORCONTROLLER_MASTER_ADDR = 30;
@@ -27,16 +35,26 @@ public class RobotMap
     public static final double DRIVEBASE_TALON_RAMP_RATE = .25; 
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
     public static final double DRIVEBASE_MAX_SPEED = 977.85;
-    public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
+    public static final double DRIVEBASE_TURN_SENSITIVITY = .5;
     public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.099; //2.099 feet
     public static final double DRIVEBASE_WHEEL_DIAMETER = 6; //INCHES
+    public static final double DRIVEBASE_KF = .76;
+    public static final double DRIVEBASE_KP = 1;
+    public static final double DRIVEBASE_KI = 0;
+    public static final double DRIVEBASE_KD = 20;
 
     // *************************
     // ** ELEVATOR PARAMETERS **
     // *************************
-    public static final int ELEVATOR_SCALE_DISTANCE = 0;
-    public static final int ELEVATOR_SWITCH_DISTANCE = 0;
+    public static final int ELEVATOR_SCALE_DIST = 0;
+    public static final int ELEVATOR_SWITCH_DIST = 0;
+    public static final int ELEVATOR_HOME_POSITION = 0;
     public static final int ELEVATOR_MAX_SPEED = 0;
     public static final int ELEVATOR_MAX_ACCEL = 0;
+    public static final double ELEVATOR_KF = 0;
+    public static final double ELEVATOR_KP = 0;
+    public static final double ELEVATOR_KI = 0;
+    public static final double ELEVATOR_KD = 0;
     public static final int ELEVATOR_TOLERANCE = 1;
+    
 }

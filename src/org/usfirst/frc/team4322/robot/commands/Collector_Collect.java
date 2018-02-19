@@ -16,10 +16,12 @@ public class Collector_Collect extends Command {
 	@Override
 	protected void execute()
 	{
-		Double powLeft = OI.operator.leftStick.getY();
-		Double powRight = OI.operator.rightStick.getY();
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, powLeft);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, powRight);
+//		Double powLeft = OI.operator.leftStick.getY();
+//		Double powRight = OI.operator.rightStick.getY();
+//		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, powLeft);
+//		Robot.collector.collectorRight.set(ControlMode.PercentOutput, powRight);
+		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, 1);
+		Robot.collector.collectorRight.set(ControlMode.PercentOutput, 1);
 	}
 	@Override
 	protected boolean isFinished() {

@@ -35,11 +35,6 @@ public class DriveBase_DriveDistance extends Command
     	Robot.driveBase.rightMaster.configMotionCruiseVelocity(cruiseVel, 10);
     	Robot.driveBase.rightMaster.configMotionAcceleration(accel, 10);
     	
-    	Robot.driveBase.rightMaster.config_kF(0, 0.76, 10);
-    	Robot.driveBase.rightMaster.config_kP(0, 1.0, 10);
-    	Robot.driveBase.rightMaster.config_kI(0, 0, 10);
-    	Robot.driveBase.rightMaster.config_kD(0, 20.0, 10);
-    	
     	Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 		
@@ -51,12 +46,7 @@ public class DriveBase_DriveDistance extends Command
 		//Left-side controller
 		Robot.driveBase.leftMaster.configMotionCruiseVelocity(cruiseVel, 10);
     	Robot.driveBase.leftMaster.configMotionAcceleration(accel, 10);
-    	
-    	Robot.driveBase.leftMaster.config_kF(0, .76, 10);
-    	Robot.driveBase.leftMaster.config_kP(0, 1.0, 10);
-    	Robot.driveBase.leftMaster.config_kI(0, 0, 10);
-    	Robot.driveBase.leftMaster.config_kD(0, 20.0, 10);
-    	
+
     	Robot.driveBase.leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		Robot.driveBase.leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 		
