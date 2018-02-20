@@ -2,21 +2,19 @@ package org.usfirst.frc.team4322.robot.commands;
 
 import org.usfirst.frc.team4322.robot.Robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Collector_Eject extends Command {
+public class Collector_Stop extends Command {
 
-	public Collector_Eject()
+	public Collector_Stop()
 	{
 		requires(Robot.collector);
 	}
 	@Override
-	public void execute()
+	protected void execute()
 	{
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, .5);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, .5);
+		Robot.collector.collectorRight.set(0);
+		Robot.collector.collectorLeft.set(0);
 	}
 	@Override
 	protected boolean isFinished() {

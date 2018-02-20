@@ -2,6 +2,7 @@ package org.usfirst.frc.team4322.robot.subsystems;
 
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.Collector_Collect;
+import org.usfirst.frc.team4322.robot.commands.Collector_Stop;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -26,7 +27,7 @@ public class Collector extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		setDefaultCommand(new Collector_Collect());
+		setDefaultCommand(new Collector_Stop());
 	}
 
 }

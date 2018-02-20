@@ -176,14 +176,9 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("DriveBase Encoder Value: ", Robot.driveBase.getDist());
-		SmartDashboard.putNumber("Left Enc: ", Robot.driveBase.leftMaster.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right motor voltage: ", Robot.driveBase.getVoltageRight());
-		SmartDashboard.putNumber("Left motor voltage: ", Robot.driveBase.getVoltageLeft());
-		SmartDashboard.putNumber("V Left: ", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
-		SmartDashboard.putNumber("V Right: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Elevator Vel: ", Robot.elevator.master.getSelectedSensorVelocity(0));
+		SmartDashboard.putNumber("Elevator Voltage: ", Robot.elevator.master.getMotorOutputPercent());
 	}
 
 	/**

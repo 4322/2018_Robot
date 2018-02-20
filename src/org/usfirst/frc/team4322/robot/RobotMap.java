@@ -46,12 +46,12 @@ public class RobotMap
     // *************************
     // ** ELEVATOR PARAMETERS **
     // *************************
-    public static final int ELEVATOR_SCALE_DIST = 0;
-    public static final int ELEVATOR_SWITCH_DIST = 0;
+    public static final int ELEVATOR_SCALE_POSITION = 7000;
+    public static final int ELEVATOR_SWITCH_POSITION = 7000;
     public static final int ELEVATOR_HOME_POSITION = 0;
-    public static final int ELEVATOR_MAX_SPEED = 0;
-    public static final int ELEVATOR_MAX_ACCEL = 0;
-    public static final double ELEVATOR_KF = 0;
+    public static final int ELEVATOR_MAX_SPEED = 1000;
+    public static final int ELEVATOR_MAX_ACCEL = 2000;
+    public static final double ELEVATOR_KF = 1;
     public static final double ELEVATOR_KP = 0;
     public static final double ELEVATOR_KI = 0;
     public static final double ELEVATOR_KD = 0;

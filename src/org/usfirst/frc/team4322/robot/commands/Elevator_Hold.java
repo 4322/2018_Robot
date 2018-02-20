@@ -6,22 +6,21 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Collector_Eject extends Command {
+public class Elevator_Hold extends Command {
 
-	public Collector_Eject()
+	public Elevator_Hold()
 	{
-		requires(Robot.collector);
+		requires(Robot.elevator);
 	}
 	@Override
-	public void execute()
+	protected void execute()
 	{
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, .5);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, .5);
+		Robot.elevator.master.set(ControlMode.PercentOutput, .06);
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 }

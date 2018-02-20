@@ -20,13 +20,13 @@ public class Collector_Collect extends Command {
 //		Double powRight = OI.operator.rightStick.getY();
 //		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, powLeft);
 //		Robot.collector.collectorRight.set(ControlMode.PercentOutput, powRight);
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, 1);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, 1);
+		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, -1);
+		Robot.collector.collectorRight.set(ControlMode.PercentOutput, -1);
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
