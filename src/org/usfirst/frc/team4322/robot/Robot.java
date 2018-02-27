@@ -5,6 +5,7 @@ import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
 import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
+import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.Collector;
 import org.usfirst.frc.team4322.robot.subsystems.DriveBase;
@@ -21,6 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.File;
 import java.io.IOException;
 
+import static java.lang.Math.toRadians;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -31,9 +34,9 @@ import java.io.IOException;
 public class Robot extends IterativeRobot
 {
 	// Controls Class
-	public static OI oi;
+	private static OI oi;
 	// Auto Chooser Class
-	public static SmartAuto smartAuto;
+	private static SmartAuto smartAuto;
 	// Drivebase Subsystem Class
 	public static DriveBase driveBase;
 	// Collector Subsystem Class
@@ -68,49 +71,49 @@ public class Robot extends IterativeRobot
 		//Start OI
 		oi = new OI();
 		//Motion Profiles
-		autoSwitchLeft = new MotionProfileCurve(Math.toRadians(-24.396), Math.toRadians(-24.396), 9.33333, 4);
-        autoSwitchRight = new MotionProfileCurve(Math.toRadians(24.396), Math.toRadians(24.396), 9.33333, 4);
-		autoScaleLeftLeft = MotionProfileCurve.appendProfiles(
+		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
+        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);
+		autoScaleLeftLeft = new AppendedMotionProfile(
+				new MotionProfileCurve[]{
 					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 4),
-					new MotionProfileCurve(Math.toRadians(33), Math.toRadians(180-3.4), 84.513/12, 3)
-				);
+					new MotionProfileCurve(toRadians(33), toRadians(180 - 3.4), 84.513 / 12, 3)
+				}
+		);
 				
-        autoScaleLeftRight = MotionProfileCurve.appendProfiles(
-        		MotionProfileCurve.appendProfiles(
-        			new MotionProfileCurve(0, 0, 159.563/12, 3), 
-        			new MotionProfileCurve(Math.toRadians(63.7), Math.toRadians(180-26.3), 94.81/12, 3)
-        			),
-        		MotionProfileCurve.appendProfiles(
-        			new MotionProfileCurve(Math.toRadians(3.1), Math.toRadians(3.1), 75.107/12, 1), 
-        			new MotionProfileCurve(-Math.toRadians(66.5), Math.toRadians(23.5), 63.809/12, 2)
-        			)
-        		);
-		autoScaleRightRight = MotionProfileCurve.appendProfiles(
-				new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
-				new MotionProfileCurve(-Math.toRadians(33), -Math.toRadians(180-3.4), 84.513/12, 3)
-			);
-        autoScaleRightLeft = MotionProfileCurve.appendProfiles(
-        		MotionProfileCurve.appendProfiles(
-            			new MotionProfileCurve(0, 0, 159.563/12, 3), 
-            			new MotionProfileCurve(-Math.toRadians(63.7), -Math.toRadians(180-26.3), 94.81/12, 3)
-            			),
-            		MotionProfileCurve.appendProfiles(
-            			new MotionProfileCurve(-Math.toRadians(3.1), -Math.toRadians(3.1), 75.107/12, 1), 
-            			new MotionProfileCurve(Math.toRadians(66.5), -Math.toRadians(23.5), 63.809/12, 2)
-            			)
-            		);
+        autoScaleLeftRight = new AppendedMotionProfile(
+				new MotionProfileCurve[]{
+					new MotionProfileCurve(0, 0, 159.563 / 12, 3),
+					new MotionProfileCurve(toRadians(63.7), toRadians(180 - 26.3), 94.81 / 12, 3),
+					new MotionProfileCurve(toRadians(3.1), toRadians(3.1), 75.107 / 12, 1),
+					new MotionProfileCurve(-toRadians(66.5), toRadians(23.5), 63.809 / 12, 2)
+				}
+		);
+		autoScaleRightRight = new AppendedMotionProfile(
+				new MotionProfileCurve[]{
+						new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
+						new MotionProfileCurve(-toRadians(33), -toRadians(180 - 3.4), 84.513 / 12, 3)
+				}
+		);
+        autoScaleRightLeft = new AppendedMotionProfile(
+				new MotionProfileCurve[]{
+						new MotionProfileCurve(0, 0, 159.563 / 12, 3),
+						new MotionProfileCurve(-toRadians(63.7), -toRadians(180 - 26.3), 94.81 / 12, 3),
+						new MotionProfileCurve(-toRadians(3.1), -toRadians(3.1), 75.107 / 12, 1),
+						new MotionProfileCurve(toRadians(66.5), -toRadians(23.5), 63.809 / 12, 2)
+				}
+		);
         
-		autoSwitchLeft.setName("autoSwitchLeft");
+		autoSwitchLeft.setFileName("autoSwitchLeft");
 		autoSwitchLeft.readProfileFromCSV();
-		autoSwitchRight.setName("autoSwitchRight");
+		autoSwitchRight.setFileName("autoSwitchRight");
 		autoSwitchRight.readProfileFromCSV();
-		autoScaleLeftLeft.setName("autoScaleLeftLeft");
+		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
 		autoScaleLeftLeft.readProfileFromCSV();
-		autoScaleRightRight.setName("autoScaleRightRight");
+		autoScaleRightRight.setFileName("autoScaleRightRight");
 		autoScaleRightRight.readProfileFromCSV();
-		autoScaleRightLeft.setName("autoScaleRightLeft");
+		autoScaleRightLeft.setFileName("autoScaleRightLeft");
 		autoScaleRightLeft.readProfileFromCSV();
-		autoScaleLeftRight.setName("autoScaleLeftRight");
+		autoScaleLeftRight.setFileName("autoScaleLeftRight");
 		autoScaleLeftRight.readProfileFromCSV();
 		SmartDashboard.putString("Build DateTime", "2/18/17 5:24PM");
 	}
