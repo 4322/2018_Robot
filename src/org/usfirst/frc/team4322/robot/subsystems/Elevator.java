@@ -39,7 +39,7 @@ public class Elevator extends Subsystem {
 		master.setSelectedSensorPosition(0, 0, 10);
 //		master.setInverted(true);
 		
-		master.configNominalOutputForward(0.03, 10);
+		master.configNominalOutputForward(RobotMap.ELEVATOR_HOLDING_VPERCENT * 1, 10);
 		master.configNominalOutputReverse(0, 10);
 		master.configPeakOutputForward(1, 10);
 		master.configPeakOutputReverse(-1, 10);

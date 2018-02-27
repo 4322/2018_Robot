@@ -34,11 +34,11 @@ public class DriveBase_DriveManual extends Command
         double vLeft = 0;
         double vRight = 0;
         
-        double vAngular;
+        double vAngular = 0;
         if (OI.pilot.lb.get())
         {
         	//Quick Turning
-            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * RobotMap.DRIVEBASE_MAX_SPEED * 
+            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * 1.5 * RobotMap.DRIVEBASE_MAX_SPEED * 
             		2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
 
         }

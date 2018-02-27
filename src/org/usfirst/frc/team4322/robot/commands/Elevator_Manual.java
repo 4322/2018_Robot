@@ -2,6 +2,9 @@ package org.usfirst.frc.team4322.robot.commands;
 
 import org.usfirst.frc.team4322.robot.OI;
 import org.usfirst.frc.team4322.robot.Robot;
+import org.usfirst.frc.team4322.robot.RobotMap;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,7 +17,7 @@ public class Elevator_Manual extends Command {
 	@Override
 	protected void execute()
 	{
-		Robot.elevator.master.set(OI.operator.getY()+.05);
+		Robot.elevator.master.set(ControlMode.PercentOutput, OI.operator.getY()+RobotMap.ELEVATOR_HOLDING_VPERCENT);
 	}
 	@Override
 	protected boolean isFinished() {

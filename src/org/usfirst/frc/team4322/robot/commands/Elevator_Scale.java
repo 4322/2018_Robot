@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
+import org.usfirst.frc.team4322.robot.subsystems.Elevator.ElevatorPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -25,11 +26,11 @@ public class Elevator_Scale extends Command {
 
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
-
-		Robot.elevator.master.configNominalOutputForward(0.03, 10);
-		Robot.elevator.master.configNominalOutputReverse(0,10);
-		Robot.elevator.master.configPeakOutputForward(.5, 10);
-		Robot.elevator.master.configPeakOutputReverse(-.5, 10);
+//
+//		Robot.elevator.master.configNominalOutputForward(0.03, 10);
+//		Robot.elevator.master.configNominalOutputReverse(0,10);
+//		Robot.elevator.master.configPeakOutputForward(.5, 10);
+//		Robot.elevator.master.configPeakOutputReverse(-.5, 10);
 
 		switch (Robot.elevator.position)
 		{
@@ -61,14 +62,21 @@ public class Elevator_Scale extends Command {
 	protected void end()
 	{
 		System.out.println("MOTION MAGIC COMPLETE!");
-		Robot.elevator.master.set(ControlMode.PercentOutput, 0);
+		Robot.elevator.position = ElevatorPosition.SCALE;
 		Robot.elevator.master.clearMotionProfileTrajectories();
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return ((Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - Robot.elevator.master.getSelectedSensorPosition(0)) <= 30) && 
+		if (Robot.elevator.position == ElevatorPosition.SCALE)
+		{
+			return true;
+		}
+		else
+		{
+			return ((Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - Robot.elevator.master.getSelectedSensorPosition(0)) <= 30) && 
 				(Robot.elevator.master.getActiveTrajectoryVelocity() == 0));
+		}
 	}
 
 }
