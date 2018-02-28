@@ -3,6 +3,7 @@ package org.usfirst.frc.team4322.robot.motion;
 import java.io.*;
 
 import org.usfirst.frc.team4322.robot.RobotMap;
+import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
 
 public class MotionProfileCurve
 {
@@ -51,6 +52,7 @@ public class MotionProfileCurve
 	}
 	void position(double[][] left, double[][] right)
 	{
+		System.out.println("<Calculating Position!>");
 		double grad;
 		double timeConstant = 0;
 
@@ -58,6 +60,10 @@ public class MotionProfileCurve
 		double quartic = (Math.tan(theta1) - ((2.333333) * Math.pow(distance, 4) * quintic)) / Math.pow(distance, 3);
 		double cubic = ((10 * Math.pow(distance, 2) * quintic) + (6 * distance * quartic)) / -3;
 		double linear = Math.tan(theta1);
+		System.out.println("Quintic term: " + quintic);
+		System.out.println("Quartic term: " + quartic);
+		System.out.println("Cubic term: " + cubic);
+		System.out.println("Linear term: " + linear);
 
 		double[][] center = new double[numOfPoints][2];
 
@@ -83,6 +89,7 @@ public class MotionProfileCurve
 
 			timeConstant += duration;
 		}
+		System.out.println("<End of Position Values!/>");
 	}
 
 	double[] velocity(double[][] position)
@@ -107,6 +114,7 @@ public class MotionProfileCurve
 
 		for (int i = 0; i < numOfPoints; i++)
 		{
+			//really complex function
 			result[i] = velocity[i] * (Math.log(
 
 					(
@@ -161,6 +169,7 @@ public class MotionProfileCurve
 	}
 	private double[][] writeMotionProfile(double[] rotations, double[] velocity, String filePath)
 	{
+		System.out.println("Generated Profile: ");
 		double[][] result = new double[numOfPoints][3];
 		try
 		{
@@ -177,6 +186,8 @@ public class MotionProfileCurve
 				result[i][0] = rotations[i];
 				result[i][1] = velocity[i];
 				result[i][2] = duration * 1000;
+
+				System.out.println("{" + result[i][0] + ", " + result[i][1] + ", " + result[i][2] + "}");
 			}
 			writer.flush();
 			writer.close();
@@ -185,6 +196,7 @@ public class MotionProfileCurve
 		{
 			System.out.println("FILE WRITE FAILED: " + e.toString());
 		}
+		System.out.println("End of Profile");
 		return result;
 	}
 	protected void calculateStuff()

@@ -18,9 +18,14 @@ public class Elevator_Hold extends Command {
 		Robot.elevator.master.set(ControlMode.PercentOutput, .06);
 	}
 	@Override
+	protected void end()
+	{
+		Robot.elevator.master.set(ControlMode.PercentOutput, 0);
+	}
+	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
