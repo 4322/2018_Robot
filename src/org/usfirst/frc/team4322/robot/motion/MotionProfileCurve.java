@@ -3,7 +3,6 @@ package org.usfirst.frc.team4322.robot.motion;
 import java.io.*;
 
 import org.usfirst.frc.team4322.robot.RobotMap;
-import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
 
 public class MotionProfileCurve
 {
@@ -45,6 +44,9 @@ public class MotionProfileCurve
 		this.maxTime = maxTime;
 		targetVelocity = distance / maxTime;
 		numOfPoints = (int) (maxTime / duration);
+
+		positionLeft = new double[numOfPoints][2];
+		positionRight = new double[numOfPoints][2];
 	}
 	public void setFileName(String fileName)
 	{
@@ -74,6 +76,8 @@ public class MotionProfileCurve
 					(quartic * Math.pow(center[i][0], 4)) +
 					(cubic * Math.pow(center[i][0], 3)) +
 					(linear * center[i][0]);
+			System.out.println("Center X: " + center[i][0]);
+			System.out.println("Center Y: " + center[i][1]);
 			if (i == numOfPoints - 1)
 			{
 				grad = Math.atan2(center[i][1] - center[i - 1][1], center[i][0] - center[i - 1][0]);
@@ -84,12 +88,17 @@ public class MotionProfileCurve
 			left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
 			left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
 
+			System.out.println("Left X: " + left[i][0]);
+			System.out.println("Left Y: " + left[i][0]);
+
 			right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
 			right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
 
+			System.out.println("Right X: " + right[i][0]);
+			System.out.println("Right Y: " + right[i][0]);
+
 			timeConstant += duration;
 		}
-		System.out.println("<End of Position Values!/>");
 	}
 
 	double[] velocity(double[][] position)
@@ -114,7 +123,6 @@ public class MotionProfileCurve
 
 		for (int i = 0; i < numOfPoints; i++)
 		{
-			//really complex function
 			result[i] = velocity[i] * (Math.log(
 
 					(
@@ -169,7 +177,7 @@ public class MotionProfileCurve
 	}
 	private double[][] writeMotionProfile(double[] rotations, double[] velocity, String filePath)
 	{
-		System.out.println("Generated Profile: ");
+		System.out.println("--- Begin Writing Profile " + fileName + " ---");
 		double[][] result = new double[numOfPoints][3];
 		try
 		{
@@ -196,11 +204,12 @@ public class MotionProfileCurve
 		{
 			System.out.println("FILE WRITE FAILED: " + e.toString());
 		}
-		System.out.println("End of Profile");
+		System.out.println("--- End Writing Profile ---");
 		return result;
 	}
 	protected void calculateStuff()
 	{
+		position(positionLeft, positionRight);
 		position(positionLeft, positionRight);
 
 		velocityLeft = velocity(positionLeft);
@@ -221,7 +230,7 @@ public class MotionProfileCurve
 		String pathRight = "/home/lvuser/" + fileName + "Right.csv";
 		File left = new File(pathLeft);
 		File right = new File(pathRight);
-		String line;
+		String line = "";
 		if (left.exists() && right.exists())
 		{
 			generatedProfileLeft = new double[numOfPoints][3];
@@ -239,13 +248,14 @@ public class MotionProfileCurve
 					generatedProfileLeft[i][2] = Double.parseDouble(values[2]);
 					i++;
 				}
+				i = 0;
 				while ((line = brRight.readLine()) != null)
 				{
 					String[] values = line.split(",");
 					generatedProfileRight[i][0] = Double.parseDouble(values[0]);
 					generatedProfileRight[i][1] = Double.parseDouble(values[1]);
 					generatedProfileRight[i][2] = Double.parseDouble(values[2]);
-					j++;
+					i++;
 				}
 			}
 			catch (IOException e)

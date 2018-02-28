@@ -20,12 +20,7 @@ public class Elevator_Switch extends Command {
 	protected void initialize()
 	{
 		Robot.elevator.master.clearMotionProfileTrajectories();
-		
-
-		Robot.elevator.master.configNominalOutputForward(0, 10);
-		Robot.elevator.master.configNominalOutputReverse(0,10);
-		Robot.elevator.master.configPeakOutputForward(1, 10);
-		Robot.elevator.master.configPeakOutputReverse(-1, 10);
+	
 
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
@@ -60,14 +55,22 @@ public class Elevator_Switch extends Command {
 	@Override
 	protected void end()
 	{
-		System.out.println("MOTION MAGIC COMPLETED!");
-		Robot.elevator.master.set(ControlMode.PercentOutput, 0);
+		System.out.println("MOTION MAGIC SWITCH COMPLETED!");
+		Robot.elevator.position = ElevatorPosition.SWITCH;
 		Robot.elevator.master.clearMotionProfileTrajectories();
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return (Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - RobotMap.ELEVATOR_SWITCH_POSITION) < 1) && (Robot.elevator.master.getActiveTrajectoryVelocity() == 0);
+		if (Robot.elevator.position == ElevatorPosition.SWITCH)
+		{
+			return true;
+		}
+		else
+		{
+			return (Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - RobotMap.ELEVATOR_SWITCH_POSITION) <= 30) && 
+				(Robot.elevator.master.getActiveTrajectoryVelocity() == 0);
+		}
 	}
 
 }

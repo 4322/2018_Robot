@@ -34,27 +34,29 @@ public class RobotMap
     // *******************************
     public static final double DRIVEBASE_TALON_RAMP_RATE = .25; 
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
-    public static final double DRIVEBASE_MAX_SPEED = 977.85;
+    public static final double DRIVEBASE_MAX_SPEED = 1300;
     public static final double DRIVEBASE_TURN_SENSITIVITY = .5;
     public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.099; //2.099 feet
     public static final double DRIVEBASE_WHEEL_DIAMETER = 6; //INCHES
-    public static final double DRIVEBASE_KF = .76;
-    public static final double DRIVEBASE_KP = 1;
-    public static final double DRIVEBASE_KI = 0;
-    public static final double DRIVEBASE_KD = 20;
+    public static final double DRIVEBASE_KF = .7869; //good
+    public static final double DRIVEBASE_KP = 1; //temporary
+    public static final double DRIVEBASE_KI = 0; //temporary
+    public static final double DRIVEBASE_KD = 0; //temporary
+    public static final double DRIVEBASE_ANTI_TIP_CONSTANT = 150;
 
     // *************************
     // ** ELEVATOR PARAMETERS **
     // *************************
-    public static final int ELEVATOR_SCALE_POSITION = 7000;
+    public static final int ELEVATOR_SCALE_POSITION = 29000;
     public static final int ELEVATOR_SWITCH_POSITION = 7000;
     public static final int ELEVATOR_HOME_POSITION = 0;
     public static final int ELEVATOR_MAX_SPEED = 1000;
     public static final int ELEVATOR_MAX_ACCEL = 2000;
+    public static final double ELEVATOR_HOLDING_VPERCENT = .07;
     public static final double ELEVATOR_KF = 1;
     public static final double ELEVATOR_KP = 0;
     public static final double ELEVATOR_KI = 0;
     public static final double ELEVATOR_KD = 0;
-    public static final int ELEVATOR_TOLERANCE = 1;
+    public static final int ELEVATOR_TOLERANCE = 30;
     
 }

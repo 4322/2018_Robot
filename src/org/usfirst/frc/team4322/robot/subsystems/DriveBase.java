@@ -3,10 +3,11 @@ package org.usfirst.frc.team4322.robot.subsystems;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveManual;
+import org.usfirst.frc.team4322.robot.commands.Drivebase_DriveManual_Voltage;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
-//import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,11 +16,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveBase extends Subsystem {
 
 	public WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
-//	private AHRS navx;
+	private AHRS navx;
 	private static final double ticksToDist = 6 * Math.PI / 1024;
 	double offset = 0.0;
 	double offsetNavX = 0;
 	public DifferentialDrive drive;
+	public double basePitch;
 	
 	public DriveBase() {
 		try {
@@ -60,8 +62,10 @@ public class DriveBase extends Subsystem {
 			rightSlave.follow(rightMaster);
 			rightSlave.setInverted(true);
 
-//			System.out.println("[d] DriveBase() creating Navx...");
-//			navx = new AHRS(Port.kMXP);
+			System.out.println("[d] DriveBase() creating Navx...");
+			navx = new AHRS(Port.kMXP);
+			navx.reset();
+			basePitch = navx.getPitch();
 			
 //			drive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -99,20 +103,23 @@ public class DriveBase extends Subsystem {
 	{
 		return (leftMaster.getSelectedSensorPosition(0) + rightMaster.getSelectedSensorPosition(0)) / 2;
 	}
-//	public double getRoll()
-//	{
-//		return navx.getRawAccelZ();
-//	}
-//
-//	public double getAngle()
-//	{
-//		return (navx.getYaw() - offsetNavX);
-//	}
-//
-//	public void resetNavX()
-//	{
-//		offsetNavX = navx.getYaw();
-//	}
+	public double getRoll()
+	{
+		return navx.getRoll();
+	}
+	public double getPitch()
+	{
+		return navx.getPitch();
+	}
+	public double getAngle()
+	{
+		return (navx.getYaw() - offsetNavX);
+	}
+
+	public void resetNavX()
+	{
+		offsetNavX = navx.getYaw();
+	}
 	public double getVoltageLeft()
 	{
 		return leftMaster.getMotorOutputVoltage();
