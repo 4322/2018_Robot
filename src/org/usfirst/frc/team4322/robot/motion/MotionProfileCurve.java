@@ -209,7 +209,7 @@ public class MotionProfileCurve
 		String pathRight = "/home/lvuser/" + fileName + "Right.csv";
 		File left = new File(pathLeft);
 		File right = new File(pathRight);
-		String line;
+		String line = "";
 		if (left.exists() && right.exists())
 		{
 			generatedProfileLeft = new double[numOfPoints][3];
@@ -218,7 +218,6 @@ public class MotionProfileCurve
 				 BufferedReader brRight = new BufferedReader(new FileReader(right)))
 			{
 				int i = 0;
-				int j = 0;
 				while ((line = brLeft.readLine()) != null)
 				{
 					String[] values = line.split(",");
@@ -227,13 +226,14 @@ public class MotionProfileCurve
 					generatedProfileLeft[i][2] = Double.parseDouble(values[2]);
 					i++;
 				}
+				i = 0;
 				while ((line = brRight.readLine()) != null)
 				{
 					String[] values = line.split(",");
 					generatedProfileRight[i][0] = Double.parseDouble(values[0]);
 					generatedProfileRight[i][1] = Double.parseDouble(values[1]);
 					generatedProfileRight[i][2] = Double.parseDouble(values[2]);
-					j++;
+					i++;
 				}
 			}
 			catch (IOException e)

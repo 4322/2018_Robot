@@ -57,6 +57,11 @@ public class DriveBase_DriveManual extends Command
         vLeft += vAngular;
         vRight -= vAngular;
         
+        //Anti tip code
+        double roll = Robot.driveBase.getPitch();
+        vLeft -= RobotMap.DRIVEBASE_ANTI_TIP_CONSTANT * (roll - Robot.driveBase.basePitch);
+        vRight -= RobotMap.DRIVEBASE_ANTI_TIP_CONSTANT * (roll - Robot.driveBase.basePitch);
+        
         Robot.driveBase.rightMaster.set(ControlMode.Velocity, vRight);
         Robot.driveBase.leftMaster.set(ControlMode.Velocity, vLeft);
         

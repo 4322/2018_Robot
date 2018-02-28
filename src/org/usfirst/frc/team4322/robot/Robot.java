@@ -136,6 +136,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
 //		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
+		SmartDashboard.putNumber("Pitch: ", Robot.driveBase.getPitch());
 	}
 
 	/**
