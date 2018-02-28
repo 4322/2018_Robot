@@ -44,6 +44,9 @@ public class MotionProfileCurve
 		this.maxTime = maxTime;
 		targetVelocity = distance / maxTime;
 		numOfPoints = (int) (maxTime / duration);
+
+		positionLeft = new double[numOfPoints][2];
+		positionRight = new double[numOfPoints][2];
 	}
 	public void setFileName(String fileName)
 	{
@@ -51,6 +54,7 @@ public class MotionProfileCurve
 	}
 	void position(double[][] left, double[][] right)
 	{
+		System.out.println("--- Position Values ---");
 		double grad;
 		double timeConstant = 0;
 
@@ -68,6 +72,8 @@ public class MotionProfileCurve
 					(quartic * Math.pow(center[i][0], 4)) +
 					(cubic * Math.pow(center[i][0], 3)) +
 					(linear * center[i][0]);
+			System.out.println("Center X: " + center[i][0]);
+			System.out.println("Center Y: " + center[i][1]);
 			if (i == numOfPoints - 1)
 			{
 				grad = Math.atan2(center[i][1] - center[i - 1][1], center[i][0] - center[i - 1][0]);
@@ -78,8 +84,14 @@ public class MotionProfileCurve
 			left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
 			left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
 
+			System.out.println("Left X: " + left[i][0]);
+			System.out.println("Left Y: " + left[i][0]);
+
 			right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
 			right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
+
+			System.out.println("Right X: " + right[i][0]);
+			System.out.println("Right Y: " + right[i][0]);
 
 			timeConstant += duration;
 		}
@@ -161,6 +173,7 @@ public class MotionProfileCurve
 	}
 	private double[][] writeMotionProfile(double[] rotations, double[] velocity, String filePath)
 	{
+		System.out.println("--- Begin Writing Profile " + fileName + " ---");
 		double[][] result = new double[numOfPoints][3];
 		try
 		{
@@ -177,6 +190,8 @@ public class MotionProfileCurve
 				result[i][0] = rotations[i];
 				result[i][1] = velocity[i];
 				result[i][2] = duration * 1000;
+
+				System.out.println("{" + result[i][0] + ", " + result[i][1] + ", " + result[i][2] + "}");
 			}
 			writer.flush();
 			writer.close();
@@ -185,10 +200,12 @@ public class MotionProfileCurve
 		{
 			System.out.println("FILE WRITE FAILED: " + e.toString());
 		}
+		System.out.println("--- End Writing Profile ---");
 		return result;
 	}
 	protected void calculateStuff()
 	{
+		position(positionLeft, positionRight);
 		position(positionLeft, positionRight);
 
 		velocityLeft = velocity(positionLeft);
