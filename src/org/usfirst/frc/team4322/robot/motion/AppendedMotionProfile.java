@@ -1,5 +1,8 @@
 package org.usfirst.frc.team4322.robot.motion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppendedMotionProfile extends MotionProfileCurve
 {
 	MotionProfileCurve[] curves;
@@ -7,45 +10,47 @@ public class AppendedMotionProfile extends MotionProfileCurve
 	{
 		this.curves = curves;
 		numOfPoints = 0;
+		maxTime = 0;
 		for (MotionProfileCurve curve:
 			 curves)
 		{
-			numOfPoints+=curve.numOfPoints;
+			numOfPoints += curve.numOfPoints;
+			maxTime += curve.maxTime;
 		}
+		System.out.println(numOfPoints);
 	}
 	@Override
-	protected void calculateStuff()
+	public void calculateStuff()
 	{
+		List<Double> vLeft = new ArrayList<>();
+		List<Double> vRight = new ArrayList<>();
 		velocityLeft = new double[numOfPoints];
 		velocityRight = new double[numOfPoints];
 
-		for(int i = 0; i < curves.length; i++)
-		{
-			MotionProfileCurve curve = curves[i];
 
+		for (MotionProfileCurve curve : curves)
+		{
 			curve.position(curve.positionLeft, curve.positionRight);
 
 			curve.velocityLeft = curve.velocity(curve.positionLeft);
 			curve.velocityRight = curve.velocity(curve.positionRight);
 
-			if (i == 0)
+			for (int i = 0; i < curve.numOfPoints; i++)
 			{
-				for (int j = 0; j < curve.numOfPoints; j++)
-				{
-					velocityLeft[j] = curve.velocityLeft[j];
-					velocityRight[j] = curve.velocityRight[j];
-				}
-			}
-			else
-			{
-				for (int j = curves[i-1].numOfPoints, n = 0; j < (curves[i-1].numOfPoints + curve.numOfPoints); j++, n++)
-				{
-					velocityLeft[j] = curve.velocityLeft[n];
-					velocityRight[j] = curve.velocityRight[n];
-				}
+				vLeft.add(curve.velocityLeft[i]);
+				vRight.add(curve.velocityRight[i]);
 			}
 		}
-
+		for(int i = 0; i < vLeft.size(); i++)
+		{
+			velocityLeft[i] = vLeft.get(i);
+		}
+		for(int i = 0; i < vRight.size(); i++)
+		{
+			velocityRight[i] = vRight.get(i);
+		}
+//		rampedVelocityLeft = velocityLeft;
+//		rampedVelocityRight = velocityRight;
 		rampedVelocityLeft = applyRamping(velocityLeft);
 		rampedVelocityRight = applyRamping(velocityRight);
 
