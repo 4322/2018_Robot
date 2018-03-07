@@ -1,10 +1,6 @@
 package org.usfirst.frc.team4322.robot;
 
-import org.usfirst.frc.team4322.robot.commands.Collector_Collect;
-import org.usfirst.frc.team4322.robot.commands.Collector_Eject;
-import org.usfirst.frc.team4322.robot.commands.Elevator_Home;
-import org.usfirst.frc.team4322.robot.commands.Elevator_Scale;
-import org.usfirst.frc.team4322.robot.commands.Elevator_Switch;
+import org.usfirst.frc.team4322.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -21,6 +17,7 @@ public class OI {
 
         
         operator = new XboxController(1);
+        operator.rt.whileHeld(new Elevator_Manual());
         operator.y.whenPressed(new Elevator_Scale());
         operator.a.whenPressed(new Elevator_Switch());
         operator.b.whenPressed(new Elevator_Home());

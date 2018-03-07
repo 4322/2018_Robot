@@ -16,17 +16,11 @@ public class Elevator_Hold extends Command {
 	@Override
 	protected void execute()
 	{
-		System.out.println("HOLDING ELEVATOR WITH " + RobotMap.ELEVATOR_HOLDING_VPERCENT + " OUTPUT!");
+//		System.out.println("HOLDING ELEVATOR WITH " + RobotMap.ELEVATOR_HOLDING_VPERCENT + " OUTPUT!");
 		Robot.elevator.master.set(ControlMode.PercentOutput, RobotMap.ELEVATOR_HOLDING_VPERCENT);
 	}
 	@Override
-	protected void end()
-	{
-		Robot.elevator.master.set(ControlMode.PercentOutput, 0);
-	}
-	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

@@ -63,9 +63,9 @@ public class DriveBase extends Subsystem {
 			rightSlave.setInverted(true);
 
 			System.out.println("[d] DriveBase() creating Navx...");
-			navx = new AHRS(Port.kMXP);
-			navx.reset();
-			basePitch = navx.getPitch();
+//			navx = new AHRS(Port.kMXP);
+//			navx.reset();
+//			basePitch = navx.getPitch();
 			
 //			drive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -103,23 +103,23 @@ public class DriveBase extends Subsystem {
 	{
 		return (leftMaster.getSelectedSensorPosition(0) + rightMaster.getSelectedSensorPosition(0)) / 2;
 	}
-	public double getRoll()
-	{
-		return navx.getRoll();
-	}
-	public double getPitch()
-	{
-		return navx.getPitch();
-	}
-	public double getAngle()
-	{
-		return (navx.getYaw() - offsetNavX);
-	}
-
-	public void resetNavX()
-	{
-		offsetNavX = navx.getYaw();
-	}
+//	public double getRoll()
+//	{
+//		return navx.getRoll();
+//	}
+//	public double getPitch()
+//	{
+//		return navx.getPitch();
+//	}
+//	public double getAngle()
+//	{
+//		return (navx.getYaw() - offsetNavX);
+//	}
+//
+//	public void resetNavX()
+//	{
+//		offsetNavX = navx.getYaw();
+////	}
 	public double getVoltageLeft()
 	{
 		return leftMaster.getMotorOutputVoltage();

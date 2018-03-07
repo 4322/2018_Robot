@@ -11,18 +11,19 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Elevator_Scale extends Command {
 
 	private int ticks;
+	private double currentError = 0;
+	private double lastError;
 	
 	public Elevator_Scale()
 	{
-		ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0);
 		requires(Robot.elevator);
 	}
 	@Override
 	protected void initialize()
 	{
+		lastError = Double.MAX_VALUE;
+
 		Robot.elevator.master.clearMotionProfileTrajectories();
-		Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED, 10);
-		Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
 
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
@@ -36,8 +37,8 @@ public class Elevator_Scale extends Command {
 		{
 			case HOME:
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED, 10);
-				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
+				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
+				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL / 2, 10);
 				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
 				break;
 			case SCALE:
@@ -47,8 +48,8 @@ public class Elevator_Scale extends Command {
 				break;
 			case SWITCH:
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0);
-				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED, 10);
-				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL, 10);
+				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
+				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL / 2, 10);
 				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
 				break;
 		}
@@ -56,7 +57,9 @@ public class Elevator_Scale extends Command {
 	@Override
 	protected void execute()
 	{
-		Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
+		System.out.print("RUNNING MOTION MAGIC SCALE: ");
+		System.out.print(currentError);
+		System.out.println(" (" + Robot.elevator.master.getActiveTrajectoryVelocity() + ")");
 	}
 	@Override
 	protected void end()
@@ -68,14 +71,23 @@ public class Elevator_Scale extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
+		currentError = Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - RobotMap.ELEVATOR_SCALE_POSITION);
 		if (Robot.elevator.position == ElevatorPosition.SCALE)
 		{
 			return true;
 		}
 		else
 		{
-			return ((Math.abs(Robot.elevator.master.getActiveTrajectoryPosition() - Robot.elevator.master.getSelectedSensorPosition(0)) <= 30) && 
-				(Robot.elevator.master.getActiveTrajectoryVelocity() == 0));
+			if (currentError > (lastError + RobotMap.ELEVATOR_TOLERANCE))
+			{
+				return true;
+			}
+			else
+			{
+				lastError = currentError;
+
+			}
+			return (currentError <= RobotMap.ELEVATOR_TOLERANCE);
 		}
 	}
 

@@ -17,12 +17,15 @@ public class Elevator_Manual extends Command {
 	@Override
 	protected void execute()
 	{
-		Robot.elevator.master.set(ControlMode.PercentOutput, OI.operator.getY()+RobotMap.ELEVATOR_HOLDING_VPERCENT);
+		double out = -OI.operator.leftStick.getY();
+
+
+		Robot.elevator.master.set(ControlMode.PercentOutput, RobotMap.cubicRamping(out) + .07);
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

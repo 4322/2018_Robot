@@ -39,20 +39,20 @@ public class DriveBase_DriveManual extends Command
         {
         	//Quick Turning
             vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * 1.5 * RobotMap.DRIVEBASE_MAX_SPEED * 
-            		2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+            		RobotMap.spookyRamping(turn); //spooky ramping
 
         }
         else
         {
         	//Normal Turning
         	vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 
-        			2 / Math.PI * Math.sin(Math.tan(turn)) * Math.cosh(Math.pow(turn, 5)); //spooky ramping
+        			RobotMap.spookyRamping(turn); //spooky ramping
         }
         
         if (power != 0)
         {
-        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(power)) * Math.cosh(Math.pow(power, 5)); //spooky ramping
-        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * 2 / Math.PI * Math.sin(Math.tan(power)) * Math.cosh(Math.pow(power, 5)); 
+        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power); //spooky ramping
+        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power);
         }
         vLeft += vAngular;
         vRight -= vAngular;

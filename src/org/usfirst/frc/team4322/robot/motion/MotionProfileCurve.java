@@ -46,8 +46,8 @@ public class MotionProfileCurve
 		targetVelocity = distance / maxTime;
 		numOfPoints = (int) (maxTime / duration);
 
-		positionLeft = new double[numOfPoints][2];
-		positionRight = new double[numOfPoints][2];
+		positionLeft = new double[numOfPoints+1][2];
+		positionRight = new double[numOfPoints+1][2];
 	}
 	public void setFileName(String fileName)
 	{
@@ -68,9 +68,9 @@ public class MotionProfileCurve
 		System.out.println("Cubic term: " + cubic);
 		System.out.println("Linear term: " + linear);
 
-		double[][] center = new double[numOfPoints][2];
+		double[][] center = new double[numOfPoints + 2][2];
 
-		for (int i = 0; i < numOfPoints; i++)
+		for (int i = 0; i < numOfPoints + 1; i++)
 		{
 			center[i][0] = targetVelocity * timeConstant;
 			center[i][1] = (quintic * Math.pow(center[i][0], 5)) +
@@ -79,30 +79,24 @@ public class MotionProfileCurve
 					(linear * center[i][0]);
 			System.out.println("Center X: " + center[i][0]);
 			System.out.println("Center Y: " + center[i][1]);
-			if (i == numOfPoints - 1)
+
+			grad = Math.atan2(center[i + 1][1] - center[i][1], center[i + 1][0] - center[i][0]);
+
+			if (i < numOfPoints + 1)
 			{
-				grad = Math.atan2(center[i][1] - center[i - 1][1], center[i][0] - center[i - 1][0]);
+				System.out.println("Grad: " + grad);
+				left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
+				left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
+
+				System.out.println("Left X: " + left[i][0]);
+				System.out.println("Left Y: " + left[i][1]);
+
+				right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
+				right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
+
+				System.out.println("Right X: " + right[i][0]);
+				System.out.println("Right Y: " + right[i][1]);
 			}
-//			else if (i == 0)
-//			{
-//				grad = theta1;
-//			}
-			else
-			{
-				grad = Math.atan2(center[i + 1][1] - center[i][1], center[i + 1][0] - center[i][0]);
-			}
-			System.out.println("Grad: " + grad);
-			left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
-			left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
-
-			System.out.println("Left X: " + left[i][0]);
-			System.out.println("Left Y: " + left[i][1]);
-
-			right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
-			right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
-
-			System.out.println("Right X: " + right[i][0]);
-			System.out.println("Right Y: " + right[i][1]);
 
 			timeConstant += duration;
 		}
@@ -114,11 +108,10 @@ public class MotionProfileCurve
 		double dxdt;
 		double dydt;
 		double[] result = new double[numOfPoints];
-		result[0] = 0;
+//		result[0] = 0;
 //		result[numOfPoints - 1] = 0;
-		for (int i = 1; i < numOfPoints-1; i++)
+		for (int i = 1; i < numOfPoints + 1; i++)
 		{
-
 
 			dxdt = (position[i][0] - position[i - 1][0]) / duration;
 			dydt = (position[i][1] - position[i - 1][1]) / duration;
@@ -126,8 +119,8 @@ public class MotionProfileCurve
 			System.out.println("dxdt: " + dxdt);
 			System.out.println("dydt: " + dydt);
 
-			result[i] = Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI);
-			System.out.println(result[i]);
+			result[i - 1] = Math.copySign(Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI), dxdt);
+			System.out.println(""+ i + " "+ result[i - 1]);
 		}
 		System.out.println("Finished Calculating Velocities!");
 		return result;
@@ -138,7 +131,7 @@ public class MotionProfileCurve
 		double[] result = new double[velocity.length];
 		double timeConstant = 0;
 		result[numOfPoints - 1] = 0;
-		for (int i = 0; i < numOfPoints - 1; i++)
+		for (int i = 0; i < numOfPoints; i++)
 		{
 			result[i] = velocity[i] * (Math.log(
 
@@ -250,8 +243,11 @@ public class MotionProfileCurve
 		velocityLeft = velocity(positionLeft);
 		velocityRight = velocity(positionRight);
 
-		rampedVelocityLeft = smoothVelocity(velocityLeft, .1, .3, 15);
-		rampedVelocityRight = smoothVelocity(velocityRight, .1, .3, 15);
+//		rampedVelocityLeft = smoothVelocity(velocityLeft, .1, .3, 15);
+//		rampedVelocityRight = smoothVelocity(velocityRight, .1, .3, 15);
+
+		rampedVelocityLeft = applyRamping(velocityLeft);
+		rampedVelocityRight = applyRamping(velocityRight);
 
 		rampedVelocityLeft = optimizeVelocity(velocityLeft, rampedVelocityLeft);
 		rampedVelocityRight = optimizeVelocity(velocityRight, rampedVelocityRight);
@@ -344,7 +340,7 @@ public class MotionProfileCurve
 		AppendedMotionProfile curve = new AppendedMotionProfile(
 				new MotionProfileCurve[]{
 						new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5),
-//						new MotionProfileCurve(-60, -60, 5, 5)
+						new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5)
 				}
 		);
 		MotionProfileCurve curve2 = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5);

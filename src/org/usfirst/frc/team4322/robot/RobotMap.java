@@ -51,12 +51,24 @@ public class RobotMap
     public static final int ELEVATOR_SWITCH_POSITION = 7000;
     public static final int ELEVATOR_HOME_POSITION = 0;
     public static final int ELEVATOR_MAX_SPEED = 1000;
-    public static final int ELEVATOR_MAX_ACCEL = 2000;
+    public static final int ELEVATOR_MAX_ACCEL = 1000;
     public static final double ELEVATOR_HOLDING_VPERCENT = .07;
     public static final double ELEVATOR_KF = 1;
     public static final double ELEVATOR_KP = 0;
     public static final double ELEVATOR_KI = 0;
     public static final double ELEVATOR_KD = 0;
     public static final int ELEVATOR_TOLERANCE = 30;
+
+    // ********************************
+    // ** JOYSTICK RAMPING EQUATIONS **
+    // ********************************
+    public static double spookyRamping(double input)
+    {
+        return 2 / Math.PI * Math.sin(Math.tan(input)) * Math.cosh(Math.pow(input, 5));
+    }
+    public static double cubicRamping(double input)
+    {
+        return Math.pow(input, 3);
+    }
     
 }

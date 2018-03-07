@@ -33,8 +33,10 @@ public class Elevator extends Subsystem {
 	{
 		master = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTORCONTROLLER_MASTER_ADDR);
 		master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+
 		master.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
 		master.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
+
 		master.setSensorPhase(false);
 		master.setSelectedSensorPosition(0, 0, 10);
 //		master.setInverted(true);
@@ -57,7 +59,6 @@ public class Elevator extends Subsystem {
 		limitHome = new DigitalInput(RobotMap.ELEVATOR_LIMIT_HOME);
 		position = ElevatorPosition.HOME;
 	}
-	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

@@ -136,7 +136,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
 //		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
-		SmartDashboard.putNumber("Pitch: ", Robot.driveBase.getPitch());
+//		SmartDashboard.putNumber("Pitch: ", Robot.driveBase.getPitch());
 	}
 
 	/**
@@ -170,6 +170,7 @@ public class Robot extends IterativeRobot
 	{
 //		driveBase.leftMaster.clearMotionProfileTrajectories();
 //		driveBase.rightMaster.clearMotionProfileTrajectories();
+		elevator.position = Elevator.ElevatorPosition.HOME;
 		driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
 		driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
 	}
@@ -185,6 +186,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("Elevator Voltage: ", Robot.elevator.master.getMotorOutputPercent());
 		SmartDashboard.putNumber("Left Velocity", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
+
 	}
 
 	/**
