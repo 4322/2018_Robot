@@ -36,7 +36,7 @@ public class Elevator_Scale extends Command {
 		switch (Robot.elevator.position)
 		{
 			case HOME:
-				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
+				ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0) ;
 				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
 				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL / 2, 10);
 				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);

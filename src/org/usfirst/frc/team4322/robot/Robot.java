@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4322.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
 import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
@@ -56,6 +57,9 @@ public class Robot extends IterativeRobot
 	//Autonomous
 	private Command autoCommand;
 
+//	//Pneumatics
+//	public Compressor compressor;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -70,6 +74,8 @@ public class Robot extends IterativeRobot
 		elevator = new Elevator();
 		//Start OI
 		oi = new OI();
+		//Start compressor
+		new Compressor().setClosedLoopControl(true);
 		//Motion Profiles
 		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
         autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);

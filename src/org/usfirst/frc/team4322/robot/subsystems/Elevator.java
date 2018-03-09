@@ -41,7 +41,7 @@ public class Elevator extends Subsystem {
 		master.setSelectedSensorPosition(0, 0, 10);
 //		master.setInverted(true);
 		
-		master.configNominalOutputForward(RobotMap.ELEVATOR_HOLDING_VPERCENT * 1, 10);
+		master.configNominalOutputForward(RobotMap.ELEVATOR_HOLDING_VPERCENT, 10);
 		master.configNominalOutputReverse(0, 10);
 		master.configPeakOutputForward(1, 10);
 		master.configPeakOutputReverse(-1, 10);
@@ -63,6 +63,10 @@ public class Elevator extends Subsystem {
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
 		setDefaultCommand(new Elevator_Hold());
+	}
+	public double getPosition()
+	{
+		return master.getActiveTrajectoryPosition();
 	}
 
 }

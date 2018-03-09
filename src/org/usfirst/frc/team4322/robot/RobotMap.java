@@ -70,5 +70,14 @@ public class RobotMap
     {
         return Math.pow(input, 3);
     }
+
+    // *************************
+    // ** PNEUMATIC ID VALUES **
+    // *************************
+    public static final int PNEUMATIC_COMPRESSOR_ID = 0;
+    public static final int PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_0 = 10;
+    public static final int PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1 = 11;
+    public static final int PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_0 = 20;
+    public static final int PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_1 = 21;
     
 }
