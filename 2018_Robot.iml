@@ -149,5 +149,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="4322Utils" level="project" />
   </component>
 </module>

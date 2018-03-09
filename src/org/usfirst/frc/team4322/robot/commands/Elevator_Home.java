@@ -32,9 +32,9 @@ public class Elevator_Home extends Command {
 		switch (Robot.elevator.position)
 		{
 			case SCALE:
-				ticks = -RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 10, 10);
-				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL / 10, 10);
+				ticks = RobotMap.ELEVATOR_HOME_POSITION;
+				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
+				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL, 10);
 				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
 				break;
 			case HOME:
@@ -43,9 +43,9 @@ public class Elevator_Home extends Command {
 				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
 				break;
 			case SWITCH:
-				ticks = -RobotMap.ELEVATOR_SWITCH_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 10, 10);
-				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL / 10, 10);
+				ticks = RobotMap.ELEVATOR_HOME_POSITION;
+				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
+				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL, 10);
 				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
 				break;
 		}

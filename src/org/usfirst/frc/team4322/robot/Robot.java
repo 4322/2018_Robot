@@ -2,10 +2,11 @@
 package org.usfirst.frc.team4322.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
-import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
-import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
-import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
+//import org.usfirst.frc.team4322.logging.RobotLogger;
+//import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
+//import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
+//import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
+//import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.Collector;
@@ -34,6 +35,8 @@ import static java.lang.Math.toRadians;
  */
 public class Robot extends IterativeRobot
 {
+//	public static RobotLogger logger;
+
 	// Controls Class
 	private static OI oi;
 	// Auto Chooser Class
@@ -66,6 +69,7 @@ public class Robot extends IterativeRobot
 	 */
 	public void robotInit()
 	{
+//		logger = new RobotLogger();
 		//Autos
 		smartAuto = new SmartAuto();
 		//Start Subsystems (Mind Dependencies!)
@@ -75,7 +79,7 @@ public class Robot extends IterativeRobot
 		//Start OI
 		oi = new OI();
 		//Start compressor
-		new Compressor().setClosedLoopControl(true);
+//		new Compressor().setClosedLoopControl(true);
 		//Motion Profiles
 		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
         autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);

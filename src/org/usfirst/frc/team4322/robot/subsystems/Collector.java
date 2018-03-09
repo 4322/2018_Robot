@@ -2,6 +2,7 @@ package org.usfirst.frc.team4322.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+//import org.usfirst.frc.team4322.logging.RobotLogger;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.Collector_Collect;
@@ -28,8 +29,8 @@ public class Collector extends Subsystem {
 //		collectorRight.follow(collectorLeft);
 		collectorRight.setInverted(true);
 
-		collectorActuator = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1);
-		collectorDeployer = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_1);
+//		collectorActuator = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1);
+//		collectorDeployer = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_1);
 		
 		collectorLeft.set(ControlMode.PercentOutput, 0);
 		collectorRight.set(ControlMode.PercentOutput, 0);

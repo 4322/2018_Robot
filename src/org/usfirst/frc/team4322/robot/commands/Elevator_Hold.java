@@ -22,12 +22,12 @@ public class Elevator_Hold extends Command {
 	@Override
 	protected void execute()
 	{
-//		System.out.println("HOLDING ELEVATOR WITH " + RobotMap.ELEVATOR_HOLDING_VPERCENT + " OUTPUT!");
-//		Robot.elevator.master.set(ControlMode.PercentOutput, RobotMap.ELEVATOR_HOLDING_VPERCENT);
-		double out;
-		double error = setpoint - Robot.elevator.getPosition();
-
-		out = error * RobotMap.ELEVATOR_HOLDING_VPERCENT + RobotMap.ELEVATOR_HOLDING_VPERCENT;
+		System.out.println("HOLDING ELEVATOR WITH " + RobotMap.ELEVATOR_HOLDING_VPERCENT + " OUTPUT!");
+		Robot.elevator.master.set(ControlMode.PercentOutput, RobotMap.ELEVATOR_HOLDING_VPERCENT);
+//		double out;
+//		double error = setpoint - Robot.elevator.getPosition();
+//
+//		out = error * RobotMap.ELEVATOR_HOLDING_VPERCENT + RobotMap.ELEVATOR_HOLDING_VPERCENT;
 	}
 	@Override
 	protected boolean isFinished() {
