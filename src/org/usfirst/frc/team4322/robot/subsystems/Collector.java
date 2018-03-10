@@ -29,8 +29,8 @@ public class Collector extends Subsystem {
 //		collectorRight.follow(collectorLeft);
 		collectorRight.setInverted(true);
 
-//		collectorActuator = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1);
-//		collectorDeployer = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_0, RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_1);
+		collectorActuator = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1, RobotMap.PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_2);
+		collectorDeployer = new DoubleSolenoid(RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_3, RobotMap.PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_4);
 		
 		collectorLeft.set(ControlMode.PercentOutput, 0);
 		collectorRight.set(ControlMode.PercentOutput, 0);

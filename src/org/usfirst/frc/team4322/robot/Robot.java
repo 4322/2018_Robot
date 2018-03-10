@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot
 		//Start OI
 		oi = new OI();
 		//Start compressor
-//		new Compressor().setClosedLoopControl(true);
+		new Compressor(RobotMap.PNEUMATIC_COMPRESSOR_ID).setClosedLoopControl(true);
 		//Motion Profiles
 		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
         autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);
