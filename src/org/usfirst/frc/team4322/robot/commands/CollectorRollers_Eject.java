@@ -6,17 +6,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Collector_Eject extends Command {
+public class CollectorRollers_Eject extends Command {
 
-	public Collector_Eject()
+	public CollectorRollers_Eject()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorRollers);
 	}
 	@Override
 	public void execute()
 	{
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, .5);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, .5);
+		Robot.collectorRollers.collectorLeft.set(ControlMode.PercentOutput, .5);
+		Robot.collectorRollers.collectorRight.set(ControlMode.PercentOutput, .5);
 	}
 	@Override
 	protected boolean isFinished() {

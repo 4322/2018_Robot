@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4322.robot.Robot;
 
 
-public class Collector_Deploy extends Command
+public class CollectorDeployer_Stop extends Command
 {
-	public Collector_Deploy()
+	public CollectorDeployer_Stop()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorDeployer);
 	}
-
 	/**
 	 * The execute method is called repeatedly when this Command is
 	 * scheduled to run until this Command either finishes or is canceled.
@@ -18,7 +17,7 @@ public class Collector_Deploy extends Command
 	@Override
 	protected void execute()
 	{
-		Robot.collector.deploy();
+		Robot.collectorDeployer.set(0);
 	}
 
 
@@ -43,6 +42,6 @@ public class Collector_Deploy extends Command
 	protected boolean isFinished()
 	{
 		// TODO: Make this return true when this Command no longer needs to run execute()
-		return false;
+		return true;
 	}
 }

@@ -17,6 +17,8 @@ public class RobotMap
 	public static final int AUTO_DIO_PORT_3 = 3;
 	public static final int ELEVATOR_LIMIT_HOME = 4;
 
+	public static final int COLLECTOR_DEPLOYER_ENC_ANALOG_PORT  = 0;
+
     // *******************************
     // ** MOTOR CONTROLLER MAPPINGS **
     // *******************************
@@ -28,6 +30,7 @@ public class RobotMap
     public static final int COLLECTOR_MOTORCONTROLLER_RIGHT_ADDR = 21;
     public static final int ELEVATOR_MOTORCONTROLLER_MASTER_ADDR = 30;
     public static final int ELEVATOR_MOTORCONTROLLER_SLAVE_ADDR = 31;
+    public static final int COLLECTOR_DEPLOYER_MOTORCONTROLLER_ADDR = 40;
     
     // *******************************
     // ** DRIVEBASE PARAMETERS **
@@ -59,6 +62,14 @@ public class RobotMap
     public static final double ELEVATOR_KD = 0;
     public static final int ELEVATOR_TOLERANCE = 30;
 
+    // **************************
+    // ** COLLECTOR PARAMETERS **
+    // **************************
+    public static final int COLLECTOR_DEPLOYER_SETPOINT = 45;
+    public static final double COLLECTOR_DEPLOYER_KP = 1;
+    public static final double COLLECTOR_DEPLOYER_KI = 0;
+    public static final double COLLECTOR_DEPLOYER_KD = 0;
+
     // ********************************
     // ** JOYSTICK RAMPING EQUATIONS **
     // ********************************
@@ -74,10 +85,9 @@ public class RobotMap
     // *************************
     // ** PNEUMATIC ID VALUES **
     // *************************
-    public static final int PNEUMATIC_COMPRESSOR_ID = 0;
+    public static final int PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_0 = 0;
     public static final int PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_1 = 1;
-    public static final int PNEUMATIC_COLLECTOR_ACTUATOR_SOLENOID_ID_2 = 2;
+    public static final int PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_2 = 2;
     public static final int PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_3 = 3;
-    public static final int PNEUMATIC_COLLECTOR_DEPLOYER_SOLENOID_ID_4 = 4;
     
 }

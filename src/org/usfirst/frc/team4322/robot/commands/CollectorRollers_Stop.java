@@ -4,17 +4,17 @@ import org.usfirst.frc.team4322.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Collector_Stop extends Command {
+public class CollectorRollers_Stop extends Command {
 
-	public Collector_Stop()
+	public CollectorRollers_Stop()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorRollers);
 	}
 	@Override
 	protected void execute()
 	{
-		Robot.collector.collectorRight.set(0);
-		Robot.collector.collectorLeft.set(0);
+		Robot.collectorRollers.collectorRight.set(0);
+		Robot.collectorRollers.collectorLeft.set(0);
 	}
 	@Override
 	protected boolean isFinished() {

@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.Compressor;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
-import org.usfirst.frc.team4322.robot.subsystems.Collector;
-import org.usfirst.frc.team4322.robot.subsystems.DriveBase;
-import org.usfirst.frc.team4322.robot.subsystems.Elevator;
+import org.usfirst.frc.team4322.robot.subsystems.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -20,9 +18,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.io.File;
-import java.io.IOException;
 
 import static java.lang.Math.toRadians;
 
@@ -43,8 +38,10 @@ public class Robot extends IterativeRobot
 	private static SmartAuto smartAuto;
 	// Drivebase Subsystem Class
 	public static DriveBase driveBase;
-	// Collector Subsystem Class
-	public static Collector collector;
+	// CollectorRollers Subsystem Class
+	public static CollectorRollers collectorRollers;
+	public static CollectorDeployer collectorDeployer;
+	public static CollectorActuator collectorActuator;
 	// Elevator Subsystem Class
 	public static Elevator elevator;
 	//MotionProfiles
@@ -74,12 +71,14 @@ public class Robot extends IterativeRobot
 		smartAuto = new SmartAuto();
 		//Start Subsystems (Mind Dependencies!)
 		driveBase = new DriveBase();
-		collector = new Collector();
+		collectorRollers = new CollectorRollers();
+		collectorDeployer = new CollectorDeployer();
+		collectorActuator = new CollectorActuator();
 		elevator = new Elevator();
 		//Start OI
 		oi = new OI();
 		//Start compressor
-		new Compressor(RobotMap.PNEUMATIC_COMPRESSOR_ID).setClosedLoopControl(true);
+		new Compressor().setClosedLoopControl(true);
 		//Motion Profiles
 		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
         autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);

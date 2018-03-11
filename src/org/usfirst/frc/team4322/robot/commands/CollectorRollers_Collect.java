@@ -1,27 +1,26 @@
 package org.usfirst.frc.team4322.robot.commands;
 
-import org.usfirst.frc.team4322.robot.OI;
 import org.usfirst.frc.team4322.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Collector_Collect extends Command {
+public class CollectorRollers_Collect extends Command {
 
-	public Collector_Collect()
+	public CollectorRollers_Collect()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorRollers);
 	}
 	@Override
 	protected void execute()
 	{
 //		Double powLeft = OI.operator.leftStick.getY();
 //		Double powRight = OI.operator.rightStick.getY();
-//		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, powLeft);
-//		Robot.collector.collectorRight.set(ControlMode.PercentOutput, powRight);
-		Robot.collector.collectorLeft.set(ControlMode.PercentOutput, -1);
-		Robot.collector.collectorRight.set(ControlMode.PercentOutput, -1);
+//		Robot.collectorRollers.collectorLeft.set(ControlMode.PercentOutput, powLeft);
+//		Robot.collectorRollers.collectorRight.set(ControlMode.PercentOutput, powRight);
+		Robot.collectorRollers.collectorLeft.set(ControlMode.PercentOutput, -1);
+		Robot.collectorRollers.collectorRight.set(ControlMode.PercentOutput, -1);
 	}
 	@Override
 	protected boolean isFinished() {

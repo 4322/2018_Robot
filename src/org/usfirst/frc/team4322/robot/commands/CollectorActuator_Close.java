@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4322.robot.Robot;
 
 
-public class Collector_Close extends Command
+public class CollectorActuator_Close extends Command
 {
-	public Collector_Close()
+	public CollectorActuator_Close()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorActuator);
 	}
 
 	/**
@@ -18,7 +18,7 @@ public class Collector_Close extends Command
 	@Override
 	protected void execute()
 	{
-		Robot.collector.close();
+		Robot.collectorActuator.close();
 	}
 
 

@@ -2,13 +2,14 @@ package org.usfirst.frc.team4322.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4322.robot.Robot;
+import org.usfirst.frc.team4322.robot.RobotMap;
 
 
-public class Collector_Open extends Command
+public class CollectorDeployer_Deploy extends Command
 {
-	public Collector_Open()
+	public CollectorDeployer_Deploy()
 	{
-		requires(Robot.collector);
+		requires(Robot.collectorDeployer);
 	}
 
 	/**
@@ -18,7 +19,14 @@ public class Collector_Open extends Command
 	@Override
 	protected void execute()
 	{
-		Robot.collector.open();
+		if (Robot.collectorDeployer.getEncoder() < RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
+		{
+			Robot.collectorDeployer.set(1);
+		}
+		else if (Robot.collectorDeployer.getEncoder() >= RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
+		{
+			Robot.collectorDeployer.set(0);
+		}
 	}
 
 
@@ -43,6 +51,12 @@ public class Collector_Open extends Command
 	protected boolean isFinished()
 	{
 		// TODO: Make this return true when this Command no longer needs to run execute()
-		return false;
+		return Robot.collectorDeployer.isDone();
+	}
+
+	@Override
+	protected void end()
+	{
+		Robot.collectorDeployer.resetEncoder();
 	}
 }
