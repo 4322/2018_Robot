@@ -14,6 +14,7 @@ public class MotionProfileCurve
 	private double theta2;
 	private double distance;
 	private double targetVelocity;
+	private double targetAcceleration;
 
 	int numOfPoints;
 	double maxTime;
@@ -37,13 +38,14 @@ public class MotionProfileCurve
 	{
 
 	}
-	public MotionProfileCurve(double theta1, double theta2, double distance, double maxTime)
+	public MotionProfileCurve(double theta1, double theta2, double distance, double velocity, double acceleration)
 	{
 		this.theta1 = theta1;
 		this.theta2 = theta2;
 		this.distance = distance;
-		this.maxTime = maxTime;
-		targetVelocity = distance / maxTime;
+		targetVelocity = velocity;
+		targetAcceleration = acceleration;
+		maxTime = (distance / velocity) + (velocity / acceleration);
 		numOfPoints = (int) (maxTime / duration);
 
 		positionLeft = new double[numOfPoints+1][2];
@@ -52,6 +54,34 @@ public class MotionProfileCurve
 	public void setFileName(String fileName)
 	{
 		this.fileName = fileName;
+	}
+	double[] trapezoidalProfile(double distance, double velocity, double acceleration)
+	{
+		double[] result = new double[numOfPoints];
+		double time = 0.000001;
+		for(int i = 0; i < numOfPoints; i++)
+		{
+			if (time > 0 && time < (velocity/acceleration))
+			{
+				result[i] = acceleration * time;
+			}
+			else if (time >= (velocity/acceleration) && time < (distance / velocity))
+			{
+				result[i] = velocity;
+			}
+			else if (time >= (distance / velocity) && time <= (maxTime))
+			{
+				result[i] = -acceleration * (time - maxTime);
+			}
+			else if (time >= maxTime)
+			{
+				result[i] = 0;
+			}
+			System.out.print("Profile Value: ");
+			System.out.println(result[i]);
+			time += duration;
+		}
+		return result;
 	}
 	void position(double[][] left, double[][] right)
 	{
@@ -184,6 +214,28 @@ public class MotionProfileCurve
 		for (int i = 1; i < numOfPoints; i++)
 		{
 			result[i] = ((velocity[i] * duration / 60) + result[i - 1]); //numerical integration of velocity
+		}
+		return result;
+	}
+	double[] integrate(double[] input)
+	{
+		//calculates position setpoint at each node
+		double[] tmp = new double[numOfPoints + 1];
+		double[] result = new double[numOfPoints];
+		tmp[0] = 0;
+		for (int i = 1; i < numOfPoints + 1; i++)
+		{
+			if (i == numOfPoints)
+			{
+				tmp[i] = tmp[i-1];
+			}
+			else
+			{
+				tmp[i] = (input[i] * duration) + tmp[i - 1]; //numerical integration of velocity
+			}
+			result[i - 1] = tmp[i];
+			System.out.print("Integration value: ");
+			System.out.println(tmp[i]);
 		}
 		return result;
 	}
@@ -337,21 +389,24 @@ public class MotionProfileCurve
 	}
 	public static void main(String[] args)
 	{
-		AppendedMotionProfile curve = new AppendedMotionProfile(
-				new MotionProfileCurve[]{
-						new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5),
-						new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5)
-				}
-		);
-		MotionProfileCurve curve2 = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5);
-		curve.calculateStuff();
-		curve.write(curve.rotationsLeft, curve.rampedVelocityLeft);
-		curve.write(curve.rotationsRight, curve.rampedVelocityRight);
+//		AppendedMotionProfile curve = new AppendedMotionProfile(
+//				new MotionProfileCurve[]{
+//						new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5),
+////						new MotionProfileCurve(-60, -60, 5, 5)
+//				}
+//		);
+//		MotionProfileCurve curve2 = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 5, 5);
+//		curve.calculateStuff();
+//		curve.write(curve.rotationsLeft, curve.rampedVelocityLeft);
+//		curve.write(curve.rotationsRight, curve.rampedVelocityRight);
+//
+//		System.out.println("AAAAAAAAAAAAAAAAAAA");
+//		curve2.calculateStuff();
+//		curve2.write(curve2.rotationsLeft, curve2.rampedVelocityLeft);
+//		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
+		MotionProfileCurve curve = new MotionProfileCurve(.5, .5, 5, 1, 1);
 
-		System.out.println("AAAAAAAAAAAAAAAAAAA");
-		curve2.calculateStuff();
-		curve2.write(curve2.rotationsLeft, curve2.rampedVelocityLeft);
-		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
+		curve.integrate(curve.trapezoidalProfile(5, 1,1));
 	}
 
 

@@ -80,50 +80,50 @@ public class Robot extends IterativeRobot
 		//Start compressor
 		new Compressor().setClosedLoopControl(true);
 		//Motion Profiles
-		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
-        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);
-		autoScaleLeftLeft = new AppendedMotionProfile(
-				new MotionProfileCurve[]{
-					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 4),
-					new MotionProfileCurve(toRadians(33), toRadians(180 - 3.4), 84.513 / 12, 3)
-				}
-		);
-				
-        autoScaleLeftRight = new AppendedMotionProfile(
-				new MotionProfileCurve[]{
-					new MotionProfileCurve(0, 0, 159.563 / 12, 3),
-					new MotionProfileCurve(toRadians(63.7), toRadians(180 - 26.3), 94.81 / 12, 3),
-					new MotionProfileCurve(toRadians(3.1), toRadians(3.1), 75.107 / 12, 1),
-					new MotionProfileCurve(-toRadians(66.5), toRadians(23.5), 63.809 / 12, 2)
-				}
-		);
-		autoScaleRightRight = new AppendedMotionProfile(
-				new MotionProfileCurve[]{
-						new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
-						new MotionProfileCurve(-toRadians(33), -toRadians(180 - 3.4), 84.513 / 12, 3)
-				}
-		);
-        autoScaleRightLeft = new AppendedMotionProfile(
-				new MotionProfileCurve[]{
-						new MotionProfileCurve(0, 0, 159.563 / 12, 3),
-						new MotionProfileCurve(-toRadians(63.7), -toRadians(180 - 26.3), 94.81 / 12, 3),
-						new MotionProfileCurve(-toRadians(3.1), -toRadians(3.1), 75.107 / 12, 1),
-						new MotionProfileCurve(toRadians(66.5), -toRadians(23.5), 63.809 / 12, 2)
-				}
-		);
-        
-		autoSwitchLeft.setFileName("autoSwitchLeft");
-		autoSwitchLeft.readProfileFromCSV();
-		autoSwitchRight.setFileName("autoSwitchRight");
-		autoSwitchRight.readProfileFromCSV();
-		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
-		autoScaleLeftLeft.readProfileFromCSV();
-		autoScaleRightRight.setFileName("autoScaleRightRight");
-		autoScaleRightRight.readProfileFromCSV();
-		autoScaleRightLeft.setFileName("autoScaleRightLeft");
-		autoScaleRightLeft.readProfileFromCSV();
-		autoScaleLeftRight.setFileName("autoScaleLeftRight");
-		autoScaleLeftRight.readProfileFromCSV();
+//		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
+//        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);
+//		autoScaleLeftLeft = new AppendedMotionProfile(
+//				new MotionProfileCurve[]{
+//					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 4),
+//					new MotionProfileCurve(toRadians(33), toRadians(180 - 3.4), 84.513 / 12, 3)
+//				}
+//		);
+//
+//        autoScaleLeftRight = new AppendedMotionProfile(
+//				new MotionProfileCurve[]{
+//					new MotionProfileCurve(0, 0, 159.563 / 12, 3),
+//					new MotionProfileCurve(toRadians(63.7), toRadians(180 - 26.3), 94.81 / 12, 3),
+//					new MotionProfileCurve(toRadians(3.1), toRadians(3.1), 75.107 / 12, 1),
+//					new MotionProfileCurve(-toRadians(66.5), toRadians(23.5), 63.809 / 12, 2)
+//				}
+//		);
+//		autoScaleRightRight = new AppendedMotionProfile(
+//				new MotionProfileCurve[]{
+//						new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
+//						new MotionProfileCurve(-toRadians(33), -toRadians(180 - 3.4), 84.513 / 12, 3)
+//				}
+//		);
+//        autoScaleRightLeft = new AppendedMotionProfile(
+//				new MotionProfileCurve[]{
+//						new MotionProfileCurve(0, 0, 159.563 / 12, 3),
+//						new MotionProfileCurve(-toRadians(63.7), -toRadians(180 - 26.3), 94.81 / 12, 3),
+//						new MotionProfileCurve(-toRadians(3.1), -toRadians(3.1), 75.107 / 12, 1),
+//						new MotionProfileCurve(toRadians(66.5), -toRadians(23.5), 63.809 / 12, 2)
+//				}
+//		);
+//
+//		autoSwitchLeft.setFileName("autoSwitchLeft");
+//		autoSwitchLeft.readProfileFromCSV();
+//		autoSwitchRight.setFileName("autoSwitchRight");
+//		autoSwitchRight.readProfileFromCSV();
+//		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
+//		autoScaleLeftLeft.readProfileFromCSV();
+//		autoScaleRightRight.setFileName("autoScaleRightRight");
+//		autoScaleRightRight.readProfileFromCSV();
+//		autoScaleRightLeft.setFileName("autoScaleRightLeft");
+//		autoScaleRightLeft.readProfileFromCSV();
+//		autoScaleLeftRight.setFileName("autoScaleLeftRight");
+//		autoScaleLeftRight.readProfileFromCSV();
 		SmartDashboard.putString("Build DateTime", "2/18/17 5:24PM");
 	}
 
