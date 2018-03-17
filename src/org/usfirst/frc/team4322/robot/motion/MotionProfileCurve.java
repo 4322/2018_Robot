@@ -21,6 +21,7 @@ public class MotionProfileCurve
 
 	double[][] positionLeft;
 	double[][] positionRight;
+	double[][] positionCenter;
 	double[] rotationsLeft;
 	double[] rotationsRight;
 	double[] velocityLeft;
@@ -88,8 +89,9 @@ public class MotionProfileCurve
 		}
 		return result;
 	}
-	void position(double[][] left, double[][] right)
+	double[][] position(double[][] left, double[][] right)
 	{
+//		numOfPoints = 50;
 		System.out.println("<Calculating Position!>");
 		double grad;
 		double timeConstant = 0.000001;
@@ -120,24 +122,22 @@ public class MotionProfileCurve
 
 			grad = Math.atan2(center[i + 1][1] - center[i][1], center[i + 1][0] - center[i][0]);
 
-			if (i < numOfPoints + 1)
-			{
-				System.out.println("Grad: " + grad);
-				left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
-				left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
+			System.out.println("Grad: " + grad);
+			left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
+			left[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad + (Math.PI / 2)) + center[i][1];
 
-				System.out.println("Left X: " + left[i][0]);
-				System.out.println("Left Y: " + left[i][1]);
+			System.out.println("Left X: " + left[i][0]);
+			System.out.println("Left Y: " + left[i][1]);
 
-				right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
-				right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
+			right[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad - (Math.PI / 2)) + center[i][0];
+			right[i][1] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.sin(grad - (Math.PI / 2)) + center[i][1];
 
-				System.out.println("Right X: " + right[i][0]);
-				System.out.println("Right Y: " + right[i][1]);
-			}
+			System.out.println("Right X: " + right[i][0]);
+			System.out.println("Right Y: " + right[i][1]);
 
 			timeConstant += duration;
 		}
+		return center;
 	}
 
 	double[] velocity(double[][] position)
@@ -285,7 +285,7 @@ public class MotionProfileCurve
 	}
 	public void calculateStuff()
 	{
-		position(positionLeft, positionRight);
+		positionCenter = position(positionLeft, positionRight);
 
 		velocityLeft = velocity(positionLeft);
 		velocityRight = velocity(positionRight);
@@ -402,7 +402,10 @@ public class MotionProfileCurve
 //		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
 		MotionProfileCurve curve = new MotionProfileCurve(.5, .5, 5, 1, 1);
 		curve.calculateStuff();
+
 		curve.write(curve.rotationsLeft, curve.velocityLeft);
+		curve.write(curve.rotationsRight, curve.velocityRight);
+		curve.write(curve.arcLength(curve.velocity(curve.positionCenter)), curve.velocity(curve.positionCenter));
 	}
 
 
