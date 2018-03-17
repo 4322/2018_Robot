@@ -57,11 +57,16 @@ public class MotionProfileCurve
 	}
 	double[] trapezoidalProfile(double distance, double velocity, double acceleration)
 	{
-		double[] result = new double[numOfPoints];
-		double time = 0.000001;
-		for(int i = 0; i < numOfPoints; i++)
+		double[] result = new double[numOfPoints + 2];
+		double time = 0.000001 - duration;
+
+		for(int i = 0; i < numOfPoints + 2; i++)
 		{
-			if (time > 0 && time < (velocity/acceleration))
+			if (time < 0)
+			{
+				result[i] = 0;
+			}
+			else if (time > 0 && time < (velocity/acceleration))
 			{
 				result[i] = acceleration * time;
 			}
@@ -100,13 +105,16 @@ public class MotionProfileCurve
 
 		double[][] center = new double[numOfPoints + 2][2];
 
+		double[] basePositionProfile = integrate(trapezoidalProfile(distance, targetVelocity, targetAcceleration));
+
 		for (int i = 0; i < numOfPoints + 1; i++)
 		{
-			center[i][0] = targetVelocity * timeConstant;
+			System.out.println("-----Base Position: " + basePositionProfile[i]);
+			center[i][0] = basePositionProfile[i];
 			center[i][1] = (quintic * Math.pow(center[i][0], 5)) +
 					(quartic * Math.pow(center[i][0], 4)) +
 					(cubic * Math.pow(center[i][0], 3)) +
-					(linear * center[i][0]);
+			(linear * center[i][0]);
 			System.out.println("Center X: " + center[i][0]);
 			System.out.println("Center Y: " + center[i][1]);
 
@@ -140,7 +148,7 @@ public class MotionProfileCurve
 		double[] result = new double[numOfPoints];
 //		result[0] = 0;
 //		result[numOfPoints - 1] = 0;
-		for (int i = 1; i < numOfPoints + 1; i++)
+		for (int i = 1; i < numOfPoints; i++)
 		{
 
 			dxdt = (position[i][0] - position[i - 1][0]) / duration;
@@ -149,7 +157,9 @@ public class MotionProfileCurve
 			System.out.println("dxdt: " + dxdt);
 			System.out.println("dydt: " + dydt);
 
-			result[i - 1] = Math.copySign(Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI), dxdt);
+			result[i - 1] = Math.copySign(Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2))
+//					* 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI)
+					, dxdt);
 			System.out.println(""+ i + " "+ result[i - 1]);
 		}
 		System.out.println("Finished Calculating Velocities!");
@@ -209,19 +219,21 @@ public class MotionProfileCurve
 	double[] arcLength(double[] velocity) //calculate number of rotations for encoder
 	{
 		//calculates position setpoint at each node
-		double[] result = new double[numOfPoints];
+		double[] result = new double[velocity.length];
 		result[0] = 0;
 		for (int i = 1; i < numOfPoints; i++)
 		{
-			result[i] = ((velocity[i] * duration / 60) + result[i - 1]); //numerical integration of velocity
+			System.out.print(i + " ");
+			result[i] = ((velocity[i] * duration) + result[i - 1]); //numerical integration of velocity
+			System.out.println(result[i]);
 		}
 		return result;
 	}
 	double[] integrate(double[] input)
 	{
 		//calculates position setpoint at each node
-		double[] tmp = new double[numOfPoints + 1];
-		double[] result = new double[numOfPoints];
+		double[] tmp = new double[input.length + 1];
+		double[] result = new double[input.length];
 		tmp[0] = 0;
 		for (int i = 1; i < numOfPoints + 1; i++)
 		{
@@ -231,28 +243,11 @@ public class MotionProfileCurve
 			}
 			else
 			{
-				tmp[i] = (input[i] * duration) + tmp[i - 1]; //numerical integration of velocity
+				tmp[i] = (input[i] * duration) + tmp[i - 1]; //numerical integration
 			}
 			result[i - 1] = tmp[i];
 			System.out.print("Integration value: ");
 			System.out.println(tmp[i]);
-		}
-		return result;
-	}
-	double[] smoothVelocity(double[] velocity, double weight_data, double weight_smooth, double tolerance)
-	{
-		double[] result = velocity;
-		result[numOfPoints - 1] = 0;
-		double change = tolerance;
-		while (change >= tolerance)
-		{
-			change = 0;
-			for (int i = 1; i < velocity.length - 1; i++)
-			{
-				double aux = result[i];
-				result[i] += weight_data * (velocity[i] - result[i]) + weight_smooth * (result[i-1] + result[i+1] - (2 * result[i]));
-				change += Math.abs(aux - result[i]);
-			}
 		}
 		return result;
 	}
@@ -295,14 +290,16 @@ public class MotionProfileCurve
 		velocityLeft = velocity(positionLeft);
 		velocityRight = velocity(positionRight);
 
+		rampedVelocityLeft = velocityLeft;
+		rampedVelocityRight = velocityRight;
 //		rampedVelocityLeft = smoothVelocity(velocityLeft, .1, .3, 15);
 //		rampedVelocityRight = smoothVelocity(velocityRight, .1, .3, 15);
 
-		rampedVelocityLeft = applyRamping(velocityLeft);
-		rampedVelocityRight = applyRamping(velocityRight);
+//		rampedVelocityLeft = applyRamping(velocityLeft);
+//		rampedVelocityRight = applyRamping(velocityRight);
 
-		rampedVelocityLeft = optimizeVelocity(velocityLeft, rampedVelocityLeft);
-		rampedVelocityRight = optimizeVelocity(velocityRight, rampedVelocityRight);
+//		rampedVelocityLeft = optimizeVelocity(velocityLeft, rampedVelocityLeft);
+//		rampedVelocityRight = optimizeVelocity(velocityRight, rampedVelocityRight);
 
 		rotationsLeft = arcLength(rampedVelocityLeft);
 		rotationsRight = arcLength(rampedVelocityRight);
@@ -322,7 +319,6 @@ public class MotionProfileCurve
 				 BufferedReader brRight = new BufferedReader(new FileReader(right)))
 			{
 				int i = 0;
-				int j = 0;
 				while ((line = brLeft.readLine()) != null)
 				{
 					String[] values = line.split(",");
@@ -405,8 +401,8 @@ public class MotionProfileCurve
 //		curve2.write(curve2.rotationsLeft, curve2.rampedVelocityLeft);
 //		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
 		MotionProfileCurve curve = new MotionProfileCurve(.5, .5, 5, 1, 1);
-
-		curve.integrate(curve.trapezoidalProfile(5, 1,1));
+		curve.calculateStuff();
+		curve.write(curve.rotationsLeft, curve.velocityLeft);
 	}
 
 
