@@ -1,9 +1,8 @@
 package org.usfirst.frc.team4322.robot.subsystems;
 
-import org.usfirst.frc.team4322.robot.Robot;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveManual;
-import org.usfirst.frc.team4322.robot.commands.Drivebase_DriveManual_Voltage;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -17,7 +16,7 @@ public class DriveBase extends Subsystem {
 
 	public WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
 	private AHRS navx;
-	private static final double ticksToDist = 6 * Math.PI / 1024;
+	private static final double ticksToInches = RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI / RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
 	double offset = 0.0;
 	double offsetNavX = 0;
 	public DifferentialDrive drive;
@@ -63,9 +62,9 @@ public class DriveBase extends Subsystem {
 			rightSlave.setInverted(true);
 
 			System.out.println("[d] DriveBase() creating Navx...");
-//			navx = new AHRS(Port.kMXP);
-//			navx.reset();
-//			basePitch = navx.getPitch();
+			navx = new AHRS(Port.kMXP);
+			navx.reset();
+			basePitch = navx.getPitch();
 			
 //			drive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -85,7 +84,7 @@ public class DriveBase extends Subsystem {
 	}
 	public double getDistInches()
 	{
-		return ((rightMaster.getSelectedSensorPosition(0) + leftMaster.getSelectedSensorPosition(0)) / 2) * ticksToDist;
+		return ((rightMaster.getSelectedSensorPosition(0) + leftMaster.getSelectedSensorPosition(0)) / 2) * ticksToInches;
 	}
 	public double getDistRight()
 	{
@@ -111,15 +110,15 @@ public class DriveBase extends Subsystem {
 //	{
 //		return navx.getPitch();
 //	}
-//	public double getAngle()
-//	{
-//		return (navx.getYaw() - offsetNavX);
-//	}
-//
-//	public void resetNavX()
-//	{
-//		offsetNavX = navx.getYaw();
-////	}
+	public double getAngle()
+	{
+		return (navx.getYaw() - offsetNavX);
+	}
+
+	public void resetNavX()
+	{
+		offsetNavX = navx.getYaw();
+	}
 	public double getVoltageLeft()
 	{
 		return leftMaster.getMotorOutputVoltage();
@@ -128,17 +127,6 @@ public class DriveBase extends Subsystem {
 	{
 		return rightMaster.getMotorOutputVoltage();
 	}
-
-//	public void autoDrive(double pow, double rot)
-//	{
-//		drive.arcadeDrive(pow, rot);
-//	}
-//
-	public void drive(double pow, double rot) {
-		System.out.println("[d] Drivebase() calling drive.arcadeDrive(" + pow + ", " + rot + ", true);");
-		drive.arcadeDrive(pow, rot, true); 
-	}
-
 	public void resetEncoder() {
 		leftMaster.setSelectedSensorPosition(0, 0, 10);
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
@@ -149,5 +137,10 @@ public class DriveBase extends Subsystem {
 			Thread.sleep(30);
 		} catch (InterruptedException e) {
 		}
+	}
+	public void setVelocity(double vLeft, double vRight)
+	{
+		leftMaster.set(ControlMode.Velocity, vLeft);
+		rightMaster.set(ControlMode.Velocity, vRight);
 	}
 }

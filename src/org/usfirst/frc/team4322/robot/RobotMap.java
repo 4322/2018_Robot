@@ -36,7 +36,7 @@ public class RobotMap
     // ** DRIVEBASE PARAMETERS **
     // *******************************
     public static final double DRIVEBASE_TALON_RAMP_RATE = .25;
-    public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
+    public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 4096;
     public static final double DRIVEBASE_MAX_SPEED = 900;
     public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
     public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.099; //2.099 feet
