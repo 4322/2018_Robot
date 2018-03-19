@@ -4,6 +4,8 @@ import java.io.*;
 
 import org.usfirst.frc.team4322.robot.RobotMap;
 
+import static java.lang.Math.toRadians;
+
 public class MotionProfileCurve
 {
 	private static final double duration = .10;
@@ -158,7 +160,7 @@ public class MotionProfileCurve
 			System.out.println("dydt: " + dydt);
 
 			result[i - 1] = Math.copySign(Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2))
-//					* 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI)
+					* 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI)
 					, dxdt);
 			System.out.println(""+ i + " "+ result[i - 1]);
 		}
@@ -224,7 +226,7 @@ public class MotionProfileCurve
 		for (int i = 1; i < numOfPoints; i++)
 		{
 			System.out.print(i + " ");
-			result[i] = ((velocity[i] * duration) + result[i - 1]); //numerical integration of velocity
+			result[i] = ((velocity[i] * duration / 60) + result[i - 1]); //numerical integration of velocity
 			System.out.println(result[i]);
 		}
 		return result;
@@ -362,6 +364,7 @@ public class MotionProfileCurve
 	}
 	protected double[][] write(double[] rotations, double[] velocity)
 	{
+		//for testing purposes ONLY
 		System.out.println("--- Begin Writing Profile " + fileName + " ---");
 		double[][] result = new double[numOfPoints][3];
 		try
@@ -400,7 +403,7 @@ public class MotionProfileCurve
 //		curve2.calculateStuff();
 //		curve2.write(curve2.rotationsLeft, curve2.rampedVelocityLeft);
 //		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
-		MotionProfileCurve curve = new MotionProfileCurve(.5, .5, 5, 1, 1);
+		MotionProfileCurve curve = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 10, 10);
 		curve.calculateStuff();
 
 		curve.write(curve.rotationsLeft, curve.velocityLeft);

@@ -5,17 +5,13 @@ import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
 
 
-public class CollectorDeployer_UnDeploy extends Command
+public class CollectorDeployer_UnDeployManual extends Command
 {
-	public CollectorDeployer_UnDeploy()
+	public CollectorDeployer_UnDeployManual()
 	{
 		requires(Robot.collectorDeployer);
 	}
-	@Override
-	protected void initialize()
-	{
-		Robot.collectorDeployer.resetEncoder();
-	}
+
 	/**
 	 * The execute method is called repeatedly when this Command is
 	 * scheduled to run until this Command either finishes or is canceled.
@@ -23,14 +19,7 @@ public class CollectorDeployer_UnDeploy extends Command
 	@Override
 	protected void execute()
 	{
-		if (Robot.collectorDeployer.getEncoder() < RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
-		{
-			Robot.collectorDeployer.set(-1);
-		}
-		else if (Robot.collectorDeployer.getEncoder() >= RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
-		{
-			Robot.collectorDeployer.set(0);
-		}
+		Robot.collectorDeployer.set(-1);
 	}
 
 
@@ -55,7 +44,7 @@ public class CollectorDeployer_UnDeploy extends Command
 	protected boolean isFinished()
 	{
 		// TODO: Make this return true when this Command no longer needs to run execute()
-		return Robot.collectorDeployer.isDone();
+		return false;
 	}
 	@Override
 	protected void end()

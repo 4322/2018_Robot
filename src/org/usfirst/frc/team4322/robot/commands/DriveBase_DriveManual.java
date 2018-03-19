@@ -7,6 +7,7 @@ import org.usfirst.frc.team4322.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4322.robot.subsystems.Elevator;
 
 public class DriveBase_DriveManual extends Command
 {
@@ -34,25 +35,28 @@ public class DriveBase_DriveManual extends Command
         double vLeft = 0;
         double vRight = 0;
         
-        double vAngular = 0;
-        if (OI.pilot.lb.get())
+        double vAngular;
+        if (power == 0 || OI.pilot.rb.get())
         {
         	//Quick Turning
-            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * 1.5 * RobotMap.DRIVEBASE_MAX_SPEED * 
-            		RobotMap.spookyRamping(turn); //spooky ramping
+            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * 1.5 * RobotMap.DRIVEBASE_MAX_SPEED *
+            		RobotMap.cubicRamping(turn);
 
         }
         else
         {
         	//Normal Turning
         	vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 
-        			RobotMap.spookyRamping(turn); //spooky ramping
+        			RobotMap.cubicRamping(turn);
         }
         
         if (power != 0)
         {
-        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power); //spooky ramping
-        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power);
+        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
+                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 0);
+        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
+                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 0);
+
         }
         vLeft += vAngular;
         vRight -= vAngular;

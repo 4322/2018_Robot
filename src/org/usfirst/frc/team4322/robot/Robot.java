@@ -1,12 +1,18 @@
 
 package org.usfirst.frc.team4322.robot;
 
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 //import org.usfirst.frc.team4322.logging.RobotLogger;
 //import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
 //import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
+import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Left;
+import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
 import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.*;
@@ -45,7 +51,7 @@ public class Robot extends IterativeRobot
 	// Elevator Subsystem Class
 	public static Elevator elevator;
 	//MotionProfiles
-	public static MotionProfileCurve spline;
+	public static MotionProfileCurve testSpline;
 	public static MotionProfileCurve straight;
 	public static MotionProfileCurve autoSwitchRight;
 	public static MotionProfileCurve autoSwitchLeft;
@@ -56,6 +62,9 @@ public class Robot extends IterativeRobot
 
 	//Autonomous
 	private Command autoCommand;
+
+	//Limelight
+	private static NetworkTable limelight;
 
 //	//Pneumatics
 //	public Compressor compressor;
@@ -79,51 +88,66 @@ public class Robot extends IterativeRobot
 		oi = new OI();
 		//Start compressor
 		new Compressor().setClosedLoopControl(true);
+		//Limelight settings
+		limelight = NetworkTableInstance.getDefault().getTable("limelight");
+		limelight.getEntry("ledMode").setValue(2);
+		limelight.getEntry("camMode").setValue(1);
+
 		//Motion Profiles
-//		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 4);
-//        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 4);
-//		autoScaleLeftLeft = new AppendedMotionProfile(
+//		testSpline = new MotionProfileCurve(.5, .5, 5, 2, 2);
+		autoSwitchLeft = new MotionProfileCurve(toRadians(55), toRadians(55), 8, 2.5, 1);
+//        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 10,10);
+//
+// 		autoScaleLeftLeft = new AppendedMotionProfile(
 //				new MotionProfileCurve[]{
-//					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 4),
-//					new MotionProfileCurve(toRadians(33), toRadians(180 - 3.4), 84.513 / 12, 3)
+//					new MotionProfileCurve(-.13505, -.13505, 185.702 / 12, 30, 30),
+//					new MotionProfileCurve(toRadians(33), toRadians(180 - 3.4), 84.513 / 12, 10,10)
 //				}
 //		);
 //
 //        autoScaleLeftRight = new AppendedMotionProfile(
 //				new MotionProfileCurve[]{
-//					new MotionProfileCurve(0, 0, 159.563 / 12, 3),
-//					new MotionProfileCurve(toRadians(63.7), toRadians(180 - 26.3), 94.81 / 12, 3),
-//					new MotionProfileCurve(toRadians(3.1), toRadians(3.1), 75.107 / 12, 1),
-//					new MotionProfileCurve(-toRadians(66.5), toRadians(23.5), 63.809 / 12, 2)
+//					new MotionProfileCurve(0, 0, 159.563 / 12, 30, 30),
+//					new MotionProfileCurve(toRadians(63.7), toRadians(180 - 26.3), 94.81 / 12, 10, 10),
+//					new MotionProfileCurve(toRadians(3.1), toRadians(3.1), 75.107 / 12, 20, 20),
+//					new MotionProfileCurve(-toRadians(66.5), toRadians(23.5), 63.809 / 12, 20, 20)
 //				}
 //		);
 //		autoScaleRightRight = new AppendedMotionProfile(
 //				new MotionProfileCurve[]{
-//						new MotionProfileCurve(.13505, .13505, 185.702 / 12, 4),
-//						new MotionProfileCurve(-toRadians(33), -toRadians(180 - 3.4), 84.513 / 12, 3)
+//						new MotionProfileCurve(.13505, .13505, 185.702 / 12, 30, 30),
+//						new MotionProfileCurve(-toRadians(33), -toRadians(180 - 3.4), 84.513 / 12, 10, 10)
 //				}
 //		);
 //        autoScaleRightLeft = new AppendedMotionProfile(
 //				new MotionProfileCurve[]{
-//						new MotionProfileCurve(0, 0, 159.563 / 12, 3),
-//						new MotionProfileCurve(-toRadians(63.7), -toRadians(180 - 26.3), 94.81 / 12, 3),
-//						new MotionProfileCurve(-toRadians(3.1), -toRadians(3.1), 75.107 / 12, 1),
-//						new MotionProfileCurve(toRadians(66.5), -toRadians(23.5), 63.809 / 12, 2)
+//						new MotionProfileCurve(0, 0, 159.563 / 12, 30, 30),
+//						new MotionProfileCurve(-toRadians(63.7), -toRadians(180 - 26.3), 94.81 / 12, 10, 10),
+//						new MotionProfileCurve(-toRadians(3.1), -toRadians(3.1), 75.107 / 12, 20, 20),
+//						new MotionProfileCurve(toRadians(66.5), -toRadians(23.5), 63.809 / 12, 20, 20)
 //				}
 //		);
 //
-//		autoSwitchLeft.setFileName("autoSwitchLeft");
-//		autoSwitchLeft.readProfileFromCSV();
+		autoSwitchLeft.setFileName("autoSwitchLeft");
+		autoSwitchLeft.readProfileFromCSV();
+//
 //		autoSwitchRight.setFileName("autoSwitchRight");
 //		autoSwitchRight.readProfileFromCSV();
+//
 //		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
 //		autoScaleLeftLeft.readProfileFromCSV();
+//
 //		autoScaleRightRight.setFileName("autoScaleRightRight");
 //		autoScaleRightRight.readProfileFromCSV();
+//
 //		autoScaleRightLeft.setFileName("autoScaleRightLeft");
 //		autoScaleRightLeft.readProfileFromCSV();
+//
 //		autoScaleLeftRight.setFileName("autoScaleLeftRight");
 //		autoScaleLeftRight.readProfileFromCSV();
+//
+//		testSpline.setFileName("testSpline");
+//		testSpline.readProfileFromCSV();
 		SmartDashboard.putString("Build DateTime", "2/18/17 5:24PM");
 	}
 
@@ -134,7 +158,6 @@ public class Robot extends IterativeRobot
 	 */
 	public void disabledInit()
 	{
-		
 	}
 
 	public void disabledPeriodic()
@@ -143,7 +166,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("DriveBase Encoder Value: ", Robot.driveBase.getDist());
 		SmartDashboard.putNumber("Left Enc: ", Robot.driveBase.leftMaster.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Enc: ", Robot.driveBase.rightMaster.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.getPosition());
 //		SmartDashboard.putNumber("NavX Yaw: ", Robot.driveBase.getAngle());
 //		SmartDashboard.putNumber("Pitch: ", Robot.driveBase.getPitch());
 	}
@@ -161,8 +184,9 @@ public class Robot extends IterativeRobot
 	 */
 	public void autonomousInit()
 	{
-		smartAuto.choose();
-		autoCommand = smartAuto.getAuto();
+//		smartAuto.choose();
+//		autoCommand = smartAuto.getAuto();
+		autoCommand = new AutoGroup_SwitchCenter_Left();
 		autoCommand.start();
 	}
 
@@ -182,6 +206,8 @@ public class Robot extends IterativeRobot
 		elevator.position = Elevator.ElevatorPosition.HOME;
 		driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
 		driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
+		limelight.getEntry("ledMode").setValue(1);
+		limelight.getEntry("camMode").setValue(1);
 	}
 
 	/**
@@ -190,12 +216,11 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.master.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Elevator Vel: ", Robot.elevator.master.getSelectedSensorVelocity(0));
-		SmartDashboard.putNumber("Elevator Voltage: ", Robot.elevator.master.getMotorOutputPercent());
+		SmartDashboard.putNumber("Elevator Enc: ", Robot.elevator.getPosition());
+		SmartDashboard.putNumber("Elevator Vel: ", Robot.elevator.getVelocity());
 		SmartDashboard.putNumber("Left Velocity", Robot.driveBase.leftMaster.getSelectedSensorVelocity(0));
 		SmartDashboard.putNumber("Right Velocity: ", Robot.driveBase.rightMaster.getSelectedSensorVelocity(0));
-
+		SmartDashboard.putBoolean("Pivot Limit: ", Robot.collectorDeployer.isLimit());
 	}
 
 	/**

@@ -19,11 +19,11 @@ public class CollectorDeployer_Deploy extends Command
 	@Override
 	protected void execute()
 	{
-		if (Robot.collectorDeployer.getEncoder() < RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
+		if (!Robot.collectorDeployer.isLimit())
 		{
 			Robot.collectorDeployer.set(1);
 		}
-		else if (Robot.collectorDeployer.getEncoder() >= RobotMap.COLLECTOR_DEPLOYER_SETPOINT)
+		else
 		{
 			Robot.collectorDeployer.set(0);
 		}

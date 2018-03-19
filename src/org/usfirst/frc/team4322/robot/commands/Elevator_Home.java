@@ -24,29 +24,25 @@ public class Elevator_Home extends Command {
 	{
 		lastError = Double.MAX_VALUE;
 
-		Robot.elevator.master.clearMotionProfileTrajectories();
+		Robot.elevator.clearProfiles();
 
-		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
-		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
+		Robot.elevator.useMotionMagicMode();
 
 		switch (Robot.elevator.position)
 		{
 			case SCALE:
 				ticks = RobotMap.ELEVATOR_HOME_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
-				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL, 10);
-				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
+				Robot.elevator.setMotionMagic(-RobotMap.ELEVATOR_MAX_SPEED / 2, -RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 			case HOME:
-				ticks = 0;
-				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED, 10);
-				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
 				break;
 			case SWITCH:
 				ticks = RobotMap.ELEVATOR_HOME_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(-RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
-				Robot.elevator.master.configMotionAcceleration(-RobotMap.ELEVATOR_MAX_ACCEL, 10);
-				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
+				Robot.elevator.setMotionMagic(-RobotMap.ELEVATOR_MAX_SPEED / 2, -RobotMap.ELEVATOR_MAX_ACCEL, ticks);
+				break;
+			case READY_TO_CLIMB:
+				ticks = RobotMap.ELEVATOR_HOME_POSITION;
+				Robot.elevator.setMotionMagic(-RobotMap.ELEVATOR_MAX_SPEED / 2, -RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 		}
 	}
@@ -54,20 +50,20 @@ public class Elevator_Home extends Command {
 	protected void execute()
 	{
 		System.out.print("RUNNING MOTION MAGIC HOME: ");
-		System.out.print(Robot.elevator.master.getSelectedSensorPosition(0) - RobotMap.ELEVATOR_HOME_POSITION);
-		System.out.println(" (" + Robot.elevator.master.getActiveTrajectoryVelocity() + ")");
+		System.out.print(Robot.elevator.getPosition() - RobotMap.ELEVATOR_HOME_POSITION);
+		System.out.println(" (" + Robot.elevator.getTrajectoryVelocity() + ")");
 	}
 	@Override
 	protected void end()
 	{
 		System.out.println("ELEVATOR HOMED!");
 		Robot.elevator.position = ElevatorPosition.HOME;
-		Robot.elevator.master.clearMotionProfileTrajectories();
+		Robot.elevator.clearProfiles();
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		currentError = Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - RobotMap.ELEVATOR_HOME_POSITION);
+		currentError = Math.abs(Robot.elevator.getPosition() - RobotMap.ELEVATOR_HOME_POSITION);
 		if (Robot.elevator.position == ElevatorPosition.HOME)
 		{
 			return true;

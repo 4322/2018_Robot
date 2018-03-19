@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4322.robot.RobotMap;
 
 public class DriveBase_Rotate extends Command {
 
@@ -14,6 +15,8 @@ public class DriveBase_Rotate extends Command {
 	public int anglarVel = 978;
 	public int angularAccel = 288;
 	double degrees;
+	private double currentError = 0;
+	private double lastError = Double.MAX_VALUE;
 	
 	public DriveBase_Rotate(double degrees)
 	{
@@ -85,8 +88,19 @@ public class DriveBase_Rotate extends Command {
     }
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return (Robot.driveBase.leftMaster.getActiveTrajectoryVelocity() == 0) && (Robot.driveBase.rightMaster.getActiveTrajectoryVelocity() == 0);
+//		currentError = Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - ticks);
+//
+//		if (currentError > (lastError + RobotMap.ELEVATOR_TOLERANCE))
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			lastError = currentError;
+//
+//		}
+//		return (currentError <= RobotMap.ELEVATOR_TOLERANCE);
+	return true;
 	}
 
 }

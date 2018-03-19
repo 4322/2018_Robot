@@ -22,12 +22,14 @@ public class OI {
         operator.y.whenPressed(new Elevator_Scale());
         operator.a.whenPressed(new Elevator_Switch());
         operator.b.whenPressed(new Elevator_Home());
+        operator.x.whenPressed(new Group_ReadyForClimb());
 
+        operator.lt.whileHeld(new CollectorActuator_Open());
         operator.lb.whileHeld(new CollectorRollers_Collect());
         operator.rb.whileHeld(new CollectorRollers_Eject());
 
-        operator.dPad.up.whenPressed(new CollectorActuator_Open());
-        operator.dPad.down.whenPressed(new CollectorActuator_Close());
+        operator.dPad.down.whileHeld(new CollectorDeployer_Deploy());
+        operator.dPad.up.whileHeld(new CollectorDeployer_UnDeploy());
         
       
     }

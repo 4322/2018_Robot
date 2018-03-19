@@ -37,8 +37,8 @@ public class RobotMap
     // *******************************
     public static final double DRIVEBASE_TALON_RAMP_RATE = .25;
     public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
-    public static final double DRIVEBASE_MAX_SPEED = 1300;
-    public static final double DRIVEBASE_TURN_SENSITIVITY = .5;
+    public static final double DRIVEBASE_MAX_SPEED = 900;
+    public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
     public static final double DRIVEBASE_WHEELBASE_WIDTH = 2.099; //2.099 feet
     public static final double DRIVEBASE_WHEEL_DIAMETER = 6; //INCHES
     public static final double DRIVEBASE_KF = .7869; //good
@@ -51,10 +51,12 @@ public class RobotMap
     // ** ELEVATOR PARAMETERS **
     // *************************
     public static final int ELEVATOR_SCALE_POSITION = 28500;
-    public static final int ELEVATOR_SWITCH_POSITION = 7000;
+    public static final int ELEVATOR_READY_TO_CLIMB_POSITION = 15000;
+    public static final int ELEVATOR_SWITCH_POSITION = 9000;
     public static final int ELEVATOR_HOME_POSITION = 0;
     public static final int ELEVATOR_MAX_SPEED = 1000;
     public static final int ELEVATOR_MAX_ACCEL = 2000;
+    public static final double ELEVATOR_TRIM_SENSITIVITY = .1;
     public static final double ELEVATOR_HOLDING_VPERCENT = 0.07;
     public static final double ELEVATOR_KF = .5115;
     public static final double ELEVATOR_KP = 1;

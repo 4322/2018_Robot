@@ -23,10 +23,9 @@ public class Elevator_Scale extends Command {
 	{
 		lastError = Double.MAX_VALUE;
 
-		Robot.elevator.master.clearMotionProfileTrajectories();
+		Robot.elevator.clearProfiles();
 
-		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
-		Robot.elevator.master.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
+		Robot.elevator.useMotionMagicMode();
 //
 //		Robot.elevator.master.configNominalOutputForward(0.03, 10);
 //		Robot.elevator.master.configNominalOutputReverse(0,10);
@@ -38,21 +37,19 @@ public class Elevator_Scale extends Command {
 			case HOME:
 //				ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0) ;
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED, 10);
-				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
-				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
+				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 			case SCALE:
 				ticks = 0;
-				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED, 10);
-				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL, 10);
 				break;
 			case SWITCH:
 //				ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0);
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.master.configMotionCruiseVelocity(RobotMap.ELEVATOR_MAX_SPEED / 2, 10);
-				Robot.elevator.master.configMotionAcceleration(RobotMap.ELEVATOR_MAX_ACCEL / 2, 10);
-				Robot.elevator.master.set(ControlMode.MotionMagic, ticks);
+				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED / 2, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
+				break;
+			case READY_TO_CLIMB:
+				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
+				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED / 2, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 		}
 	}
@@ -61,19 +58,19 @@ public class Elevator_Scale extends Command {
 	{
 		System.out.print("RUNNING MOTION MAGIC SCALE: ");
 		System.out.print(currentError);
-		System.out.println(" (" + Robot.elevator.master.getActiveTrajectoryVelocity() + ")");
+		System.out.println(" (" + Robot.elevator.getTrajectoryVelocity() + ")");
 	}
 	@Override
 	protected void end()
 	{
 		System.out.println("MOTION MAGIC COMPLETE!");
 		Robot.elevator.position = ElevatorPosition.SCALE;
-		Robot.elevator.master.clearMotionProfileTrajectories();
+		Robot.elevator.clearProfiles();
 	}
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		currentError = Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - RobotMap.ELEVATOR_SCALE_POSITION);
+		currentError = Math.abs(Robot.elevator.getPosition() - RobotMap.ELEVATOR_SCALE_POSITION);
 		if (Robot.elevator.position == ElevatorPosition.SCALE)
 		{
 			return true;
