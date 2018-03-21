@@ -10,7 +10,7 @@ import org.usfirst.frc.team4322.robot.RobotMap;
 
 public class DriveBase_Rotate extends Command {
 
-	private static final double ticksPerDegree = 22.2;
+	private static final double ticksPerDegree = 33.3;
 	public double ticks;
 	public int anglarVel = 978;
 	public int angularAccel = 288;
@@ -27,7 +27,7 @@ public class DriveBase_Rotate extends Command {
 	@Override 
 	protected void initialize()
 	{
-//		Robot.driveBase.resetNavX();
+		Robot.driveBase.resetNavX();
 		
     	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
     	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
@@ -75,8 +75,7 @@ public class DriveBase_Rotate extends Command {
 	@Override
 	protected void execute()
 	{
-		Robot.driveBase.rightMaster.set(ControlMode.MotionMagic, ticks);
-    	Robot.driveBase.leftMaster.set(ControlMode.MotionMagic, -ticks);
+
 	}
 	@Override 
     protected void end()
@@ -87,20 +86,20 @@ public class DriveBase_Rotate extends Command {
     	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
     }
 	@Override
-	protected boolean isFinished() {
-//		currentError = Math.abs(Robot.elevator.master.getSelectedSensorPosition(0) - ticks);
-//
-//		if (currentError > (lastError + RobotMap.ELEVATOR_TOLERANCE))
-//		{
-//			return true;
-//		}
-//		else
-//		{
-//			lastError = currentError;
-//
-//		}
-//		return (currentError <= RobotMap.ELEVATOR_TOLERANCE);
-	return true;
+	protected boolean isFinished()
+	{
+		currentError = Math.abs(Robot.driveBase.getDist() - ticks);
+
+		if (currentError > (lastError + RobotMap.ELEVATOR_TOLERANCE))
+		{
+			return true;
+		}
+		else
+		{
+			lastError = currentError;
+
+		}
+		return (currentError <= RobotMap.ELEVATOR_TOLERANCE);
 	}
 
 }

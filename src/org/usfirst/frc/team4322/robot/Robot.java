@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot
 
 		//Motion Profiles
 //		testSpline = new MotionProfileCurve(.5, .5, 5, 2, 2);
-		autoSwitchLeft = new MotionProfileCurve(toRadians(55), toRadians(55), 8, 2.5, 1);
+		autoSwitchLeft = new MotionProfileCurve(toRadians(55), toRadians(55), 8, 2.5,1);
 //        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 10,10);
 //
 // 		autoScaleLeftLeft = new AppendedMotionProfile(

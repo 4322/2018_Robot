@@ -18,10 +18,9 @@ public class DriveBase extends Subsystem {
 	public WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
 	private AHRS navx;
 	private static final double ticksToInches = RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI / RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
-	double offset = 0.0;
-	double offsetNavX = 0;
-	public DifferentialDrive drive;
-	public double basePitch;
+	private double offset = 0.0;
+	private double offsetNavX = 0;
+	private double basePitch;
 	
 	public DriveBase() {
 		try {

@@ -3,12 +3,13 @@ package org.usfirst.frc.team4322.robot.motion;
 import java.io.*;
 
 import org.usfirst.frc.team4322.robot.RobotMap;
+import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveArc;
 
 import static java.lang.Math.toRadians;
 
 public class MotionProfileCurve
 {
-	private static final double duration = .10;
+	private static final double duration = .1;
 	private static final double jConstant = 10.3;
 	private static final double rampRate = 1;
 
@@ -96,9 +97,9 @@ public class MotionProfileCurve
 //		numOfPoints = 50;
 		System.out.println("<Calculating Position!>");
 		double grad;
-		double timeConstant = 0.000001;
+		double timeConstant = 0;
 
-		double quintic = (-3 * (Math.tan(theta2) + Math.tan(theta1))) / (Math.pow(distance, 4));
+		double quintic = (3 * (Math.tan(theta2) + Math.tan(theta1))) / (-Math.pow(distance, 4));
 		double quartic = (Math.tan(theta1) - ((2.333333) * Math.pow(distance, 4) * quintic)) / Math.pow(distance, 3);
 		double cubic = ((10 * Math.pow(distance, 2) * quintic) + (6 * distance * quartic)) / -3;
 		double linear = Math.tan(theta1);
@@ -111,6 +112,7 @@ public class MotionProfileCurve
 
 		double[] basePositionProfile = integrate(trapezoidalProfile(distance, targetVelocity, targetAcceleration));
 
+
 		for (int i = 0; i < numOfPoints + 1; i++)
 		{
 			System.out.println("-----Base Position: " + basePositionProfile[i]);
@@ -119,10 +121,9 @@ public class MotionProfileCurve
 					(quartic * Math.pow(center[i][0], 4)) +
 					(cubic * Math.pow(center[i][0], 3)) +
 			(linear * center[i][0]);
-			System.out.println("Center X: " + center[i][0]);
-			System.out.println("Center Y: " + center[i][1]);
+			System.out.println(timeConstant + " (" + center[i][0] + ", " + center[i][1] + ")");
 
-			grad = Math.atan2(center[i + 1][1] - center[i][1], center[i + 1][0] - center[i][0]);
+			grad = Math.atan2(center[i + 1][1] - center[i][1], center[i + 1][0] - center[i][0]) + Math.PI;
 
 			System.out.println("Grad: " + grad);
 			left[i][0] = RobotMap.DRIVEBASE_WHEELBASE_WIDTH / 2 * Math.cos(grad + (Math.PI / 2)) + center[i][0];
@@ -303,8 +304,8 @@ public class MotionProfileCurve
 //		rampedVelocityLeft = optimizeVelocity(velocityLeft, rampedVelocityLeft);
 //		rampedVelocityRight = optimizeVelocity(velocityRight, rampedVelocityRight);
 
-		rotationsLeft = arcLength(rampedVelocityLeft);
-		rotationsRight = arcLength(rampedVelocityRight);
+		rotationsLeft = arcLength(velocityLeft);
+		rotationsRight = arcLength(velocityRight);
 	}
 	public void readProfileFromCSV()
 	{
@@ -403,12 +404,14 @@ public class MotionProfileCurve
 //		curve2.calculateStuff();
 //		curve2.write(curve2.rotationsLeft, curve2.rampedVelocityLeft);
 //		curve2.write(curve2.rotationsRight, curve2.rampedVelocityRight);
-		MotionProfileCurve curve = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.33333, 10, 10);
+		MotionProfileCurve curve = new MotionProfileCurve(Math.toRadians(30), Math.toRadians(30), 10, 2, 2);
 		curve.calculateStuff();
 
 		curve.write(curve.rotationsLeft, curve.velocityLeft);
 		curve.write(curve.rotationsRight, curve.velocityRight);
-		curve.write(curve.arcLength(curve.velocity(curve.positionCenter)), curve.velocity(curve.positionCenter));
+
+		DriveBase_DriveArc arc = new DriveBase_DriveArc(2, 30, 5);
+//		curve.write(curve.arcLength(curve.velocity(curve.positionCenter)), curve.velocity(curve.positionCenter));
 	}
 
 

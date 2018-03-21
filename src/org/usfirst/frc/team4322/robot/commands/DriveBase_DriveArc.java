@@ -20,8 +20,10 @@ public class DriveBase_DriveArc extends Command
 		this.velocity = velocity;
 		this.endAngle = endAngle;
 		double endAngleRadians = Math.toRadians(endAngle);
-		radius = (straightDistance * Math.sin((Math.PI - endAngleRadians)) / 2) / Math.sin(endAngleRadians); //radius of the circle
+		radius = (straightDistance * Math.sin((Math.PI - endAngleRadians) / 2) ) / Math.sin(endAngleRadians); //radius of the circle
 		arcLength = Math.abs(endAngleRadians) * Math.abs(radius);
+		System.out.println(radius);
+		System.out.println(arcLength * 12 / (6 * Math.PI) * 2);
 	}
 	@Override
 	public void initialize()

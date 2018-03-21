@@ -15,14 +15,19 @@ public class DriveBase_DriveDistance extends Command
 	double rotations;
 	double ticks;
 
-	int cruiseVel = 1467;
-	int accel = 684;
+	int cruiseVel;
+	int accel;
+
+	private double currentError = 0;
+	private double lastError = Double.MAX_VALUE;
 	
-    public DriveBase_DriveDistance(double inches)
+    public DriveBase_DriveDistance(double inches, int velocity, int acceleration)
     {
         requires(Robot.driveBase);
         rotations = inches / (4 * Math.PI);
         ticks = rotations * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
+        cruiseVel = velocity;
+        accel = acceleration;
     }
     @Override
     protected void initialize()
@@ -78,8 +83,18 @@ public class DriveBase_DriveDistance extends Command
     @Override
     protected boolean isFinished()
     {
-        // TODO Auto-generated method stub
-        return Robot.driveBase.leftMaster.getActiveTrajectoryVelocity() == 0 ;
+		currentError = Math.abs(Robot.driveBase.getDist() - ticks);
+
+		if (currentError > (lastError + RobotMap.ELEVATOR_TOLERANCE))
+		{
+			return true;
+		}
+		else
+		{
+			lastError = currentError;
+
+		}
+		return (currentError <= RobotMap.ELEVATOR_TOLERANCE);
     }
     
 }
