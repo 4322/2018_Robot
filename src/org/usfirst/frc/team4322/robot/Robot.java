@@ -49,6 +49,8 @@ public class Robot extends IterativeRobot
 	public static CollectorRollers collectorRollers;
 	public static CollectorDeployer collectorDeployer;
 	public static CollectorActuator collectorActuator;
+	//Stupid
+	public static boolean isReadyForClimb = false;
 	// Elevator Subsystem Class
 	public static Elevator elevator;
 	//MotionProfiles
@@ -91,13 +93,15 @@ public class Robot extends IterativeRobot
 		new Compressor().setClosedLoopControl(true);
 		//Limelight settings
 		limelight = NetworkTableInstance.getDefault().getTable("limelight");
-		limelight.getEntry("ledMode").setValue(2);
+		limelight.getEntry("ledMode").setValue(1);
 		limelight.getEntry("camMode").setValue(1);
 
 		//Motion Profiles
 //		testSpline = new MotionProfileCurve(.5, .5, 5, 2, 2);
-		autoSwitchLeft = new MotionProfileCurve(toRadians(55), toRadians(55), 8, 2.5,1);
-//        autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 10,10);
+		autoSwitchLeft = new MotionProfileCurve(toRadians(-30), toRadians(-30), 10, 5,2);
+		autoSwitchRight = new MotionProfileCurve(toRadians(30), toRadians(30), 10, 5,2);
+
+// autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 10,10);
 //
 // 		autoScaleLeftLeft = new AppendedMotionProfile(
 //				new MotionProfileCurve[]{
@@ -132,8 +136,8 @@ public class Robot extends IterativeRobot
 		autoSwitchLeft.setFileName("autoSwitchLeft");
 		autoSwitchLeft.readProfileFromCSV();
 //
-//		autoSwitchRight.setFileName("autoSwitchRight");
-//		autoSwitchRight.readProfileFromCSV();
+		autoSwitchRight.setFileName("autoSwitchRight");
+		autoSwitchRight.readProfileFromCSV();
 //
 //		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
 //		autoScaleLeftLeft.readProfileFromCSV();
@@ -150,6 +154,7 @@ public class Robot extends IterativeRobot
 //		testSpline.setFileName("testSpline");
 //		testSpline.readProfileFromCSV();
 		SmartDashboard.putString("Build DateTime", "2/18/17 5:24PM");
+		elevator.reset();
 	}
 
 	/**
@@ -159,6 +164,8 @@ public class Robot extends IterativeRobot
 	 */
 	public void disabledInit()
 	{
+		limelight.getEntry("ledMode").setValue(1);
+		limelight.getEntry("camMode").setValue(1);
 	}
 
 	public void disabledPeriodic()
@@ -207,7 +214,7 @@ public class Robot extends IterativeRobot
 	{
 //		driveBase.leftMaster.clearMotionProfileTrajectories();
 //		driveBase.rightMaster.clearMotionProfileTrajectories();
-//		elevator.position = Elevator.ElevatorPosition.HOME;
+		elevator.position = Elevator.ElevatorPosition.SWITCH;
 		driveBase.leftMaster.set(ControlMode.PercentOutput, 0);
 		driveBase.rightMaster.set(ControlMode.PercentOutput, 0);
 		limelight.getEntry("ledMode").setValue(1);

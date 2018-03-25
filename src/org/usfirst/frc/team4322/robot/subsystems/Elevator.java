@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team4322.robot.commands.Elevator_Trim;
 
 public class Elevator extends Subsystem {
 	
@@ -62,7 +63,7 @@ public class Elevator extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		setDefaultCommand(new Elevator_Hold());
+		setDefaultCommand(new Elevator_Trim());
 	}
 	public double getTrajectoryPosition()
 	{

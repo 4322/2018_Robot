@@ -24,7 +24,7 @@ public class DriveBase extends Subsystem {
 	
 	public DriveBase() {
 		try {
-			
+			//TODO: Change CTRE_MagEncoder_Relative to QuadEncoder, test values again
 			System.out.println("[d] ********* Constructing DriveBase() *********");
 			System.out.println("[d] DriveBase() creating leftMaster...");
 			leftMaster = new WPI_TalonSRX(RobotMap.DRIVEBASE_MOTORCONTROLLER_LEFT_MASTER_ADDR);

@@ -9,7 +9,7 @@ public class AutoGroup_ScaleLeft_Left extends CommandGroup
 	public AutoGroup_ScaleLeft_Left()
 	{
 		addParallel(new Elevator_Scale());
-		addSequential(new Auto_MotionProfileDrive(Robot.autoScaleLeftLeft));
+//		addSequential(new Auto_MotionProfileDrive(Robot.autoScaleLeftLeft));
 		addSequential(new CollectorRollers_Eject());
 	}
 }

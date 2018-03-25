@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4322.robot.commands;
 
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
 
@@ -24,8 +25,11 @@ public class DriveBase_DriveDistance extends Command
     public DriveBase_DriveDistance(double inches, int velocity, int acceleration)
     {
         requires(Robot.driveBase);
-        rotations = inches / (4 * Math.PI);
+        rotations = inches / (6 * Math.PI);
+        System.out.println("Rotations: " + rotations);
         ticks = rotations * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
+        System.out.println("Ticks: " + ticks);
+        SmartDashboard.putNumber("Ticks: ", ticks);
         cruiseVel = velocity;
         accel = acceleration;
     }
@@ -66,10 +70,8 @@ public class DriveBase_DriveDistance extends Command
     }
     @Override
     protected void execute()
-    {
-        // TODO Auto-generated method stub
-    	Robot.driveBase.rightMaster.set(ControlMode.MotionMagic, ticks);
-    	Robot.driveBase.leftMaster.set(ControlMode.MotionMagic, ticks);
+	{
+
     }
     @Override 
     protected void end()

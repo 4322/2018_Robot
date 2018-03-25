@@ -1,11 +1,6 @@
 package org.usfirst.frc.team4322.robot;
 
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_ScaleLeft_Left;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_ScaleLeft_Right;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_ScaleRight_Left;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_ScaleRight_Right;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Left;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Right;
+import org.usfirst.frc.team4322.robot.commands.*;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -61,6 +56,14 @@ public class SmartAuto
 			{
 				auto = new AutoGroup_ScaleRight_Right();
 			}
+		}
+		else if (position == 3)
+		{
+			auto = new AutoGroup_ReachBaseline();
+		}
+		else if (position == 4)
+		{
+			auto = new AutoGroup_DoNothing();
 		}
 	}
 	public Command getAuto()

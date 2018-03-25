@@ -16,6 +16,7 @@ public class DriveBase_DriveManual extends Command
     {
         requires(Robot.driveBase);
     }
+    double oldTurn = 0;
     @Override
     protected void initialize()
     {	
@@ -26,11 +27,34 @@ public class DriveBase_DriveManual extends Command
     protected void execute()
     {
         // TODO Auto-generated method stub
-        Double power= OI.pilot.leftStick.getY();
-        Double turn = OI.pilot.rightStick.getX();
-        
+        double power= OI.pilot.leftStick.getY();
+        double turn = OI.pilot.rightStick.getX();
+        double negInertia = turn - oldTurn;
+        oldTurn = turn;
+
 //        Robot.driveBase.drive(power, turn);
-        
+
+        double negInertiaAccum = 0;
+        double negInertiaScalar = 5;
+
+        double negInertiaPower = negInertia * negInertiaScalar;
+        negInertiaAccum += negInertiaPower;
+
+        turn += negInertiaAccum;
+
+        if (negInertiaAccum > 1)
+        {
+            negInertiaAccum -= 1;
+        }
+        else if (negInertiaAccum < -1)
+        {
+            negInertiaAccum += 1;
+        }
+        else
+        {
+            negInertiaAccum = 0;
+
+        }
         
         double vLeft = 0;
         double vRight = 0;
@@ -52,10 +76,12 @@ public class DriveBase_DriveManual extends Command
         
         if (power != 0)
         {
-        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
-                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1);
-        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power) *
-                    (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1);
+        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power)
+                    * (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1)
+            ;
+        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power)
+                     * (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1)
+            ;
 
         }
         vLeft += vAngular;

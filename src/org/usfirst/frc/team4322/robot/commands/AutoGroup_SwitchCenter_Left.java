@@ -11,8 +11,10 @@ public class AutoGroup_SwitchCenter_Left extends CommandGroup {
 		addParallel(new Elevator_Switch());
 		addParallel(new CollectorDeployer_Deploy());
 //		addSequential(new Auto_MotionProfileDrive(Robot.autoSwitchLeft));
-		addSequential(new DriveBase_DriveArc(2, -30, 5));
-		addSequential(new DriveBase_DriveArc(2, 30, 5));
+//		addSequential(new DriveBase_DriveArc(2, -28.06 * 2, Math.abs((118/12) * Math.sin(Math.toRadians(32.06)))));
+//		addSequential(new DriveBase_DriveArc(2, 28.06 * 2, Math.abs((118/12) * Math.sin(Math.toRadians(32.06)))));
+		addSequential(new DriveBase_DriveArc(2, -20.6 * 2,  .9 * Math.abs((110/12) * Math.sin(Math.toRadians(24.06)))));
+		addSequential(new DriveBase_DriveArc(2, 20.6 * 2, Math.abs((110/12) * Math.sin(Math.toRadians(24.06)))));
 		addSequential(new CollectorActuator_Open());
 	}
 }

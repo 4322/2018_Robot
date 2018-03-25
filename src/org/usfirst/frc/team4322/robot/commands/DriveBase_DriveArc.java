@@ -15,15 +15,23 @@ public class DriveBase_DriveArc extends Command
 
 	private static final double angleTolerance = 4;
 
-	public DriveBase_DriveArc(double velocity, double endAngle, double straightDistance)
+//	public DriveBase_DriveArc(double velocity, double endAngle, double straightDistance)
+//	{
+//		this.velocity = velocity;
+//		this.endAngle = endAngle;
+//		double endAngleRadians = Math.toRadians(endAngle);
+//		radius = (straightDistance * Math.sin((Math.PI - endAngleRadians)) / 2 ) / Math.sin(endAngleRadians); //radius of the circle
+//		arcLength = Math.abs(endAngleRadians) * Math.abs(radius);
+//		System.out.println(radius);
+//		System.out.println(arcLength * 12 / (6 * Math.PI) * 2);
+//	}
+	public DriveBase_DriveArc(double velocity, double endAngle, double radius)
 	{
 		this.velocity = velocity;
 		this.endAngle = endAngle;
 		double endAngleRadians = Math.toRadians(endAngle);
-		radius = (straightDistance * Math.sin((Math.PI - endAngleRadians) / 2) ) / Math.sin(endAngleRadians); //radius of the circle
+		this.radius = radius;
 		arcLength = Math.abs(endAngleRadians) * Math.abs(radius);
-		System.out.println(radius);
-		System.out.println(arcLength * 12 / (6 * Math.PI) * 2);
 	}
 	@Override
 	public void initialize()
@@ -60,8 +68,8 @@ public class DriveBase_DriveArc extends Command
 			vLeft = velocity;
 			vRight = velocity;
 		}
-		vLeft = vLeft * 12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER);
-		vRight = vRight * 12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER);
+		vLeft *= ((12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION) / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER));
+		vRight *= ((12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION) / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER));
 
 		Robot.driveBase.setVelocity(vLeft, vRight);
 	}
