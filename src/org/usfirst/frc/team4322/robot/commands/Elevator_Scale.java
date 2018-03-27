@@ -45,11 +45,11 @@ public class Elevator_Scale extends Command {
 			case SWITCH:
 //				ticks = RobotMap.ELEVATOR_SCALE_POSITION - Robot.elevator.master.getSelectedSensorPosition(0);
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED / 2, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
+				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 			case READY_TO_CLIMB:
 				ticks = RobotMap.ELEVATOR_SCALE_POSITION;
-				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED / 2, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
+				Robot.elevator.setMotionMagic(RobotMap.ELEVATOR_MAX_SPEED, RobotMap.ELEVATOR_MAX_ACCEL, ticks);
 				break;
 		}
 	}

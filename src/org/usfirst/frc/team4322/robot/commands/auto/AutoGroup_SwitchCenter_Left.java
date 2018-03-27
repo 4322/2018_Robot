@@ -1,8 +1,12 @@
-package org.usfirst.frc.team4322.robot.commands;
+package org.usfirst.frc.team4322.robot.commands.auto;
 
 import org.usfirst.frc.team4322.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.usfirst.frc.team4322.robot.commands.CollectorActuator_Open;
+import org.usfirst.frc.team4322.robot.commands.CollectorDeployer_Deploy;
+import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveArc;
+import org.usfirst.frc.team4322.robot.commands.Elevator_Switch;
 
 public class AutoGroup_SwitchCenter_Left extends CommandGroup {
 

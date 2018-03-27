@@ -1,8 +1,9 @@
-package org.usfirst.frc.team4322.robot.commands;
+package org.usfirst.frc.team4322.robot.commands.auto;
 
 import org.usfirst.frc.team4322.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.usfirst.frc.team4322.robot.commands.*;
 
 public class AutoGroup_SwitchCenter_Right extends CommandGroup {
 

@@ -10,7 +10,7 @@ import org.usfirst.frc.team4322.robot.RobotMap;
 
 public class DriveBase_Rotate extends Command {
 
-	private static final double ticksPerDegree = 33.3;
+	private static final double ticksPerDegree = 22.2 / 1.5;
 	public double ticks;
 	public int anglarVel = 978;
 	public int angularAccel = 288;

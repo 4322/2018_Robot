@@ -29,7 +29,7 @@ public class DriveBase extends Subsystem {
 			System.out.println("[d] DriveBase() creating leftMaster...");
 			leftMaster = new WPI_TalonSRX(RobotMap.DRIVEBASE_MOTORCONTROLLER_LEFT_MASTER_ADDR);
 			leftMaster.configClosedloopRamp(RobotMap.DRIVEBASE_TALON_RAMP_RATE, 1000);
-			leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+			leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 			leftMaster.setSensorPhase(true);
 		
 			leftMaster.config_kF(0, RobotMap.DRIVEBASE_KF, 10);
@@ -40,7 +40,7 @@ public class DriveBase extends Subsystem {
 			System.out.println("[d] DriveBase() creating rightMaster...");
 			rightMaster = new WPI_TalonSRX(RobotMap.DRIVEBASE_MOTORCONTROLLER_RIGHT_MASTER_ADDR);
 			rightMaster.configClosedloopRamp(RobotMap.DRIVEBASE_TALON_RAMP_RATE, 1000);
-			rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+			rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 			rightMaster.setSensorPhase(true);
 			rightMaster.setInverted(true);
 

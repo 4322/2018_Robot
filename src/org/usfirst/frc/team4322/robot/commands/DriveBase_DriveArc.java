@@ -14,6 +14,7 @@ public class DriveBase_DriveArc extends Command
 	private boolean isFinished = false;
 
 	private static final double angleTolerance = 4;
+	private static final double positionTolerance = .1;
 
 //	public DriveBase_DriveArc(double velocity, double endAngle, double straightDistance)
 //	{
@@ -67,6 +68,10 @@ public class DriveBase_DriveArc extends Command
 		{
 			vLeft = velocity;
 			vRight = velocity;
+			if (positionErr < positionTolerance)
+			{
+				isFinished = true;
+			}
 		}
 		vLeft *= ((12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION) / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER));
 		vRight *= ((12 * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION) / (10 * Math.PI * RobotMap.DRIVEBASE_WHEEL_DIAMETER));

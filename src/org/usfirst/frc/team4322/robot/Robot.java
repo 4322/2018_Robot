@@ -1,20 +1,14 @@
 
 package org.usfirst.frc.team4322.robot;
 
-import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 //import org.usfirst.frc.team4322.logging.RobotLogger;
-//import org.usfirst.frc.team4322.robot.commands.AutoGroup_DriveSquare;
-//import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
+//import org.usfirst.frc.team4322.robot.commands.auto.AutoGroup_DriveSquare;
+//import org.usfirst.frc.team4322.robot.commands.auto.Auto_MotionProfileDrive;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_DriveDistance;
 //import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Left;
-import org.usfirst.frc.team4322.robot.commands.AutoGroup_SwitchCenter_Right;
-import org.usfirst.frc.team4322.robot.commands.Auto_MotionProfileDrive;
-import org.usfirst.frc.team4322.robot.motion.AppendedMotionProfile;
 import org.usfirst.frc.team4322.robot.motion.MotionProfileCurve;
 import org.usfirst.frc.team4322.robot.subsystems.*;
 
@@ -97,9 +91,10 @@ public class Robot extends IterativeRobot
 		limelight.getEntry("camMode").setValue(1);
 
 		//Motion Profiles
+		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.333333, 2);
 //		testSpline = new MotionProfileCurve(.5, .5, 5, 2, 2);
-		autoSwitchLeft = new MotionProfileCurve(toRadians(-30), toRadians(-30), 10, 5,2);
-		autoSwitchRight = new MotionProfileCurve(toRadians(30), toRadians(30), 10, 5,2);
+//		autoSwitchLeft = new MotionProfileCurve(toRadians(-30), toRadians(-30), 10, 5,2);
+//		autoSwitchRight = new MotionProfileCurve(toRadians(30), toRadians(30), 10, 5,2);
 
 // autoSwitchRight = new MotionProfileCurve(toRadians(24.396), toRadians(24.396), 9.33333, 10,10);
 //
@@ -133,11 +128,11 @@ public class Robot extends IterativeRobot
 //				}
 //		);
 //
-		autoSwitchLeft.setFileName("autoSwitchLeft");
-		autoSwitchLeft.readProfileFromCSV();
-//
-		autoSwitchRight.setFileName("autoSwitchRight");
-		autoSwitchRight.readProfileFromCSV();
+//		autoSwitchLeft.setFileName("autoSwitchLeft");
+//		autoSwitchLeft.readProfileFromCSV();
+
+//		autoSwitchRight.setFileName("autoSwitchRight");
+//		autoSwitchRight.readProfileFromCSV();
 //
 //		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
 //		autoScaleLeftLeft.readProfileFromCSV();

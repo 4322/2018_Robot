@@ -1,10 +1,9 @@
 package org.usfirst.frc.team4322.robot;
 
-import org.usfirst.frc.team4322.robot.commands.*;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4322.robot.commands.auto.*;
 
 public class SmartAuto 
 {
