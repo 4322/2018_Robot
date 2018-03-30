@@ -15,40 +15,38 @@ public class MotionProfileCurve
 {
 	private String name;
 
-	public double[][] position;
-	public double[][] positionLeft;
-	public double[][] positionRight;
+	private double[][] position;
+	private double[][] positionLeft;
+	private double[][] positionRight;
 
-	public double[] velocity;
-	public double[] velocityLeft;
-	public double[] velocityRight;
+	private double[] velocity;
+	private double[] velocityLeft;
+	private double[] velocityRight;
 
-	public double[] rampedVelocityLeft;
-	public double[] rampedVelocityRight;
-
-	public double[][] generatedProfile;
+	private double[] rampedVelocityLeft;
+	private double[] rampedVelocityRight;
 
 	public double[][] generatedProfileLeft;
 	public double[][] generatedProfileRight;
 
-	public double targetVelocity = 3; //cruising speed in feet per s
-	public double rampRate = 1;
-	public double jConstant = 10.3;
-	public double timeConstant = 0; //accumulates over time
-	public double maxTime = 5 / 3; //duration of profile
-	public static final double duration = .10; //duration of each point in seconds
-	public static final double wheelBaseWidth = RobotMap.DRIVEBASE_WHEELBASE_WIDTH; //feet
-	public int numOfPoints = (int) (maxTime / duration);
+	private double targetVelocity = 3; //cruising speed in feet per s
+	private double rampRate = 1;
+	private double jConstant = 10.3;
+	private double timeConstant = 0; //accumulates over time
+	private double maxTime = 5 / 3; //duration of profile
+	private static final double duration = .10; //duration of each point in seconds
+	private static final double wheelBaseWidth = RobotMap.DRIVEBASE_WHEELBASE_WIDTH; //feet
+	private int numOfPoints = (int) (maxTime / duration);
 
-	public double theta1;
-	public double theta2;
-	public double distance;
+	private double theta1;
+	private double theta2;
+	private double distance;
 
 	//numbers used for quintic hermite spline interpolation
-	public double quintic;
-	public double quartic;
-	public double cubic;
-	public double linear;
+	private double quintic;
+	private double quartic;
+	private double cubic;
+	private double linear;
 
 	public File csvFileLeft;
 	public File csvFileRight;
@@ -63,7 +61,6 @@ public class MotionProfileCurve
 		velocity = new double[numOfPoints];
 		velocityLeft = new double[numOfPoints];
 		velocityRight = new double[numOfPoints];
-		generatedProfile = new double[numOfPoints][3];
 	}
 
 	public MotionProfileCurve(double theta1, double theta2, double distance, double maxTime)
@@ -77,8 +74,20 @@ public class MotionProfileCurve
 
 
 	}
+	public MotionProfileCurve(double theta1, double theta2, double distance, double velocity, double acceleration)
+	{
+		this.theta1 = Math.toRadians(theta1);
+		this.theta2 = Math.toRadians(theta2);
+		this.distance = distance;
+		targetVelocity = velocity;
+		rampRate = acceleration;
+		maxTime = (distance / velocity) + (velocity / acceleration);
+		numOfPoints = (int) (maxTime / duration);
 
-	public void initializeCurve()
+
+	}
+
+	private void initializeCurve()
 	{
 		System.out.println("File does not exist, calculate points.");
 		fillHermite();
@@ -87,11 +96,6 @@ public class MotionProfileCurve
 		velocityLeft = fillVelocity(positionLeft);
 		velocityRight = fillVelocity(positionRight);
 
-	}
-	public void initializeAppendedCurve(MotionProfileCurve curve1, MotionProfileCurve curve2)
-	{
-		curve1.initializeCurve();
-		curve2.initializeCurve();
 	}
 	public void setName(String name)
 	{
@@ -157,7 +161,7 @@ public class MotionProfileCurve
 	double[] trapezoidalProfile(double distance, double velocity, double acceleration)
 	{
 		double[] result = new double[numOfPoints];
-		double time = 0.000001 - duration;
+		double time = 0.000001;
 
 		for(int i = 0; i < numOfPoints; i++)
 		{
@@ -228,24 +232,25 @@ public class MotionProfileCurve
 				velocity = new double[numOfPoints];
 				velocityLeft = new double[numOfPoints];
 				velocityRight = new double[numOfPoints];
-				generatedProfile = new double[numOfPoints][3];
 	}
 
 	public void fillPosition()
 	{
 		timeConstant = 0;
 		System.out.println("--- Generating Position Values! ---");
+		double[] basePositionProfile = integrate(trapezoidalProfile(distance, targetVelocity, rampRate));
 		for (int i = 0; i < numOfPoints; i++)
 		{
 			double grad;
 
-			position[i][0] = targetVelocity * timeConstant;//x
+			position[i][0] = basePositionProfile[i];//x
 			position[i][1] = (quintic * Math.pow(position[i][0], 5)) +
 					(quartic * Math.pow(position[i][0], 4)) +
 					(cubic * Math.pow(position[i][0], 3)) +
 					(linear * position[i][0]);//y
 
 			System.out.println(timeConstant + " (" + position[i][0] + ", " + position[i][1] + ")");
+
 			if (i == numOfPoints - 1)
 			{
 				grad = Math.atan2(position[i][1] - position[i - 1][1], position[i][0] - position[i - 1][0]);
@@ -253,7 +258,7 @@ public class MotionProfileCurve
 			{
 				grad = Math.atan2(position[i + 1][1] - position[i][1], position[i + 1][0] - position[i][0]);
 			}
-
+			System.out.println("Grad: " + grad);
 
 			positionLeft[i][0] = wheelBaseWidth / 2 * Math.cos(grad + (Math.PI / 2)) + position[i][0];
 			positionLeft[i][1] = wheelBaseWidth / 2 * Math.sin(grad + (Math.PI / 2)) + position[i][1];
@@ -453,7 +458,8 @@ public class MotionProfileCurve
 		fillPosition();
 		fillPosition(); //stupid
 		velocityLeft = fillVelocity(positionLeft);
-		rampedVelocityLeft = optimizeVelocity(velocityLeft, applyRamping(velocityLeft));
+		rampedVelocityLeft = velocityLeft;
+//		rampedVelocityLeft = optimizeVelocity(velocityLeft, applyRamping(velocityLeft));
 //	     rampedVelocityLeft = applyRamping(velocityLeft);
 		rotLeft = arcLength(rampedVelocityLeft);
 		outputLeft = compileTestProfile(rotLeft, rampedVelocityLeft);
@@ -471,7 +477,8 @@ public class MotionProfileCurve
 		fillPosition();
 		fillPosition();
 		velocityRight = fillVelocity(positionRight);
-		rampedVelocityRight = optimizeVelocity(velocityRight, applyRamping(velocityRight));
+		rampedVelocityRight = velocityRight;
+//		rampedVelocityRight = optimizeVelocity(velocityRight, applyRamping(velocityRight));
 //	     rampedVelocityRight = applyRamping(velocityRight);
 		rotRight = arcLength(rampedVelocityRight);
 		outputRight = compileTestProfile(rotRight, rampedVelocityRight);
@@ -554,18 +561,18 @@ public class MotionProfileCurve
 	}
 	public static void main(String [] args)
 	{
-//		MotionProfileCurve curve = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.333333, 2);
-		MotionProfileCurve curve = MotionProfileCurve.appendProfiles(
-				MotionProfileCurve.appendProfiles(
-				new MotionProfileCurve(30, 30, 5, 5),
-				new MotionProfileCurve(30, 30, 5 ,5)
-		),
-				MotionProfileCurve.appendProfiles(
-						new MotionProfileCurve(30, 30, 5, 5),
-						new MotionProfileCurve(30, 30, 5 ,5)
-				))
+		MotionProfileCurve curve = new MotionProfileCurve(30, 30, 5, 1, 1);
+//		MotionProfileCurve curve = MotionProfileCurve.appendProfiles(
+//				MotionProfileCurve.appendProfiles(
+//				new MotionProfileCurve(30, 30, 5, 5),
+//				new MotionProfileCurve(30, 30, 5 ,5)
+//		),
+//				MotionProfileCurve.appendProfiles(
+//						new MotionProfileCurve(30, 30, 5, 5),
+//						new MotionProfileCurve(30, 30, 5 ,5)
+//				))
 				;
-//		curve.generateProfileLeft();
-//		curve.generateProfileRight();
+		curve.generateProfileLeft();
+		curve.generateProfileRight();
 	}
 }

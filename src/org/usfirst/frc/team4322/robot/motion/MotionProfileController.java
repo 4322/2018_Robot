@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4322.robot.motion;
 
-import java.lang.instrument.Instrumentation;
-
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
