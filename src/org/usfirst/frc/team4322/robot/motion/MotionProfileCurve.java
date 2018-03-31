@@ -254,7 +254,8 @@ public class MotionProfileCurve
 			if (i == numOfPoints - 1)
 			{
 				grad = Math.atan2(position[i][1] - position[i - 1][1], position[i][0] - position[i - 1][0]);
-			} else
+			}
+			else
 			{
 				grad = Math.atan2(position[i + 1][1] - position[i][1], position[i + 1][0] - position[i][0]);
 			}
@@ -283,7 +284,7 @@ public class MotionProfileCurve
 		double dydt;
 		System.out.println("--- Generating Velocity Values ---");
 		velocity[0] = 0;
-		for (int i = 1; i < numOfPoints; i++)
+		for (int i = 1; i < numOfPoints - 1; i++)
 		{
 
 			dxdt = (position[i][0] - position[i - 1][0]) / duration; //run an approximation of dxdt and dydt
@@ -292,6 +293,7 @@ public class MotionProfileCurve
 			velocity[i] = Math.sqrt(Math.pow(dxdt, 2) + Math.pow(dydt, 2)) * 60 * 12 / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI); //calculate magnitude of velocity, convert to rpm
 			System.out.println(velocity[i]);
 		}
+		velocity[numOfPoints - 2] = 0;
 		System.out.println("--- End of Velocity Values ---");
 		return velocity;
 	}
