@@ -91,7 +91,12 @@ public class Robot extends IterativeRobot
 		limelight.getEntry("camMode").setValue(1);
 
 		//Motion Profiles
-		autoSwitchLeft = new MotionProfileCurve(toRadians(-24.396), toRadians(-24.396), 9.333333, 2);
+		autoSwitchLeft = new MotionProfileCurve(-24.396, -24.396, 9.333333, 2, 4);
+		autoSwitchRight = new MotionProfileCurve(24.396, 24.396, 9.333333, 2, 4);
+
+		autoScaleLeftLeft = MotionProfileCurve.appendProfiles(
+				new MotionProfileCurve(Math.toDegrees(-.13505), Math.toDegrees(-.13505), 185.702 / 12, 2),
+				new MotionProfileCurve(33, 180 - 3.4, 84.513 / 12, 1));
 //		testSpline = new MotionProfileCurve(.5, .5, 5, 2, 2);
 //		autoSwitchLeft = new MotionProfileCurve(toRadians(-30), toRadians(-30), 10, 5,2);
 //		autoSwitchRight = new MotionProfileCurve(toRadians(30), toRadians(30), 10, 5,2);
@@ -128,14 +133,14 @@ public class Robot extends IterativeRobot
 //				}
 //		);
 //
-//		autoSwitchLeft.setFileName("autoSwitchLeft");
-//		autoSwitchLeft.readProfileFromCSV();
+		autoSwitchLeft.setName("autoSwitchLeft");
+		autoSwitchLeft.readProfileFromCSV();
 
-//		autoSwitchRight.setFileName("autoSwitchRight");
-//		autoSwitchRight.readProfileFromCSV();
+		autoSwitchRight.setName("autoSwitchRight");
+		autoSwitchRight.readProfileFromCSV();
 //
-//		autoScaleLeftLeft.setFileName("autoScaleLeftLeft");
-//		autoScaleLeftLeft.readProfileFromCSV();
+		autoScaleLeftLeft.setName("autoScaleLeftLeft");
+		autoScaleLeftLeft.readProfileFromCSV();
 //
 //		autoScaleRightRight.setFileName("autoScaleRightRight");
 //		autoScaleRightRight.readProfileFromCSV();

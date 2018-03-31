@@ -30,7 +30,7 @@ public class DriveBase_DriveDistance extends Command
         ticks = rotations * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
         System.out.println("Ticks: " + ticks);
         SmartDashboard.putNumber("Ticks: ", ticks);
-        cruiseVel = (int) Math.copySign(inches, velocity);
+        cruiseVel = (int) Math.copySign(velocity, inches);
         accel = (int) Math.copySign(acceleration, velocity);
     }
     @Override

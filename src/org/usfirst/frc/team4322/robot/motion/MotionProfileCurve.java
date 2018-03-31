@@ -53,6 +53,11 @@ public class MotionProfileCurve
 	FileWriter writer;
 	public boolean isAppended = false;
 
+	private enum Mode {
+		VELOCITY_MODE,
+		TIME_MODE
+	}
+	Mode mode;
 	public MotionProfileCurve()
 	{
 		position = new double[numOfPoints][2];
@@ -71,7 +76,7 @@ public class MotionProfileCurve
 		this.maxTime = maxTime;
 		targetVelocity = distance / maxTime;
 		numOfPoints = (int) (maxTime / duration);
-
+		mode = Mode.TIME_MODE;
 
 	}
 	public MotionProfileCurve(double theta1, double theta2, double distance, double velocity, double acceleration)
@@ -83,7 +88,7 @@ public class MotionProfileCurve
 		rampRate = acceleration;
 		maxTime = (distance / velocity) + (velocity / acceleration);
 		numOfPoints = (int) (maxTime / duration);
-
+		mode = Mode.VELOCITY_MODE;
 
 	}
 
@@ -155,8 +160,8 @@ public class MotionProfileCurve
 	{
 //		generatedProfileLeft = compileProfile(arcLength(rampedVelocityLeft), rampedVelocityLeft, name + "Left");
 //		generatedProfileRight = compileProfile(arcLength(rampedVelocityRight), rampedVelocityRight, name + "Right");
-		generatedProfileLeft = compileTestProfile(arcLength(rampedVelocityLeft), rampedVelocityLeft);
-		generatedProfileRight = compileTestProfile(arcLength(rampedVelocityRight), rampedVelocityRight);
+		generatedProfileLeft = compileProfile(arcLength(rampedVelocityLeft), rampedVelocityLeft, name + "_Left");
+		generatedProfileRight = compileProfile(arcLength(rampedVelocityRight), rampedVelocityRight, name + "_Right");
 	}
 	double[] trapezoidalProfile(double distance, double velocity, double acceleration)
 	{
@@ -236,14 +241,21 @@ public class MotionProfileCurve
 
 	public void fillPosition()
 	{
-		timeConstant = 0;
+		timeConstant = 0.0000001;
 		System.out.println("--- Generating Position Values! ---");
 		double[] basePositionProfile = integrate(trapezoidalProfile(distance, targetVelocity, rampRate));
 		for (int i = 0; i < numOfPoints; i++)
 		{
 			double grad;
 
-			position[i][0] = basePositionProfile[i];//x
+			if (mode == Mode.VELOCITY_MODE)
+			{
+				position[i][0] = basePositionProfile[i];//x
+			}
+			else
+			{
+				position[i][0] = targetVelocity * timeConstant;
+			}
 			position[i][1] = (quintic * Math.pow(position[i][0], 5)) +
 					(quartic * Math.pow(position[i][0], 4)) +
 					(cubic * Math.pow(position[i][0], 3)) +
@@ -464,7 +476,7 @@ public class MotionProfileCurve
 //		rampedVelocityLeft = optimizeVelocity(velocityLeft, applyRamping(velocityLeft));
 //	     rampedVelocityLeft = applyRamping(velocityLeft);
 		rotLeft = arcLength(rampedVelocityLeft);
-		outputLeft = compileTestProfile(rotLeft, rampedVelocityLeft);
+		outputLeft = compileProfile(rotLeft, rampedVelocityLeft, name + "_Left");
 		System.out.println("--- LEFT PROFILE END ---");
 		return outputLeft;
 	}
@@ -483,7 +495,7 @@ public class MotionProfileCurve
 //		rampedVelocityRight = optimizeVelocity(velocityRight, applyRamping(velocityRight));
 //	     rampedVelocityRight = applyRamping(velocityRight);
 		rotRight = arcLength(rampedVelocityRight);
-		outputRight = compileTestProfile(rotRight, rampedVelocityRight);
+		outputRight = compileProfile(rotRight, rampedVelocityRight, name + "_Right");
 		System.out.println("--- RIGHT PROFILE END ---");
 		return outputRight;
 	}
