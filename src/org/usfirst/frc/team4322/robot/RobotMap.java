@@ -17,7 +17,7 @@ public class RobotMap
 	public static final int AUTO_DIO_PORT_3 = 3;
 	public static final int ELEVATOR_LIMIT_HOME = 4;
 
-	public static final int COLLECTOR_DEPLOYER_ENC_ANALOG_PORT  = 0;
+	public static final int COLLECTOR_DEPLOYER_ENC_ANALOG_PORT  = 1;
 
     // *******************************
     // ** MOTOR CONTROLLER MAPPINGS **
@@ -36,15 +36,15 @@ public class RobotMap
     // ** DRIVEBASE PARAMETERS **
     // *******************************
     public static final double DRIVEBASE_TALON_RAMP_RATE = .25;
-    public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 256;
+    public static final double DRIVEBASE_ENCODER_TICKS_PER_ROTATION = 1024;
     public static final double DRIVEBASE_MAX_SPEED = 1300;
     public static final double DRIVEBASE_TURN_SENSITIVITY = .3;
     public static final double DRIVEBASE_WHEELBASE_WIDTH = 25.25/12; //2.099 feet
     public static final double DRIVEBASE_WHEEL_DIAMETER = 6; //INCHES
     public static final double DRIVEBASE_KF = .7869; //good
-    public static final double DRIVEBASE_KP = 1; //temporary
-    public static final double DRIVEBASE_KI = 0; //temporary
-    public static final double DRIVEBASE_KD = 0; //temporary
+    public static final double DRIVEBASE_KP = 4; //temporary
+    public static final double DRIVEBASE_KI = 0.0000065; //temporary
+    public static final double DRIVEBASE_KD = 350; //temporary
     public static final double DRIVEBASE_ANTI_TIP_CONSTANT = 150;
 
     // *************************
@@ -52,7 +52,7 @@ public class RobotMap
     // *************************
     public static final int ELEVATOR_SCALE_POSITION = 28500;
     public static final int ELEVATOR_READY_TO_CLIMB_POSITION = 22000;
-    public static final int ELEVATOR_SWITCH_POSITION = 9000;
+    public static final int ELEVATOR_SWITCH_POSITION = 10500;
     public static final int ELEVATOR_HOME_POSITION = 0;
     public static final int ELEVATOR_MAX_SPEED = 1000;
     public static final int ELEVATOR_MAX_ACCEL = 2000;
@@ -67,7 +67,8 @@ public class RobotMap
     // **************************
     // ** COLLECTOR PARAMETERS **
     // **************************
-    public static final int COLLECTOR_DEPLOYER_SETPOINT = 45;
+    public static final int COLLECTOR_DEPLOYER_SETPOINT = 90;
+    public static final int COLLECTOR_DEPLOYER_SCALE_SETPOINT = 45;
     public static final double COLLECTOR_DEPLOYER_KP = 1;
     public static final double COLLECTOR_DEPLOYER_KI = 0;
     public static final double COLLECTOR_DEPLOYER_KD = 0;

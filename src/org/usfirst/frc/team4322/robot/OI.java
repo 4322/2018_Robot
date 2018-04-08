@@ -14,6 +14,7 @@ public class OI {
     {
         //DRIVER CONTROLS
         pilot = new XboxController(0);
+        pilot.rt.whileHeld(new Drivebase_DriveManual_Voltage());
 
         
         operator = new XboxController(1);
@@ -28,8 +29,8 @@ public class OI {
         operator.lb.whileHeld(new CollectorRollers_Collect());
         operator.rb.whileHeld(new CollectorRollers_Eject());
 
-        operator.dPad.down.whenPressed(new CollectorDeployer_Deploy());
-        operator.dPad.up.whenPressed(new CollectorDeployer_UnDeploy());
+        operator.dPad.down.whileHeld(new CollectorDeployer_DeployManual());
+        operator.dPad.up.whileHeld(new CollectorDeployer_UnDeployManual());
         
       
     }

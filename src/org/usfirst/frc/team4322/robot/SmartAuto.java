@@ -3,6 +3,7 @@ package org.usfirst.frc.team4322.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4322.robot.commands.DriveBase_Rotate;
 import org.usfirst.frc.team4322.robot.commands.auto.*;
 
 public class SmartAuto 
@@ -31,7 +32,7 @@ public class SmartAuto
 			}
 			else
 			{
-				auto = new AutoGroup_ScaleLeft_Right();
+				auto = new AutoGroup_ReachBaseline();
 			}
 		}
 		else if (position == 1) // if center
@@ -49,7 +50,7 @@ public class SmartAuto
 		{
 			if (gameData.charAt(1) == 'L')
 			{
-				auto = new AutoGroup_ScaleRight_Left();
+				auto = new AutoGroup_ReachBaseline();
 			}
 			else
 			{
@@ -63,6 +64,10 @@ public class SmartAuto
 		else if (position == 4)
 		{
 			auto = new AutoGroup_DoNothing();
+		}
+		else if (position == 5)
+		{
+			auto = new DriveBase_Rotate(90);
 		}
 	}
 	public Command getAuto()

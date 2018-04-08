@@ -9,13 +9,14 @@ public class AutoGroup_ScaleLeft_Left extends CommandGroup
 {
 	public AutoGroup_ScaleLeft_Left()
 	{
-		addSequential(new Auto_MotionProfileDrive(Robot.autoScaleLeftLeft));
+		addSequential(new Auto_MotionProfileDrive(Robot.autoScaleLeftLeft1));
 //		addSequential(new DriveBase_DriveDistance());
+		addParallel(new CollectorDeployer_Deploy());
 		addSequential(new Elevator_Scale());
 //		addSequential(new DriveBase_DriveArc( .5, 33, 2));
+		addSequential(new Auto_MotionProfileDrive(Robot.autoScaleLeftLeft2));
 		addSequential(new CollectorRollers_Eject());
-		addSequential(new DriveBase_DriveDistance(-12, 900, 900));
+		addSequential(new DriveBase_DriveDistance(20, 100, 100));
 		addSequential(new Elevator_Home());
-
 	}
 }

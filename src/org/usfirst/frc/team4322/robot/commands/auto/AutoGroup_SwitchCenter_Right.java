@@ -15,5 +15,19 @@ public class AutoGroup_SwitchCenter_Right extends CommandGroup {
 //		addSequential(new DriveBase_DriveArc(2, 20.6 * 2,  .9 * Math.abs((110/12) * Math.sin(Math.toRadians(24.06)))));
 //		addSequential(new DriveBase_DriveArc(2, -20.6 * 2, Math.abs((110/12) * Math.sin(Math.toRadians(24.06)))));
 		addSequential(new CollectorActuator_Open());
+//		addSequential(new Command_Delay(1500));
+//		addSequential(new DriveBase_DriveDistance(-18, -500, -500));
+//		addSequential(new Elevator_Home());
+//		addSequential(new DriveBase_Rotate(-90));
+//		addParallel(new CollectorActuator_Open());
+//		addParallel(new CollectorRollers_Collect());
+//		addSequential(new DriveBase_DriveDistance(30, 500, 500));
+//		addParallel(new CollectorRollers_Stop());
+//		addSequential(new CollectorActuator_Close());
+//		addSequential(new DriveBase_DriveDistance(-30, -500, -500));
+//		addParallel(new Elevator_Switch());
+//		addSequential(new DriveBase_Rotate(90));
+//		addSequential(new DriveBase_DriveDistance(20, 500, 500));
+//		addSequential(new CollectorActuator_Open());
 	}
 }

@@ -13,6 +13,7 @@ import org.usfirst.frc.team4322.robot.commands.CollectorDeployer_Stop;
 import java.util.stream.Collector;
 
 import static org.usfirst.frc.team4322.robot.subsystems.CollectorDeployer.CollectorPosition.DOWN;
+import static org.usfirst.frc.team4322.robot.subsystems.CollectorDeployer.CollectorPosition.MIDDLE;
 import static org.usfirst.frc.team4322.robot.subsystems.CollectorDeployer.CollectorPosition.UP;
 
 //import org.usfirst.frc.team4322.logging.RobotLogger;
@@ -28,7 +29,8 @@ public class CollectorDeployer extends Subsystem
 	public enum CollectorPosition
 	{
 		UP,
-		DOWN
+		DOWN,
+		MIDDLE
 	}
 
 	private CollectorPosition position = UP;
@@ -37,6 +39,7 @@ public class CollectorDeployer extends Subsystem
 	{
 		collectorDeployer = new WPI_TalonSRX(RobotMap.COLLECTOR_DEPLOYER_MOTORCONTROLLER_ADDR);
 		trigger = new AnalogTrigger(RobotMap.COLLECTOR_DEPLOYER_ENC_ANALOG_PORT);
+		trigger.setLimitsVoltage(3.2, 3.4);
 		counter = new Counter(trigger);
 		limit = new DigitalInput(4);
 	}
@@ -90,4 +93,5 @@ public class CollectorDeployer extends Subsystem
 	{
 		return position == DOWN;
 	}
+	public boolean isMiddle() { return position == MIDDLE; }
 }

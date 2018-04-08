@@ -25,7 +25,7 @@ public class DriveBase_DriveDistance extends Command
     public DriveBase_DriveDistance(double inches, int velocity, int acceleration)
     {
         requires(Robot.driveBase);
-        rotations = inches / (6 * Math.PI);
+        rotations = inches / (RobotMap.DRIVEBASE_WHEEL_DIAMETER * Math.PI);
         System.out.println("Rotations: " + rotations);
         ticks = rotations * RobotMap.DRIVEBASE_ENCODER_TICKS_PER_ROTATION;
         System.out.println("Ticks: " + ticks);
@@ -41,11 +41,11 @@ public class DriveBase_DriveDistance extends Command
     	Robot.driveBase.leftMaster.clearMotionProfileTrajectories();
     	Robot.driveBase.rightMaster.clearMotionProfileTrajectories();
     	//Right-side controllers
+		Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
+		Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
+
     	Robot.driveBase.rightMaster.configMotionCruiseVelocity(cruiseVel, 10);
     	Robot.driveBase.rightMaster.configMotionAcceleration(accel, 10);
-    	
-    	Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
-		Robot.driveBase.rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 		
 		Robot.driveBase.rightMaster.configNominalOutputForward(0, 10);
 		Robot.driveBase.rightMaster.configNominalOutputReverse(0, 10);

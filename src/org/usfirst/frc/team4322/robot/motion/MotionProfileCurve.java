@@ -502,8 +502,8 @@ public class MotionProfileCurve
 
 	public void readProfileFromCSV()
 	{
-		String pathLeft = "/home/lvuser/" + name + "Left.csv";
-		String pathRight = "/home/lvuser/" + name + "Right.csv";
+		String pathLeft = "/home/lvuser/" + name + "_Left.csv";
+		String pathRight = "/home/lvuser/" + name + "_Right.csv";
 		csvFileLeft = new File(pathLeft);
 		csvFileRight = new File(pathRight);
 		String line = "";

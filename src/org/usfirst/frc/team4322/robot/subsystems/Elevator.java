@@ -2,7 +2,6 @@ package org.usfirst.frc.team4322.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
 
-import org.usfirst.frc.team4322.motion.MotorCollection;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
 import org.usfirst.frc.team4322.robot.commands.Elevator_Hold;
@@ -15,8 +14,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4322.robot.commands.Elevator_Trim;
 
 public class Elevator extends Subsystem {
-
-	private MotorCollection elevatorMotors;
 
 	private WPI_TalonSRX master;
 	private WPI_TalonSRX slave;

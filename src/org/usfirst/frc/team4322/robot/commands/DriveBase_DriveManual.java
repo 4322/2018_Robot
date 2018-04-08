@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4322.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4322.robot.OI;
 import org.usfirst.frc.team4322.robot.Robot;
 import org.usfirst.frc.team4322.robot.RobotMap;
@@ -17,6 +18,7 @@ public class DriveBase_DriveManual extends Command
         requires(Robot.driveBase);
     }
     double oldTurn = 0;
+    double negInertiaAccum = 0;
     @Override
     protected void initialize()
     {	
@@ -26,7 +28,16 @@ public class DriveBase_DriveManual extends Command
     @Override
     protected void execute()
     {
-        // TODO Auto-generated method stub
+
+//        Robot.driveBase.leftMaster.config_kF(0, RobotMap.DRIVEBASE_KF, 10);
+//        Robot.driveBase.leftMaster.config_kP(0, SmartDashboard.getNumber("P: ", 1), 10);
+//        Robot.driveBase.leftMaster.config_kI(0, SmartDashboard.getNumber("I: ", 1), 10);
+//        Robot.driveBase.leftMaster.config_kD(0, SmartDashboard.getNumber("D: ", 1), 10);
+//
+//        Robot.driveBase.rightMaster.config_kF(0, RobotMap.DRIVEBASE_KF, 10);
+//        Robot.driveBase.rightMaster.config_kP(0, SmartDashboard.getNumber("P: ", 1), 10);
+//        Robot.driveBase.rightMaster.config_kI(0, SmartDashboard.getNumber("I: ", 1), 10);
+//        Robot.driveBase.rightMaster.config_kD(0, SmartDashboard.getNumber("D: ", 1), 10);
         double power= OI.pilot.leftStick.getY();
         double turn = OI.pilot.rightStick.getX();
         double negInertia = turn - oldTurn;
@@ -34,7 +45,6 @@ public class DriveBase_DriveManual extends Command
 
 //        Robot.driveBase.drive(power, turn);
 
-        double negInertiaAccum = 0;
         double negInertiaScalar = 5;
 
         double negInertiaPower = negInertia * negInertiaScalar;
@@ -53,17 +63,18 @@ public class DriveBase_DriveManual extends Command
         else
         {
             negInertiaAccum = 0;
-
         }
+
+        SmartDashboard.putNumber("Turn Stick: ", turn);
         
         double vLeft = 0;
         double vRight = 0;
         
         double vAngular;
-        if (power == 0 || OI.pilot.rb.get())
+        if (power == 0 || OI.pilot.lb.get())
         {
         	//Quick Turning
-            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * 1.5 * RobotMap.DRIVEBASE_MAX_SPEED *
+            vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * RobotMap.DRIVEBASE_MAX_SPEED *
             		RobotMap.cubicRamping(turn);
 
         }
@@ -73,20 +84,23 @@ public class DriveBase_DriveManual extends Command
         	vAngular = RobotMap.DRIVEBASE_TURN_SENSITIVITY * Math.abs(power) * RobotMap.DRIVEBASE_MAX_SPEED * 
         			RobotMap.cubicRamping(turn);
         }
-        
+        SmartDashboard.putNumber("vAngular: ", vAngular);
         if (power != 0)
         {
-        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power)
+        	vLeft = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power)
                     * (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1)
             ;
-        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.cubicRamping(power)
+        	vRight = RobotMap.DRIVEBASE_MAX_SPEED * RobotMap.spookyRamping(power)
                      * (Robot.elevator.position == Elevator.ElevatorPosition.SCALE ? .5 : 1)
             ;
 
         }
         vLeft += vAngular;
         vRight -= vAngular;
-        
+
+        SmartDashboard.putNumber("vLeft: ", vLeft);
+        SmartDashboard.putNumber("vRight: ", vRight);
+
         //Anti tip code
 //        double roll = Robot.driveBase.getPitch();
 //        vLeft -= RobotMap.DRIVEBASE_ANTI_TIP_CONSTANT * (roll - Robot.driveBase.basePitch);
@@ -94,7 +108,7 @@ public class DriveBase_DriveManual extends Command
         
         Robot.driveBase.rightMaster.set(ControlMode.Velocity, vRight);
         Robot.driveBase.leftMaster.set(ControlMode.Velocity, vLeft);
-        
+
     }
 
     @Override
