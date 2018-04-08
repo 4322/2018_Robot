@@ -14,7 +14,7 @@ public class OI {
     {
         //DRIVER CONTROLS
         pilot = new XboxController(0);
-        pilot.rt.whileHeld(new Drivebase_DriveManual_Voltage());
+//        pilot.rt.whileHeld(new Drivebase_DriveManual_Voltage());
 
         
         operator = new XboxController(1);
